@@ -1,0 +1,24 @@
+
+.JoinOrCreateForm {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px auto;
+    max-width: 1040px;
+    box-sizing: border-box;
+}
+
+.JoinOrCreateForm > div {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 3px;
+    border: 1px solid #000000;
+}
+
+.JoinOrCreateForm > div + div {
+    margin-left: 24px;
+}
+
+.JoinOrCreateForm h2 {
+    margin-top: 0;
+}

@@ -13,6 +13,8 @@
       // Add this line to get types for streaming imports (packageOptions.source="remote"):
       //     "*": [".snowpack/types/*"]
       // More info: https://www.snowpack.dev/guides/streaming-imports
+      "react": ["node_modules/preact/compat"],
+      "react-dom": ["node_modules/preact/compat"]
     },
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,
@@ -22,6 +24,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error"
+    "importsNotUsedAsValues": "error",
+    "experimentalDecorators": true
   }
 }

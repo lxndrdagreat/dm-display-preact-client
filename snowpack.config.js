@@ -4,6 +4,10 @@ module.exports = {
     public: {url: '/', static: true},
     src: {url: '/dist'},
   },
+  alias: {
+    "react": "preact/compat",
+    "react-dom": "preact/compat"
+  },
   plugins: [
     '@snowpack/plugin-dotenv',
     '@snowpack/plugin-typescript',

@@ -1,40 +1,55 @@
-import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
-import logo from './logo.png';
+import { Component, h } from 'preact';
+import { connect } from 'react-redux';
 import './App.css';
+import { AppRoute, setRoute } from './store/slices/app-route.slice';
+import { dispatch } from './store/store';
+import HomeRoute from './route-components/HomeRoute';
+import AdminRoute from './route-components/AdminRoute';
+import type { RootState } from './store/reducer';
+import { SocketClient } from './networking/socket-client';
 
-function App() {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://preactjs.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Preact
-          </a>
-        </p>
-      </header>
-    </div>
-  );
+interface AppProps {
+  appRoute: AppRoute;
 }
 
-export default App;
+class App extends Component<AppProps> {
+
+  private unsubscribe: (() => void) | null = null;
+
+  constructor(props?: AppProps) {
+    super(props);
+  }
+
+  componentDidMount() {
+    SocketClient.instance.connect();
+  }
+
+  onClick() {
+    dispatch(setRoute(AppRoute.Admin));
+  }
+
+  // Return the App component.
+  render() {
+    return (
+      <div className="App">
+        {
+          this.props.appRoute === AppRoute.Home
+          ? (
+            <HomeRoute/>
+            ) : this.props.appRoute === AppRoute.Admin
+          ? (
+            <AdminRoute/>
+            ) : null
+        }
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state: RootState): AppProps => {
+  return {
+    appRoute: state.appRoute
+  };
+};
+
+export default connect(mapStateToProps)(App);
