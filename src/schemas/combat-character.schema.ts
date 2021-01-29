@@ -15,8 +15,3 @@ export interface CombatCharacterSchema {
   roll: number;
   npc?: NPCDetails;
 }
-
-export interface AddCharacterRequest {
-  token: string;
-  character: Omit<CombatCharacterSchema, 'id'>;
-}

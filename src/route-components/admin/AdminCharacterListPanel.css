@@ -2,7 +2,15 @@
     background-color: #FFFFFF;
     overflow-y: scroll;
     height: 100%;
-    width: 100%;
     box-sizing: border-box;
     padding: 24px;
+    width: 30%;
+    min-width: 480px;
+    box-shadow: 2px 2px 4px 0 #000000;
+    z-index: 1;
+}
+
+.AdminCharacterListPanel ul {
+    list-style: none;
+    padding: 0;
 }

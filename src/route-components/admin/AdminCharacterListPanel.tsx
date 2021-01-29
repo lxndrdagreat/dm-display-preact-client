@@ -4,6 +4,7 @@ import type {RootState} from '../../store/reducer';
 import {connect} from 'react-redux';
 import './AdminCharacterListPanel.css';
 import AddCharacterForm from './AddCharacterForm';
+import AdminCombatCharacterItem from './AdminCombatCharacterItem';
 
 interface AdminCharacterListPanelProps {
   characters: CombatCharacterSchema[];
@@ -19,7 +20,10 @@ function AdminCharacterListPanel({characters}: AdminCharacterListPanelProps) {
       <ul class="character-list">
         {
           characters.map(charater => {
-            return <li class="character-list-item">{charater.displayName}</li>
+            return <AdminCombatCharacterItem
+              character={charater}
+              isTurn={false}
+            />
           })
         }
       </ul>
@@ -30,7 +34,7 @@ function AdminCharacterListPanel({characters}: AdminCharacterListPanelProps) {
 
 function mapStateToProps(state: RootState): AdminCharacterListPanelProps {
   return {
-    characters: state.combatTracker ? state.combatTracker.characters : []
+    characters: (state.combatTracker ? state.combatTracker.characters.slice() : []).sort((a, b) => b.roll - a.roll)
   };
 }
 

@@ -1,0 +1,24 @@
+.AdminCombatCharacterItem {
+    display: flex;
+    padding: 8px;
+    background-color: #EFEFEF;
+    transition: transform .2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.AdminCombatCharacterItem:nth-child(odd) {
+    background-color: #CFCFCF;
+}
+
+.AdminCombatCharacterItem.active-turn {
+    transform: scale3d(1.05, 1.1, 1);
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+}
+
+.AdminCombatCharacterItem .roll {
+    font-weight: bold;
+    margin-right: 16px;
+    width: 1rem;
+    text-align: center;
+}

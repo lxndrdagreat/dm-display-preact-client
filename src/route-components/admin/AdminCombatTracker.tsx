@@ -2,6 +2,7 @@ import {h} from 'preact';
 import Button from '../../components/buttons/Button';
 import './AdminCombatTracker.css';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
+import CombatTrackerCharacterScreen from './CombatTrackerCharacterScreen';
 
 function AdminCombatTracker() {
 
@@ -29,6 +30,7 @@ function AdminCombatTracker() {
 
       <div class="split">
         <AdminCharacterListPanel/>
+        <CombatTrackerCharacterScreen/>
       </div>
     </div>
   );
