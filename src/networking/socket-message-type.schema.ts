@@ -1,6 +1,7 @@
 import type {SessionUserRole} from '../schemas/session-user.schema';
 import type {ActiveScreen} from '../schemas/session.schema';
 import type {CombatTrackerSchema} from '../schemas/combat-tracker.schema';
+import type {CombatCharacterSchema} from '../schemas/combat-character.schema';
 
 export enum SocketMessageType {
   CreateNewSession,
@@ -12,6 +13,7 @@ export enum SocketMessageType {
 
   FullState,
 
+  /* Combat Tracker Messages */
   CombatTrackerState,
   CombatTrackerAddCharacter,
   CombatTrackerCharacterAdded,
@@ -48,4 +50,12 @@ export type SocketMessage = {
     activeScreen: ActiveScreen;
     combatTracker: CombatTrackerSchema;
   };
-};
+}
+| {
+  type: SocketMessageType.CombatTrackerAddCharacter;
+  payload: Omit<CombatCharacterSchema, 'id'>;
+}
+| {
+  type: SocketMessageType.CombatTrackerCharacterAdded;
+  payload: CombatCharacterSchema;
+}

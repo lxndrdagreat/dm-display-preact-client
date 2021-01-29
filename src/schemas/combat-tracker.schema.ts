@@ -5,11 +5,3 @@ export interface CombatTrackerSchema {
   activeCharacterId: string | null;
   round: number;
 }
-
-export function initCombatTrackerState(): CombatTrackerSchema {
-  return {
-    characters: [],
-    activeCharacterId: null,
-    round: 1
-  };
-}

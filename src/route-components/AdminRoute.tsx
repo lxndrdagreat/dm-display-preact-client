@@ -1,26 +1,21 @@
-import { h } from 'preact';
-import type { RootState } from '../store/reducer';
-import { connect } from 'react-redux';
+import {h} from 'preact';
+import type {RootState} from '../store/reducer';
+import {connect} from 'react-redux';
 import './AdminRoute.css';
-
-enum AdminRouteView {
-  CreateOrJoin,
-  Session
-}
+import {ActiveScreen} from '../schemas/session.schema';
+import AdminCombatTracker from './admin/AdminCombatTracker';
 
 interface AdminRouteProps {
-  view: AdminRouteView
+  activeScreen: ActiveScreen;
 }
 
-function AdminRoute(props: AdminRouteProps) {
-
+function AdminRoute({activeScreen}: AdminRouteProps) {
   return (
     <div className='AdminRoute'>
       {
-        props.view === AdminRouteView.CreateOrJoin
-          ? (
-            <h1>Admin</h1>
-          ) : null
+        activeScreen === ActiveScreen.CombatTracker ? (
+          <AdminCombatTracker/>
+        ) : null
       }
     </div>
   );
@@ -28,7 +23,7 @@ function AdminRoute(props: AdminRouteProps) {
 
 function mapStateToProps(state: RootState): AdminRouteProps {
   return {
-    view: AdminRouteView.CreateOrJoin,
+    activeScreen: ActiveScreen.CombatTracker
   };
 }
 

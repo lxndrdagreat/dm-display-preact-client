@@ -1,0 +1,8 @@
+.AdminCharacterListPanel {
+    background-color: #FFFFFF;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+}

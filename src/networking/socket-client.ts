@@ -1,4 +1,5 @@
 import type { SocketMessage } from './socket-message-type.schema';
+import type {SocketMessageType} from './socket-message-type.schema';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
 type UnsubscribeFunction = () => void;
@@ -7,6 +8,7 @@ export class SocketClient {
   private static _instance: SocketClient;
   private socket: WebSocket | null = null;
   private onSocketMessageSubscribers: OnSocketMessageSubscriber[] = [];
+  private nextOfTypeCallbacks: Record<number, OnSocketMessageSubscriber[]> = {};
 
   static get instance(): SocketClient {
     if (!SocketClient._instance) {
@@ -28,6 +30,13 @@ export class SocketClient {
       for (const sub of this.onSocketMessageSubscribers) {
         sub(data);
       }
+      // check nextOfType callbacks
+      if (this.nextOfTypeCallbacks[data.type]) {
+        for (const callback of this.nextOfTypeCallbacks[data.type]) {
+          callback(data);
+        }
+        this.nextOfTypeCallbacks[data.type] = [];
+      }
     };
 
     this.socket.onclose = () => {
@@ -43,10 +52,22 @@ export class SocketClient {
     };
   }
 
-  send(message: SocketMessage): void {
+  send(message: SocketMessage): SocketClient {
     if (!this.socket) {
       throw new Error('Cannot send: no socket connection.');
     }
     this.socket.send(JSON.stringify(message));
+
+    return this;
+  }
+
+  // FIXME: not convinced that this is a healthy way to accomplish this
+  nextOfType(messageType: SocketMessageType, callback: OnSocketMessageSubscriber): SocketClient {
+    if (!this.nextOfTypeCallbacks[messageType]) {
+      this.nextOfTypeCallbacks[messageType] = [];
+    }
+    this.nextOfTypeCallbacks[messageType].push(callback);
+
+    return this;
   }
 }

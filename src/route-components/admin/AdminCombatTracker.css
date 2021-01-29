@@ -1,0 +1,16 @@
+.AdminCombatTracker {
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: #AAAAAA;
+}
+
+.AdminCombatTracker header {
+    width: 100vw;
+    border-bottom: 1px solid #000000;
+    background-color: #FFFFFF;
+}
+
+.AdminCombatTracker .split {
+    display: flex;
+    height: calc(100vh - 36px);
+}
