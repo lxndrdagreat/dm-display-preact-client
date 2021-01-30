@@ -1,5 +1,4 @@
 .CombatTrackerCharacterScreen {
-    background-color: #EFEFEF;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
@@ -8,4 +7,23 @@
 
 .CombatTrackerCharacterScreen h2 {
     margin-top: 0;
+}
+
+.CombatTrackerCharacterScreen .body {
+    background-color: #EEEEEE;
+    min-height: 30vh;
+    border-radius: 3px;
+    border: 1px solid #888888;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+.CombatTrackerCharacterScreen .body h3,
+.CombatTrackerCharacterScreen .body h4 {
+    margin-top: 0;
+}
+
+.CombatTrackerCharacterScreen .npc-block {
+    font-size: 16px;
 }

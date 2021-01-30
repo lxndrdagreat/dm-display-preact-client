@@ -7,18 +7,19 @@ import AdminCombatCharacterItem from './AdminCombatCharacterItem';
 
 interface AdminCharacterListPanelProps {
   characters: CombatCharacterSchema[];
+  activeCharacterId: string | null;
 }
 
-function AdminCharacterListPanel({characters}: AdminCharacterListPanelProps) {
+function AdminCharacterListPanel({characters, activeCharacterId}: AdminCharacterListPanelProps) {
 
   return (
     <div className="AdminCharacterListPanel">
       <ul class="character-list">
         {
-          characters.map(charater => {
+          characters.map(character => {
             return <AdminCombatCharacterItem
-              character={charater}
-              isTurn={false}
+              character={character}
+              isTurn={activeCharacterId === character.id}
             />
           })
         }
@@ -29,8 +30,16 @@ function AdminCharacterListPanel({characters}: AdminCharacterListPanelProps) {
 }
 
 function mapStateToProps(state: RootState): AdminCharacterListPanelProps {
+  if (!state.combatTracker) {
+    return {
+      characters: [],
+      activeCharacterId: null
+    };
+  }
+
   return {
-    characters: (state.combatTracker ? state.combatTracker.characters.slice() : []).sort((a, b) => b.roll - a.roll)
+    characters: state.combatTracker.characters.slice().sort((a, b) => b.roll - a.roll),
+    activeCharacterId: state.combatTracker.activeCharacterId
   };
 }
 

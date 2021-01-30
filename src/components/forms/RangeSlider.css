@@ -1,3 +1,67 @@
-.RangeSlider {
+.RangeSlider label {
+    font-weight: bold;
+}
 
+.RangeSlider-wrap {
+    display: flex;
+    position: relative;
+}
+
+.RangeSlider-min-label,
+.RangeSlider-max-label,
+.RangeSlider-value-label {
+    margin: auto 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.RangeSlider-min-label {
+    margin-right: 8px;
+}
+
+.RangeSlider-max-label {
+    margin-left: 8px;
+}
+
+.RangeSlider-value-label {
+    position: absolute;
+    left: 50%;
+    top: -25px;
+    transform: translateX(-50%);
+    border-radius: 2px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    padding: 2px 4px;
+    background-color: #FFFFFF;
+}
+
+.RangeSlider input {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background-color: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.RangeSlider input:hover {
+    opacity: 1;
+}
+
+.RangeSlider input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #00AAFF;
+    cursor: pointer;
+}
+
+.RangeSlider input::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #00AAFF;
+    cursor: pointer;
 }

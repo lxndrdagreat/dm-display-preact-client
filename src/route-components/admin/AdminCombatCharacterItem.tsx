@@ -2,6 +2,8 @@ import {h} from 'preact';
 import type {CombatCharacterSchema} from '../../schemas/combat-character.schema';
 import './AdminCombatCharacterItem.css';
 import classnames from 'classnames';
+import { dispatch } from '../../store/store';
+import { setViewingCharacterDetails } from '../../store/slices/character-details.slice';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -9,13 +11,20 @@ interface Props {
 }
 
 function AdminCombatCharacterItem({character, isTurn}: Props) {
+
+  function onClick() {
+    dispatch(setViewingCharacterDetails(character.id));
+  }
+
   return (
     <li className={
       classnames({
         'AdminCombatCharacterItem': true,
         'active-turn': isTurn
       })
-    }>
+    }
+        onClick={onClick}
+    >
       <div className="roll">{character.roll}</div>
       <div className="name">{ character.displayName } { character.adminName ? `(${character.adminName})` : '' }</div>
     </li>

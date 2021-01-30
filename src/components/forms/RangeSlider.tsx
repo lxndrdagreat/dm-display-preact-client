@@ -9,19 +9,50 @@ interface RangeSliderProps {
   label: string;
   labelMinMax?: boolean;
   labelValue?: boolean;
+  onChange?: (value: number) => void;
 }
 
 function RangeSlider(props: RangeSliderProps) {
+
+  function onChange(event: Event) {
+    if (props.onChange) {
+      const {value} = (event.target as HTMLInputElement);
+      try {
+        const v = parseInt(value);
+        props.onChange(v);
+      } catch (e) {}
+    }
+  }
+
   return (
     <div className="RangeSlider">
       <label for={`${props.id}-slider`}>{props.label}</label>
-      <input
-        id={`${props.id}-slider`}
-        type="range"
-        min={props.min}
-        max={props.max}
-        value={props.value}
-      />
+      <div className="RangeSlider-wrap">
+        {
+          props.labelMinMax ? (
+            <div class="RangeSlider-min-label">{ props.min }</div>
+          ) : null
+        }
+        <input
+          id={`${props.id}-slider`}
+          type="range"
+          min={props.min}
+          max={props.max}
+          value={props.value}
+          onChange={onChange}
+        />
+        {
+          props.labelMinMax ? (
+            <div class="RangeSlider-max-label">{ props.max }</div>
+          ) : null
+        }
+        {
+          props.labelValue ? (
+            <div className='RangeSlider-value-label'>{ props.value }</div>
+          ) : null
+        }
+      </div>
+
     </div>
   );
 }
