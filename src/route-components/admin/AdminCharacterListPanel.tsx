@@ -3,7 +3,6 @@ import type {CombatCharacterSchema} from '../../schemas/combat-character.schema'
 import type {RootState} from '../../store/reducer';
 import {connect} from 'react-redux';
 import './AdminCharacterListPanel.css';
-import AddCharacterForm from './AddCharacterForm';
 import AdminCombatCharacterItem from './AdminCombatCharacterItem';
 
 interface AdminCharacterListPanelProps {
@@ -14,9 +13,6 @@ function AdminCharacterListPanel({characters}: AdminCharacterListPanelProps) {
 
   return (
     <div className="AdminCharacterListPanel">
-
-      <AddCharacterForm/>
-
       <ul class="character-list">
         {
           characters.map(charater => {

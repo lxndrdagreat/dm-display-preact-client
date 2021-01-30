@@ -1,9 +1,9 @@
 .AdminCharacterListPanel {
-    background-color: #FFFFFF;
+    background-color: #777777;
     overflow-y: scroll;
     height: 100%;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 16px;
     width: 30%;
     min-width: 480px;
     box-shadow: 2px 2px 4px 0 #000000;
@@ -13,4 +13,5 @@
 .AdminCharacterListPanel ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }

@@ -1,3 +1,26 @@
 .Button {
     padding: 8px 16px;
+    border: 1px solid #AAAAAA;
+    background-color: #EFEFEF;
+}
+
+.Button:active {
+    background-color: #BCBCBC;
+}
+
+.Button.danger {
+    background-color: #ff4400;
+    border: 1px solid #bb4400;
+    color: #FFFFFF;
+}
+
+.Button.danger:active {
+    background-color: #bb4400;
+    border: 1px solid #bb4400;
+    color: #FFFFFF;
+}
+
+.Button.primary {
+    background-color: #00AAFF;
+    color: #FFFFFF;
 }

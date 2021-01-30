@@ -1,18 +1,27 @@
 import { h, RenderableProps, JSX } from 'preact';
 import './Button.css';
+import classNames from 'classnames';
 
 interface ButtonProps {
+  primary?: boolean;
+  danger?: boolean;
   onClick?: (event: JSX.TargetedEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-function Button({ children, onClick }: RenderableProps<ButtonProps>) {
+function Button(props: RenderableProps<ButtonProps>) {
   return (
     <button
-      class='Button'
+      class={
+        classNames({
+          'Button': true,
+          primary: props.primary,
+          danger: props.danger
+        })
+      }
       type='button'
-      onClick={ onClick }
+      onClick={ props.onClick }
     >
-      {children}
+      {props.children}
     </button>
   );
 }

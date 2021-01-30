@@ -2,15 +2,17 @@
     height: 100vh;
     box-sizing: border-box;
     background-color: #AAAAAA;
+    display: flex;
+    flex-direction: column;
 }
 
 .AdminCombatTracker header {
-    width: 100vw;
+    width: 100%;
     border-bottom: 1px solid #000000;
     background-color: #FFFFFF;
 }
 
 .AdminCombatTracker .split {
     display: flex;
-    height: calc(100vh - 36px);
+    height: 100%;
 }
