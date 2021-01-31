@@ -7,6 +7,7 @@ import HomeRoute from './route-components/HomeRoute';
 import AdminRoute from './route-components/AdminRoute';
 import type { RootState } from './store/reducer';
 import { SocketClient } from './networking/socket-client';
+import { initStorage } from './storage-service';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -14,14 +15,15 @@ interface AppProps {
 
 class App extends Component<AppProps> {
 
-  private unsubscribe: (() => void) | null = null;
-
   constructor(props?: AppProps) {
     super(props);
   }
 
   componentDidMount() {
-    SocketClient.instance.connect();
+    SocketClient.instance.connect()
+      .then(() => {
+        initStorage();
+      });
   }
 
   onClick() {

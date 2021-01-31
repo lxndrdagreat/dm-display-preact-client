@@ -17,32 +17,39 @@ export class SocketClient {
     return SocketClient._instance;
   }
 
-  connect(): void {
+  async connect(): Promise<void> {
     if (this.socket) {
       throw new Error('Cannot connect: already have socket connection.');
     }
 
-    const protocol = 'wss'; // location.protocol.startsWith('https') ? 'wss' : 'ws';
-    this.socket = new WebSocket(`${protocol}://localhost:3090`);
-    // this.socket.binaryType = 'arraybuffer';
-    this.socket.onmessage = (event: MessageEvent) => {
-      const data = JSON.parse(event.data) as SocketMessage;
-      for (const sub of this.onSocketMessageSubscribers) {
-        sub(data);
-      }
-      // check nextOfType callbacks
-      if (this.nextOfTypeCallbacks[data.type]) {
-        for (const callback of this.nextOfTypeCallbacks[data.type]) {
-          callback(data);
-        }
-        this.nextOfTypeCallbacks[data.type] = [];
-      }
-    };
+    return new Promise(resolve => {
+      const protocol = 'wss'; // location.protocol.startsWith('https') ? 'wss' : 'ws';
+      this.socket = new WebSocket(`${protocol}://localhost:3090`);
+      // this.socket.binaryType = 'arraybuffer';
 
-    this.socket.onclose = () => {
-      console.log('socket closed');
-      this.socket = null;
-    };
+      this.socket.onmessage = (event: MessageEvent) => {
+        const data = JSON.parse(event.data) as SocketMessage;
+        for (const sub of this.onSocketMessageSubscribers) {
+          sub(data);
+        }
+        // check nextOfType callbacks
+        if (this.nextOfTypeCallbacks[data.type]) {
+          for (const callback of this.nextOfTypeCallbacks[data.type]) {
+            callback(data);
+          }
+          this.nextOfTypeCallbacks[data.type] = [];
+        }
+      };
+
+      this.socket.onopen = () => {
+        resolve();
+      };
+
+      this.socket.onclose = () => {
+        console.log('socket closed');
+        this.socket = null;
+      };
+    });
   }
 
   subscribe(sub: OnSocketMessageSubscriber): UnsubscribeFunction {
