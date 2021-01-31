@@ -25,6 +25,7 @@ function CombatTrackerCharacterScreen({character}: CharacterScreenProps) {
 
   function onNPCHealthChange(value: number) {
     // TODO: handle npc health change
+    console.log('health change', value);
   }
 
   return (
@@ -51,6 +52,7 @@ function CombatTrackerCharacterScreen({character}: CharacterScreenProps) {
                       label="HP"
                       labelMinMax
                       labelValue
+                      trackChanges
                       onChange={onNPCHealthChange}
                       />
                   </div>

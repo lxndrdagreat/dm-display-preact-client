@@ -35,6 +35,16 @@
     background-color: #FFFFFF;
 }
 
+.RangeSlider-delta-tracker {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    left: calc(50% + 2em);
+    top: -25px;
+    transform: translateX(-50%);
+    color: #AA0000;
+}
+
 .RangeSlider input {
     -webkit-appearance: none;
     width: 100%;

@@ -1,5 +1,7 @@
 import {h} from 'preact';
 import './RangeSlider.css';
+import { useState } from 'preact/hooks';
+import validate = WebAssembly.validate;
 
 interface RangeSliderProps {
   min: number;
@@ -9,18 +11,59 @@ interface RangeSliderProps {
   label: string;
   labelMinMax?: boolean;
   labelValue?: boolean;
+  trackChanges?: boolean;
   onChange?: (value: number) => void;
+}
+
+interface State {
+  active: boolean;
+  startingValue: number;
+  value: number;
 }
 
 function RangeSlider(props: RangeSliderProps) {
 
+  const [state, setState] = useState<State>({
+    active: false,
+    startingValue: props.value ?? props.min,
+    value: props.value ?? props.min
+  });
+
+  function parseInputValue(input: HTMLInputElement): number {
+    try {
+      return parseInt(input.value);
+    } catch (e) {
+      return 0;
+    }
+  }
+
   function onChange(event: Event) {
+    if (state.active) {
+      const v = parseInputValue(event.target as HTMLInputElement);
+      setState({
+        ...state,
+        value: v
+      });
+    }
+  }
+
+  function onMouseDown(event: MouseEvent) {
+    const v = parseInputValue(event.target as HTMLInputElement);
+    setState({
+      active: true,
+      startingValue: v,
+      value: v
+    });
+  }
+
+  function onMouseUp(event: MouseEvent) {
+    setState({
+      active: false,
+      startingValue: state.value,
+      value: state.value
+    });
     if (props.onChange) {
-      const {value} = (event.target as HTMLInputElement);
-      try {
-        const v = parseInt(value);
-        props.onChange(v);
-      } catch (e) {}
+      props.onChange(state.value);
     }
   }
 
@@ -38,7 +81,9 @@ function RangeSlider(props: RangeSliderProps) {
           type="range"
           min={props.min}
           max={props.max}
-          value={props.value}
+          value={state.value}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
           onChange={onChange}
         />
         {
@@ -48,7 +93,15 @@ function RangeSlider(props: RangeSliderProps) {
         }
         {
           props.labelValue ? (
-            <div className='RangeSlider-value-label'>{ props.value }</div>
+            <div className='RangeSlider-value-label'>{ state.value }</div>
+          ) : null
+        }
+        {
+          /* Delta Change Indicator */
+          props.trackChanges && state.active ? (
+            <div className='RangeSlider-delta-tracker'>
+              { state.value - state.startingValue}
+            </div>
           ) : null
         }
       </div>
