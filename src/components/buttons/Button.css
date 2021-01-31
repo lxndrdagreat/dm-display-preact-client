@@ -1,26 +1,37 @@
 .Button {
+    cursor: pointer;
+}
+
+.Button:not(.icon) {
     padding: 8px 16px;
     border: 1px solid #AAAAAA;
     background-color: #EFEFEF;
 }
 
-.Button:active {
+.Button:not(.icon):active {
     background-color: #BCBCBC;
 }
 
-.Button.danger {
+.Button:not(.icon).danger {
     background-color: #ff4400;
     border: 1px solid #bb4400;
     color: #FFFFFF;
 }
 
-.Button.danger:active {
+.Button:not(.icon).danger:active {
     background-color: #bb4400;
     border: 1px solid #bb4400;
     color: #FFFFFF;
 }
 
-.Button.primary {
+.Button:not(.icon).primary {
     background-color: #00AAFF;
     color: #FFFFFF;
+}
+
+.Button.icon {
+    font-size: inherit;
+    background: transparent;
+    border: none;
+    color: currentColor;
 }

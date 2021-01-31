@@ -26,17 +26,17 @@ function JoinOrCreateForm() {
     sessionId: ''
   });
 
-  function onSessionIdInput(e: Event) {
+  function onSessionIdInput(value: string) {
     setState({
       ...state,
-      sessionId: (e.target as HTMLInputElement).value
+      sessionId: value
     });
   }
 
-  function onPasswordInput(e: Event) {
+  function onPasswordInput(value: string) {
     setState({
       ...state,
-      password: (e.target as HTMLInputElement).value
+      password: value
     });
   }
 

@@ -8,7 +8,7 @@ import {AppRoute, setRoute} from '../store/slices/app-route.slice';
 import store, {dispatch} from '../store/store';
 import type {RootState} from '../store/reducer';
 import {SessionUserRole} from '../schemas/session-user.schema';
-import {setCombatTracker, addCombatCharacter} from '../store/slices/combat-tracker.slice';
+import {setCombatTracker, addCombatCharacter, updateCombatCharacter} from '../store/slices/combat-tracker.slice';
 
 function handleMessage(message: SocketMessage): void {
   const state = store.getState() as RootState;
@@ -33,8 +33,10 @@ function handleMessage(message: SocketMessage): void {
       dispatch(setCombatTracker(combatTracker));
       break;
     case SocketMessageType.CombatTrackerCharacterAdded:
-      const character = message.payload;
-      dispatch(addCombatCharacter(character));
+      dispatch(addCombatCharacter(message.payload));
+      break;
+    case SocketMessageType.CombatTrackerCharacterUpdated:
+      dispatch(updateCombatCharacter(message.payload));
       break;
     default:
       console.log('message unhandled', message);

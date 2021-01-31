@@ -5,10 +5,16 @@ interface TextProps {
   id: string;
   label: string;
   value?: string;
-  onChange?: (event: JSX.TargetedEvent<HTMLInputElement, Event>) => void;
+  onChange?: (value: string) => void;
 }
 
 function Text(props: TextProps) {
+
+  function onChange(e: Event) {
+    if (props.onChange) {
+      props.onChange((e.target as HTMLInputElement).value);
+    }
+  }
 
   return (
     <div class="Text">
@@ -16,7 +22,7 @@ function Text(props: TextProps) {
       <input type="text"
              id={`${props.id}-input`}
              value={props.value}
-             onInput={props.onChange} />
+             onInput={onChange} />
     </div>
   );
 }

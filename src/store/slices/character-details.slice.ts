@@ -2,11 +2,19 @@ import {createSlice} from '@reduxjs/toolkit';
 
 export interface CharacterDetailsState {
   characterId: string;
+  editingName: boolean;
+  editingNPCURL: boolean;
+  editingNPCAC: boolean;
+  editingNPCHealth: boolean;
 }
 
 function initCharacterDetailsState(id: string): CharacterDetailsState {
   return {
-    characterId: id
+    characterId: id,
+    editingName: false,
+    editingNPCAC: false,
+    editingNPCHealth: false,
+    editingNPCURL: false
   };
 }
 
@@ -22,9 +30,21 @@ const characterDetailsSlice = createSlice({
         return initCharacterDetailsState(action.payload);
       }
       state.characterId = action.payload;
+    },
+
+    setEditingCharacterName(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.editingName = action.payload;
+      if (state.editingName) {
+        state.editingNPCAC = false;
+        state.editingNPCHealth = false;
+        state.editingNPCURL = false;
+      }
     }
   }
 });
 
-export const {setViewingCharacterDetails} = characterDetailsSlice.actions;
+export const {setViewingCharacterDetails, setEditingCharacterName} = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

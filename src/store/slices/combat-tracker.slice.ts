@@ -35,6 +35,13 @@ const combatTrackerSlice = createSlice({
         throw new Error('CombatTracker is null');
       }
       state.characters.push(action.payload);
+    },
+
+    updateCombatCharacter(state, action) {
+      if (!state) {
+        throw new Error('CombatTracker is null');
+      }
+      state.characters = state.characters.map(ch => ch.id === action.payload.id ? action.payload : ch);
     }
   }
 });
@@ -44,5 +51,6 @@ export const {
   setCombatTrackerActiveCharacterId,
   setCombatTrackerCharacters,
   setCombatTrackerRound,
-  addCombatCharacter} = combatTrackerSlice.actions;
+  addCombatCharacter,
+  updateCombatCharacter} = combatTrackerSlice.actions;
 export default combatTrackerSlice.reducer;

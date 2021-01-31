@@ -59,3 +59,15 @@ export type SocketMessage = {
   type: SocketMessageType.CombatTrackerCharacterAdded;
   payload: CombatCharacterSchema;
 }
+| {
+  type: SocketMessageType.CombatTrackerUpdateCharacter;
+  payload: Partial<CombatCharacterSchema>;
+}
+| {
+  type: SocketMessageType.CombatTrackerCharacterUpdated;
+  payload: CombatCharacterSchema;
+}
+| {
+  type: SocketMessageType.CombatTrackerRemoveCharacter;
+  payload: string;
+}

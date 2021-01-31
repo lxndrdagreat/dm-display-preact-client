@@ -16,7 +16,7 @@ interface State {
   displayName: string;
   adminName: string;
   nameVisible: boolean;
-  npc?: NPCDetails;
+  npc: NPCDetails | null;
 }
 
 function initForm(): State {
@@ -25,7 +25,8 @@ function initForm(): State {
     roll: 0,
     displayName: '',
     adminName: '',
-    nameVisible: true
+    nameVisible: true,
+    npc: null
   };
 }
 
@@ -42,8 +43,7 @@ function AddCharacterForm() {
 
   const [state, setState] = useState<State>(initForm());
 
-  function onNPCBlockChange(e: Event) {
-    const {checked} = (e.target as HTMLInputElement);
+  function onNPCBlockChange(checked: boolean) {
     if (checked) {
       setState({
         ...state,
@@ -52,7 +52,7 @@ function AddCharacterForm() {
     } else {
       setState({
         ...state,
-        npc: undefined
+        npc: null
       });
     }
   }
@@ -64,17 +64,17 @@ function AddCharacterForm() {
     });
   }
 
-  function onAddCharacterDisplayNameChange(e: Event) {
+  function onAddCharacterDisplayNameChange(value: string) {
     setState({
       ...state,
-      displayName: (e.target as HTMLInputElement).value
+      displayName: value
     });
   }
 
-  function onAddCharacterAdminNameChange(e: Event) {
+  function onAddCharacterAdminNameChange(value: string) {
     setState({
       ...state,
-      adminName: (e.target as HTMLInputElement).value
+      adminName: value
     });
   }
 
@@ -85,7 +85,7 @@ function AddCharacterForm() {
     });
   }
 
-  function onAddCharacterNPCURLChange(e: Event) {
+  function onAddCharacterNPCURLChange(value: string) {
     if (!state.npc) {
       return;
     }
@@ -93,7 +93,7 @@ function AddCharacterForm() {
       ...state,
       npc: {
         ...state.npc,
-        url: (e.target as HTMLInputElement).value
+        url: value
       }
     });
   }
@@ -189,7 +189,8 @@ function AddCharacterForm() {
 
               <FormRow>
                 <Text id="add-character-npc-url"
-                      label="URL"/>
+                      label="URL"
+                      onChange={onAddCharacterNPCURLChange}/>
               </FormRow>
 
               <FormRow>
