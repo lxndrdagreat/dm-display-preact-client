@@ -4,6 +4,7 @@
     background-color: #EFEFEF;
     transition: transform .2s ease-in-out;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .AdminCombatCharacterItem:nth-child(odd) {

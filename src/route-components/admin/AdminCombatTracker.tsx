@@ -4,8 +4,9 @@ import './AdminCombatTracker.css';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
 import CombatTrackerCharacterScreen from './CombatTrackerCharacterScreen';
 import AddCharacterDialog from './AddCharacterDialog';
-import { useState } from 'preact/hooks';
-import set = Reflect.set;
+import {useState} from 'preact/hooks';
+import {SocketClient} from '../../networking/socket-client';
+import {SocketMessageType} from '../../networking/socket-message-type.schema';
 
 interface State {
   addCharacterDialogOpen?: boolean;
@@ -16,7 +17,10 @@ function AdminCombatTracker() {
   const [state, setState] = useState<State>({});
 
   function onNextClick() {
-
+    SocketClient.instance.send({
+      type: SocketMessageType.CombatTrackerNextTurn,
+      payload: ''
+    });
   }
 
   function onRestartClick() {

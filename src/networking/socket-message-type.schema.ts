@@ -20,7 +20,11 @@ export enum SocketMessageType {
   CombatTrackerRemoveCharacter,
   CombatTrackerCharacterRemoved,
   CombatTrackerUpdateCharacter,
-  CombatTrackerCharacterUpdated
+  CombatTrackerCharacterUpdated,
+  CombatTrackerNextTurn,
+  CombatTrackerPreviousTurn,
+  CombatTrackerActiveCharacter,
+  CombatTrackerRound
 }
 
 export type SocketMessage = {
@@ -71,3 +75,12 @@ export type SocketMessage = {
   type: SocketMessageType.CombatTrackerRemoveCharacter;
   payload: string;
 }
+| {
+  type: SocketMessageType.CombatTrackerNextTurn;
+  // FIXME: this is dumb
+  payload: '';
+}
+| {
+  type: SocketMessageType.CombatTrackerActiveCharacter;
+  payload: string;
+};
