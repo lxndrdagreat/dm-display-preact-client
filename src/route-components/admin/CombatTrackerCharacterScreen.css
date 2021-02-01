@@ -51,3 +51,16 @@
 .npc-details__url .Text {
     width: 100%;
 }
+
+.character-health {
+    display: flex;
+    margin: 16px 0;
+}
+
+.character-health .RangeSlider {
+    width: 100%;
+}
+
+.character-health .Button {
+    margin: auto;
+}

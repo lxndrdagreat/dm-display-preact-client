@@ -54,9 +54,21 @@ const characterDetailsSlice = createSlice({
         state.editingNPCHealth = false;
         state.editingName = false;
       }
+    },
+
+    setEditingCharacterHealth(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.editingNPCHealth = action.payload;
+      if (state.editingNPCHealth) {
+        state.editingNPCAC = false;
+        state.editingNPCURL = false;
+        state.editingName = false;
+      }
     }
   }
 });
 
-export const {setViewingCharacterDetails, setEditingCharacterName, setEditingCharacterURL} = characterDetailsSlice.actions;
+export const {setViewingCharacterDetails, setEditingCharacterName, setEditingCharacterURL, setEditingCharacterHealth} = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

@@ -10,7 +10,11 @@ import Checkbox from '../../components/forms/Checkbox';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import { dispatch } from '../../store/store';
-import { setEditingCharacterName, setEditingCharacterURL } from '../../store/slices/character-details.slice';
+import {
+  setEditingCharacterHealth,
+  setEditingCharacterName,
+  setEditingCharacterURL,
+} from '../../store/slices/character-details.slice';
 import NumberInput from '../../components/forms/NumberInput';
 import Text from '../../components/forms/Text';
 import { useState } from 'preact/hooks';
@@ -33,6 +37,7 @@ interface FormStates {
   forCharacter: string;
   topDetails: CharacterTopDetailsFormState;
   npcURL: string;
+  npcMaxHealth: number;
 }
 
 function initFormStatesForCharacter(character: CombatCharacterSchema): FormStates {
@@ -44,6 +49,7 @@ function initFormStatesForCharacter(character: CombatCharacterSchema): FormState
       adminName: character.adminName,
     },
     npcURL: character.npc?.url ? character.npc.url : '',
+    npcMaxHealth: character.npc?.maxHealth ? character.npc.maxHealth : 0,
   };
 }
 
@@ -58,6 +64,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         forCharacter: '',
         topDetails: {},
         npcURL: '',
+        npcMaxHealth: 0,
       },
   );
 
@@ -186,7 +193,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     }
     setFormStates({
       ...formStates,
-      npcURL: character.npc?.url ? character.npc.url : ''
+      npcURL: character.npc?.url ? character.npc.url : '',
     });
     dispatch(setEditingCharacterURL(true));
   }
@@ -194,7 +201,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
   function onNPCURLChange(value: string) {
     setFormStates({
       ...formStates,
-      npcURL: value
+      npcURL: value,
     });
   }
 
@@ -210,9 +217,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
           id: character.id,
           npc: {
             ...character.npc,
-            url: formStates.npcURL
-          }
-        }
+            url: formStates.npcURL,
+          },
+        },
       });
     }
   }
@@ -232,6 +239,42 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         },
       },
     });
+  }
+
+  function onNPCMaxHealthChange(value: number) {
+    setFormStates({
+      ...formStates,
+      npcMaxHealth: value
+    });
+  }
+
+  function onEditNPCHealthClick() {
+    if (!character || !character.npc) {
+      return;
+    }
+    if (!props.editingNPCHealth) {
+      // turn on editing
+      setFormStates({
+        ...formStates,
+        npcMaxHealth: character.npc.maxHealth,
+      });
+      dispatch(setEditingCharacterHealth(true));
+    } else {
+      // turn off editing
+      if (formStates.npcMaxHealth !== character.npc.maxHealth) {
+        SocketClient.instance.send({
+          type: SocketMessageType.CombatTrackerUpdateCharacter,
+          payload: {
+            id: character.id,
+            npc: {
+              ...character.npc,
+              maxHealth: formStates.npcMaxHealth
+            }
+          }
+        });
+      }
+      dispatch(setEditingCharacterHealth(false));
+    }
   }
 
   return (
@@ -303,7 +346,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
             {
               character.npc ? (
                 <div class='npc-details'>
-                  <div class="npc-details__url">
+                  <div class='npc-details__url'>
                     <strong>URL:</strong>&nbsp;
 
                     {
@@ -319,7 +362,6 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                       )
                     }
 
-
                     <Button icon
                             title='Change URL'
                             onClick={props.editingNPCURL ? onSaveNPCURLClick : onEditNPCURLClick}>
@@ -327,7 +369,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                     </Button>
                   </div>
 
-                  <div>
+                  <div class='character-health'>
                     <RangeSlider
                       min={0}
                       max={character.npc.maxHealth}
@@ -339,6 +381,24 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                       trackChanges
                       onChange={onNPCHealthChange}
                     />
+
+                    {
+                      props.editingNPCHealth ? (
+                        <NumberInput
+                          id="edit-character-max-health"
+                          label="Max Health"
+                          value={formStates.npcMaxHealth}
+                          onChange={onNPCMaxHealthChange}
+                        />
+                      ) : null
+                    }
+
+                    <Button icon
+                            title='Edit Health'
+                            onClick={onEditNPCHealthClick}>
+                      <Icon name='pencil' />
+                    </Button>
+
                   </div>
 
                   <div>
