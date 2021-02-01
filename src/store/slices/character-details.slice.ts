@@ -42,9 +42,21 @@ const characterDetailsSlice = createSlice({
         state.editingNPCHealth = false;
         state.editingNPCURL = false;
       }
+    },
+
+    setEditingCharacterURL(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.editingNPCURL = action.payload;
+      if (state.editingNPCURL) {
+        state.editingNPCAC = false;
+        state.editingNPCHealth = false;
+        state.editingName = false;
+      }
     }
   }
 });
 
-export const {setViewingCharacterDetails, setEditingCharacterName} = characterDetailsSlice.actions;
+export const {setViewingCharacterDetails, setEditingCharacterName, setEditingCharacterURL} = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

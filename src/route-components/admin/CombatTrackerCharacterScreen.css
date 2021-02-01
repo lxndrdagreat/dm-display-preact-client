@@ -43,3 +43,11 @@
 .edit-character-admin-name {
     width: 100%;
 }
+
+.npc-details__url {
+    display: flex;
+}
+
+.npc-details__url .Text {
+    width: 100%;
+}

@@ -10,7 +10,7 @@ import Checkbox from '../../components/forms/Checkbox';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import { dispatch } from '../../store/store';
-import { setEditingCharacterName } from '../../store/slices/character-details.slice';
+import { setEditingCharacterName, setEditingCharacterURL } from '../../store/slices/character-details.slice';
 import NumberInput from '../../components/forms/NumberInput';
 import Text from '../../components/forms/Text';
 import { useState } from 'preact/hooks';
@@ -32,6 +32,7 @@ interface CharacterTopDetailsFormState {
 interface FormStates {
   forCharacter: string;
   topDetails: CharacterTopDetailsFormState;
+  npcURL: string;
 }
 
 function initFormStatesForCharacter(character: CombatCharacterSchema): FormStates {
@@ -42,6 +43,7 @@ function initFormStatesForCharacter(character: CombatCharacterSchema): FormState
       displayName: character.displayName,
       adminName: character.adminName,
     },
+    npcURL: character.npc?.url ? character.npc.url : '',
   };
 }
 
@@ -55,6 +57,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       : {
         forCharacter: '',
         topDetails: {},
+        npcURL: '',
       },
   );
 
@@ -129,7 +132,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       return;
     }
     const changes: Partial<CombatCharacterSchema> = {
-      id: character.id
+      id: character.id,
     };
     if (formStates.topDetails.adminName !== character.adminName) {
       changes.adminName = formStates.topDetails.adminName;
@@ -143,7 +146,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     }
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerUpdateCharacter,
-      payload: changes
+      payload: changes,
     });
   }
 
@@ -175,6 +178,43 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         adminName: value,
       },
     });
+  }
+
+  function onEditNPCURLClick() {
+    if (!character) {
+      return;
+    }
+    setFormStates({
+      ...formStates,
+      npcURL: character.npc?.url ? character.npc.url : ''
+    });
+    dispatch(setEditingCharacterURL(true));
+  }
+
+  function onNPCURLChange(value: string) {
+    setFormStates({
+      ...formStates,
+      npcURL: value
+    });
+  }
+
+  function onSaveNPCURLClick() {
+    dispatch(setEditingCharacterURL(false));
+    if (!character || character.id !== formStates.forCharacter || !character.npc) {
+      return;
+    }
+    if (formStates.npcURL !== character.npc.url) {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerUpdateCharacter,
+        payload: {
+          id: character.id,
+          npc: {
+            ...character.npc,
+            url: formStates.npcURL
+          }
+        }
+      });
+    }
   }
 
   function onNPCHealthChange(value: number) {
@@ -263,8 +303,28 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
             {
               character.npc ? (
                 <div class='npc-details'>
-                  <div>
-                    <strong>URL:</strong>&nbsp; <a href={character.npc.url} target='_blank'>{character.npc.url}</a>
+                  <div class="npc-details__url">
+                    <strong>URL:</strong>&nbsp;
+
+                    {
+                      props.editingNPCURL ? (
+                        <Text
+                          id='edit-character-url'
+                          label='Edit URL'
+                          value={formStates.npcURL}
+                          onChange={onNPCURLChange}
+                        />
+                      ) : (
+                        <a href={character.npc.url} target='_blank'>{character.npc.url}</a>
+                      )
+                    }
+
+
+                    <Button icon
+                            title='Change URL'
+                            onClick={props.editingNPCURL ? onSaveNPCURLClick : onEditNPCURLClick}>
+                      <Icon name='pencil' />
+                    </Button>
                   </div>
 
                   <div>
