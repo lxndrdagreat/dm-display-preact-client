@@ -27,6 +27,11 @@ export enum SocketMessageType {
   CombatTrackerRound
 }
 
+export enum SessionConnectionRefusedReason {
+  SessionNotFound,
+  InvalidPermissions
+}
+
 export type SocketMessage = {
   type: SocketMessageType.CreateNewSession;
   payload: string;
@@ -87,4 +92,8 @@ export type SocketMessage = {
 | {
   type: SocketMessageType.CombatTrackerRound;
   payload: number;
+}
+| {
+  type: SocketMessageType.SessionConnectionRefused;
+  payload: SessionConnectionRefusedReason;
 };

@@ -1,7 +1,7 @@
 import type { SocketMessage } from './socket-message-type.schema';
 import { SocketMessageType } from './socket-message-type.schema';
 import { SocketClient } from './socket-client';
-import { setSessionId, setSessionToken } from '../store/slices/session.slice';
+import { setSessionId, setSessionToken, clearSession } from '../store/slices/session.slice';
 import { AppRoute, setRoute } from '../store/slices/app-route.slice';
 import store, { dispatch } from '../store/store';
 import type { RootState } from '../store/reducer';
@@ -47,6 +47,9 @@ function handleMessage(message: SocketMessage): void {
       break;
     case SocketMessageType.CombatTrackerRound:
       dispatch(setCombatTrackerRound(message.payload));
+      break;
+    case SocketMessageType.SessionConnectionRefused:
+      dispatch(clearSession());
       break;
     default:
       console.log('message unhandled', message);
