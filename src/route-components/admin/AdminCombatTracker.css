@@ -10,6 +10,10 @@
     width: 100%;
     border-bottom: 1px solid #000000;
     background-color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 8px;
 }
 
 .AdminCombatTracker .split {

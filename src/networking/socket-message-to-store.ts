@@ -1,14 +1,18 @@
-import type {
-  SocketMessage
-} from './socket-message-type.schema';
-import {SocketMessageType} from './socket-message-type.schema';
-import {SocketClient} from './socket-client';
-import {setSessionId, setSessionToken} from '../store/slices/session.slice';
-import {AppRoute, setRoute} from '../store/slices/app-route.slice';
-import store, {dispatch} from '../store/store';
-import type {RootState} from '../store/reducer';
-import {SessionUserRole} from '../schemas/session-user.schema';
-import {setCombatTracker, addCombatCharacter, updateCombatCharacter, setCombatTrackerActiveCharacterId} from '../store/slices/combat-tracker.slice';
+import type { SocketMessage } from './socket-message-type.schema';
+import { SocketMessageType } from './socket-message-type.schema';
+import { SocketClient } from './socket-client';
+import { setSessionId, setSessionToken } from '../store/slices/session.slice';
+import { AppRoute, setRoute } from '../store/slices/app-route.slice';
+import store, { dispatch } from '../store/store';
+import type { RootState } from '../store/reducer';
+import { SessionUserRole } from '../schemas/session-user.schema';
+import {
+  addCombatCharacter,
+  setCombatTracker,
+  setCombatTrackerActiveCharacterId,
+  updateCombatCharacter,
+  setCombatTrackerRound
+} from '../store/slices/combat-tracker.slice';
 
 function handleMessage(message: SocketMessage): void {
   const state = store.getState() as RootState;
@@ -40,6 +44,9 @@ function handleMessage(message: SocketMessage): void {
       break;
     case SocketMessageType.CombatTrackerActiveCharacter:
       dispatch(setCombatTrackerActiveCharacterId(message.payload));
+      break;
+    case SocketMessageType.CombatTrackerRound:
+      dispatch(setCombatTrackerRound(message.payload));
       break;
     default:
       console.log('message unhandled', message);

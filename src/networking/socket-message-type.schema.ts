@@ -83,4 +83,8 @@ export type SocketMessage = {
 | {
   type: SocketMessageType.CombatTrackerActiveCharacter;
   payload: string;
+}
+| {
+  type: SocketMessageType.CombatTrackerRound;
+  payload: number;
 };

@@ -7,6 +7,8 @@ import AddCharacterDialog from './AddCharacterDialog';
 import {useState} from 'preact/hooks';
 import {SocketClient} from '../../networking/socket-client';
 import {SocketMessageType} from '../../networking/socket-message-type.schema';
+import HeaderStatus from './HeaderStatus';
+import RoundInfo from './RoundInfo';
 
 interface State {
   addCharacterDialogOpen?: boolean;
@@ -50,10 +52,14 @@ function AdminCombatTracker() {
   return (
     <div className="AdminCombatTracker">
       <header>
-        <Button onClick={onAddCharacterClick}>Add Character</Button>
-        <Button onClick={onNextClick}>Next</Button>
-        <Button onClick={onRestartClick}>Restart Combat</Button>
-        <Button onClick={onClearClick} danger>Clear Combat</Button>
+        <RoundInfo/>
+        <div className='header-controls'>
+          <Button onClick={onAddCharacterClick}>Add Character</Button>
+          <Button onClick={onNextClick}>Next</Button>
+          <Button onClick={onRestartClick}>Restart Combat</Button>
+          <Button onClick={onClearClick} danger>Clear Combat</Button>
+        </div>
+        <HeaderStatus/>
       </header>
 
       <AddCharacterDialog
