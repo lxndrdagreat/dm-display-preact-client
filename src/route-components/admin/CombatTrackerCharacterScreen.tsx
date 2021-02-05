@@ -6,7 +6,6 @@ import type { RootState } from '../../store/reducer';
 import Button from '../../components/buttons/Button';
 import Icon from '../../components/Icon';
 import RangeSlider from '../../components/forms/RangeSlider';
-import Checkbox from '../../components/forms/Checkbox';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import { dispatch } from '../../store/store';
@@ -73,7 +72,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     setFormStates(initFormStatesForCharacter(character));
   }
 
-  function onToggleActiveChange(active: boolean) {
+  function onToggleActiveChange() {
     if (!character) {
       return;
     }
@@ -81,8 +80,23 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       type: SocketMessageType.CombatTrackerUpdateCharacter,
       payload: {
         id: character.id,
-        active: active,
+        active: !character.active,
       },
+    });
+  }
+
+  function onDuplicateCharacterClick() {
+    if (!character) {
+      return;
+    }
+    const dupe: Partial<CombatCharacterSchema> = {
+      ...character
+    };
+    delete dupe.id;
+    delete dupe.conditions;
+    SocketClient.instance.send({
+      type: SocketMessageType.CombatTrackerAddCharacter,
+      payload: dupe as Omit<CombatCharacterSchema, 'id' | 'conditions'>
     });
   }
 
@@ -365,15 +379,39 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
             }
 
 
-            <CharacterConditionList conditions={character.conditions}
-                                    onConditionChange={onConditionChange} />
+            <div className='info-row'>
+              <CharacterConditionList conditions={character.conditions}
+                                      onConditionChange={onConditionChange} />
 
-            <Checkbox
-              id='character-details-active'
-              label='Active?'
-              checked={character.active}
-              onChange={onToggleActiveChange}
-            />
+              <div>
+                {/*<Checkbox*/}
+                {/*  id='character-details-active'*/}
+                {/*  label='Active?'*/}
+                {/*  checked={character.active}*/}
+                {/*  onChange={onToggleActiveChange}*/}
+                {/*/>*/}
+                <div>
+                  {
+                    character.active
+                      ? (
+                        <Button danger
+                                onClick={onToggleActiveChange}>Deactivate</Button>
+                      )
+                      : (
+                        <Button primary
+                                onClick={onToggleActiveChange}>Activate</Button>
+                      )
+                  }
+                </div>
+                <div>
+                  <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
+                </div>
+              </div>
+            </div>
+
+
+
+
 
             {
               character.npc ? (

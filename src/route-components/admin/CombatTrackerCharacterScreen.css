@@ -64,3 +64,14 @@
 .character-health .Button {
     margin: auto;
 }
+
+.CombatTrackerCharacterScreen .info-row {
+    display: flex;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+}
+
+.CombatTrackerCharacterScreen .info-row .CharacterConditionList {
+    width: 50%;
+    margin-right: 24px;
+}
