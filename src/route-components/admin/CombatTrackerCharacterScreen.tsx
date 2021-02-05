@@ -1,6 +1,6 @@
 import { h } from 'preact';
 import './CombatTrackerCharacterScreen.css';
-import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
+import type { CharacterConditions, CombatCharacterSchema } from '../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '../../store/reducer';
 import Button from '../../components/buttons/Button';
@@ -18,6 +18,7 @@ import {
 import NumberInput from '../../components/forms/NumberInput';
 import Text from '../../components/forms/Text';
 import { useState } from 'preact/hooks';
+import CharacterConditionList from './CharacterConditionList';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
@@ -244,7 +245,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
   function onNPCMaxHealthChange(value: number) {
     setFormStates({
       ...formStates,
-      npcMaxHealth: value
+      npcMaxHealth: value,
     });
   }
 
@@ -268,12 +269,40 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
             id: character.id,
             npc: {
               ...character.npc,
-              maxHealth: formStates.npcMaxHealth
-            }
-          }
+              maxHealth: formStates.npcMaxHealth,
+            },
+          },
         });
       }
       dispatch(setEditingCharacterHealth(false));
+    }
+  }
+
+  function onConditionChange(condition: CharacterConditions) {
+    if (!character) {
+      return;
+    }
+    const indexOf = character.conditions.indexOf(condition);
+    if (indexOf >= 0) {
+      const cons = character.conditions.slice();
+      cons.splice(indexOf, 1);
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerUpdateCharacter,
+        payload: {
+          id: character.id,
+          conditions: cons
+        }
+      });
+    } else {
+      const cons = character.conditions.slice();
+      cons.push(condition);
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerUpdateCharacter,
+        payload: {
+          id: character.id,
+          conditions: cons
+        }
+      });
     }
   }
 
@@ -336,6 +365,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
             }
 
 
+            <CharacterConditionList conditions={character.conditions}
+                                    onConditionChange={onConditionChange} />
+
             <Checkbox
               id='character-details-active'
               label='Active?'
@@ -385,8 +417,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                     {
                       props.editingNPCHealth ? (
                         <NumberInput
-                          id="edit-character-max-health"
-                          label="Max Health"
+                          id='edit-character-max-health'
+                          label='Max Health'
                           value={formStates.npcMaxHealth}
                           onChange={onNPCMaxHealthChange}
                         />

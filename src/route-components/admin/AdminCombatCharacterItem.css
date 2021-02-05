@@ -5,6 +5,11 @@
     transition: transform .2s ease-in-out;
     box-sizing: border-box;
     cursor: pointer;
+    font-size: 24px;
+}
+
+.AdminCombatCharacterItem > * {
+    margin: auto 0;
 }
 
 .AdminCombatCharacterItem:nth-child(odd) {
@@ -20,6 +25,14 @@
 .AdminCombatCharacterItem .roll {
     font-weight: bold;
     margin-right: 16px;
-    width: 1rem;
+    width: 10%;
     text-align: center;
 }
+
+.AdminCombatCharacterItem .name {
+    width: 100%;
+}
+
+/*.AdminCombatCharacterItem .info {*/
+/*    font-size: 36px;*/
+/*}*/

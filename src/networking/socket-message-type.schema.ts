@@ -62,7 +62,7 @@ export type SocketMessage = {
 }
 | {
   type: SocketMessageType.CombatTrackerAddCharacter;
-  payload: Omit<CombatCharacterSchema, 'id'>;
+  payload: Omit<CombatCharacterSchema, 'id' | 'conditions'>;
 }
 | {
   type: SocketMessageType.CombatTrackerCharacterAdded;
