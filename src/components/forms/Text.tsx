@@ -1,10 +1,12 @@
-import {h, JSX} from 'preact';
+import {h} from 'preact';
 import './Text.css';
+import classNames from 'classnames';
 
 interface TextProps {
   id: string;
   label: string;
   value?: string;
+  noLabel?: boolean;
   onChange?: (value: string) => void;
 }
 
@@ -17,7 +19,12 @@ function Text(props: TextProps) {
   }
 
   return (
-    <div class="Text">
+    <div class={
+      classNames({
+        'Text': true,
+        'no-label': props.noLabel
+      })
+    }>
       <label for={`${props.id}-input`}>{props.label}</label>
       <input type="text"
              id={`${props.id}-input`}

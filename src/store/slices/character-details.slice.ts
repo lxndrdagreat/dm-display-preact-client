@@ -1,20 +1,31 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
 
 export interface CharacterDetailsState {
   characterId: string;
-  editingName: boolean;
+  editingTopDetails: boolean;
   editingNPCURL: boolean;
   editingNPCAC: boolean;
   editingNPCHealth: boolean;
+  topDetails: Pick<CombatCharacterSchema, 'displayName' | 'adminName' | 'roll'>;
+  npcUrl: string;
 }
 
 function initCharacterDetailsState(id: string): CharacterDetailsState {
   return {
     characterId: id,
-    editingName: false,
+    editingTopDetails: false,
     editingNPCAC: false,
     editingNPCHealth: false,
-    editingNPCURL: false
+    editingNPCURL: false,
+
+    topDetails: {
+      displayName: '',
+      adminName: '',
+      roll: 0,
+    },
+
+    npcUrl: ''
   };
 }
 
@@ -26,18 +37,15 @@ const characterDetailsSlice = createSlice({
       if (action.payload === null) {
         return null;
       }
-      if (!state) {
-        return initCharacterDetailsState(action.payload);
-      }
-      state.characterId = action.payload;
+      return initCharacterDetailsState(action.payload);
     },
 
-    setEditingCharacterName(state, action) {
+    setEditingCharacterTopDetails(state, action) {
       if (!state) {
         return state;
       }
-      state.editingName = action.payload;
-      if (state.editingName) {
+      state.editingTopDetails = action.payload;
+      if (state.editingTopDetails) {
         state.editingNPCAC = false;
         state.editingNPCHealth = false;
         state.editingNPCURL = false;
@@ -52,7 +60,7 @@ const characterDetailsSlice = createSlice({
       if (state.editingNPCURL) {
         state.editingNPCAC = false;
         state.editingNPCHealth = false;
-        state.editingName = false;
+        state.editingTopDetails = false;
       }
     },
 
@@ -64,11 +72,59 @@ const characterDetailsSlice = createSlice({
       if (state.editingNPCHealth) {
         state.editingNPCAC = false;
         state.editingNPCURL = false;
-        state.editingName = false;
+        state.editingTopDetails = false;
       }
+    },
+
+    setTopDetails(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.topDetails = {
+        ...state.topDetails,
+        ...action.payload,
+      };
+    },
+
+    setTopDetailsDisplayName(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.topDetails.displayName = action.payload;
+    },
+
+    setTopDetailsAdminName(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.topDetails.adminName = action.payload;
+    },
+
+    setTopDetailsInitiativeRoll(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.topDetails.roll = action.payload;
+    },
+
+    setNpcUrl(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.npcUrl = action.payload;
     }
-  }
+  },
 });
 
-export const {setViewingCharacterDetails, setEditingCharacterName, setEditingCharacterURL, setEditingCharacterHealth} = characterDetailsSlice.actions;
+export const {
+  setViewingCharacterDetails,
+  setEditingCharacterTopDetails,
+  setEditingCharacterURL,
+  setEditingCharacterHealth,
+  setTopDetails,
+  setTopDetailsAdminName,
+  setTopDetailsDisplayName,
+  setTopDetailsInitiativeRoll,
+  setNpcUrl
+} = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

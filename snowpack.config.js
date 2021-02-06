@@ -6,7 +6,8 @@ module.exports = {
   },
   alias: {
     "react": "preact/compat",
-    "react-dom": "preact/compat"
+    "react-dom": "preact/compat",
+    '@store': './src/store'
   },
   plugins: [
     '@snowpack/plugin-dotenv',
