@@ -1,12 +1,12 @@
-import {h} from 'preact';
+import { h } from 'preact';
 import Button from '../../components/buttons/Button';
 import './AdminCombatTracker.css';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
 import CombatTrackerCharacterScreen from './CombatTrackerCharacterScreen';
 import AddCharacterDialog from './AddCharacterDialog';
-import {useState} from 'preact/hooks';
-import {SocketClient} from '../../networking/socket-client';
-import {SocketMessageType} from '../../networking/socket-message-type.schema';
+import { useState } from 'preact/hooks';
+import { SocketClient } from '../../networking/socket-client';
+import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import HeaderStatus from './HeaderStatus';
 import RoundInfo from './RoundInfo';
 
@@ -20,20 +20,23 @@ function AdminCombatTracker() {
 
   function onNextClick() {
     SocketClient.instance.send({
-      type: SocketMessageType.CombatTrackerNextTurn,
-      payload: ''
+      type: SocketMessageType.CombatTrackerNextTurn
     });
   }
 
   function onRestartClick() {
-    if (window.confirm('Are you sure you want to reset combat?')) {
-      // TODO: clear combat
+    if (window.confirm('Are you sure you want to restart this combat?')) {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRequestRestart
+      });
     }
   }
 
   function onClearClick() {
     if (window.confirm('Are you sure you want to clear the combat tracker?')) {
-      // TODO: clear combat
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRequestClear
+      });
     }
   }
 

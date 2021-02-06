@@ -1,18 +1,18 @@
-import type { SocketMessage } from './socket-message-type.schema';
+import type { ServerCommandFullState, SocketMessage } from './socket-message-type.schema';
 import { SocketMessageType } from './socket-message-type.schema';
 import { SocketClient } from './socket-client';
-import { setSessionId, setSessionToken, clearSession } from '../store/slices/session.slice';
+import { clearSession, setSessionId, setSessionToken } from '../store/slices/session.slice';
 import { AppRoute, setRoute } from '../store/slices/app-route.slice';
 import store, { dispatch } from '../store/store';
 import type { RootState } from '../store/reducer';
 import { SessionUserRole } from '../schemas/session-user.schema';
 import {
   addCombatCharacter,
+  removeCombatCharacter,
   setCombatTracker,
   setCombatTrackerActiveCharacterId,
-  updateCombatCharacter,
   setCombatTrackerRound,
-  removeCombatCharacter
+  updateCombatCharacter,
 } from '../store/slices/combat-tracker.slice';
 
 function handleMessage(message: SocketMessage): void {
@@ -34,8 +34,11 @@ function handleMessage(message: SocketMessage): void {
       }
       break;
     case SocketMessageType.FullState:
-      const {combatTracker} = message.payload;
+      const {combatTracker} = (message as ServerCommandFullState).payload;
       dispatch(setCombatTracker(combatTracker));
+      break;
+    case SocketMessageType.CombatTrackerState:
+      dispatch(setCombatTracker(message.payload));
       break;
     case SocketMessageType.CombatTrackerCharacterAdded:
       dispatch(addCombatCharacter(message.payload));
