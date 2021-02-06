@@ -81,6 +81,10 @@ export type SocketMessage = {
   payload: string;
 }
 | {
+  type: SocketMessageType.CombatTrackerCharacterRemoved;
+  payload: string;
+}
+| {
   type: SocketMessageType.CombatTrackerNextTurn;
   // FIXME: this is dumb
   payload: '';

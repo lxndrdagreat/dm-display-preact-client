@@ -320,6 +320,18 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     }
   }
 
+  function onDeleteCharacterClick() {
+    if (!character) {
+      return;
+    }
+    if (window.confirm(`Are you sure you want to delete "${character.displayName}"?`)) {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRemoveCharacter,
+        payload: character.id
+      });
+    }
+  }
+
   return (
     <div className='CombatTrackerCharacterScreen'>
       <h2>Character Details</h2>
@@ -384,12 +396,6 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                                       onConditionChange={onConditionChange} />
 
               <div>
-                {/*<Checkbox*/}
-                {/*  id='character-details-active'*/}
-                {/*  label='Active?'*/}
-                {/*  checked={character.active}*/}
-                {/*  onChange={onToggleActiveChange}*/}
-                {/*/>*/}
                 <div>
                   {
                     character.active
@@ -405,6 +411,10 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                 </div>
                 <div>
                   <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
+                </div>
+                <div>
+                  <Button danger
+                          onClick={onDeleteCharacterClick}>Delete</Button>
                 </div>
               </div>
             </div>

@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import type {CombatTrackerSchema} from '../../schemas/combat-tracker.schema';
+import { createSlice } from '@reduxjs/toolkit';
+import type { CombatTrackerSchema } from '../../schemas/combat-tracker.schema';
 
 const combatTrackerSlice = createSlice({
   name: 'combatTracker',
@@ -37,13 +37,20 @@ const combatTrackerSlice = createSlice({
       state.characters.push(action.payload);
     },
 
+    removeCombatCharacter(state, action) {
+      if (!state) {
+        throw new Error('CombatTracker is null');
+      }
+      state.characters = state.characters.filter(ch => ch.id !== action.payload);
+    },
+
     updateCombatCharacter(state, action) {
       if (!state) {
         throw new Error('CombatTracker is null');
       }
       state.characters = state.characters.map(ch => ch.id === action.payload.id ? action.payload : ch);
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -52,5 +59,7 @@ export const {
   setCombatTrackerCharacters,
   setCombatTrackerRound,
   addCombatCharacter,
-  updateCombatCharacter} = combatTrackerSlice.actions;
+  updateCombatCharacter,
+  removeCombatCharacter,
+} = combatTrackerSlice.actions;
 export default combatTrackerSlice.reducer;

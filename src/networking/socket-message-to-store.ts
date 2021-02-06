@@ -11,7 +11,8 @@ import {
   setCombatTracker,
   setCombatTrackerActiveCharacterId,
   updateCombatCharacter,
-  setCombatTrackerRound
+  setCombatTrackerRound,
+  removeCombatCharacter
 } from '../store/slices/combat-tracker.slice';
 
 function handleMessage(message: SocketMessage): void {
@@ -47,6 +48,9 @@ function handleMessage(message: SocketMessage): void {
       break;
     case SocketMessageType.CombatTrackerRound:
       dispatch(setCombatTrackerRound(message.payload));
+      break;
+    case SocketMessageType.CombatTrackerCharacterRemoved:
+      dispatch(removeCombatCharacter(message.payload));
       break;
     case SocketMessageType.SessionConnectionRefused:
       dispatch(clearSession());
