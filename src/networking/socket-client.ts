@@ -1,5 +1,5 @@
 import type { SocketMessage } from './socket-message-type.schema';
-import type {SocketMessageType} from './socket-message-type.schema';
+import type { SocketMessageType } from './socket-message-type.schema';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
 type UnsubscribeFunction = () => void;
@@ -22,7 +22,7 @@ export class SocketClient {
       throw new Error('Cannot connect: already have socket connection.');
     }
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const protocol = 'wss'; // location.protocol.startsWith('https') ? 'wss' : 'ws';
       this.socket = new WebSocket(`${protocol}://localhost:3090`);
       // this.socket.binaryType = 'arraybuffer';
@@ -55,7 +55,10 @@ export class SocketClient {
   subscribe(sub: OnSocketMessageSubscriber): UnsubscribeFunction {
     this.onSocketMessageSubscribers.push(sub);
     return () => {
-      this.onSocketMessageSubscribers.splice(this.onSocketMessageSubscribers.indexOf(sub), 1);
+      this.onSocketMessageSubscribers.splice(
+        this.onSocketMessageSubscribers.indexOf(sub),
+        1,
+      );
     };
   }
 
@@ -69,7 +72,10 @@ export class SocketClient {
   }
 
   // FIXME: not convinced that this is a healthy way to accomplish this
-  nextOfType(messageType: SocketMessageType, callback: OnSocketMessageSubscriber): SocketClient {
+  nextOfType(
+    messageType: SocketMessageType,
+    callback: OnSocketMessageSubscriber,
+  ): SocketClient {
     if (!this.nextOfTypeCallbacks[messageType]) {
       this.nextOfTypeCallbacks[messageType] = [];
     }

@@ -33,7 +33,7 @@ function initCharacterDetailsState(id: string): CharacterDetailsState {
 
 const characterDetailsSlice = createSlice({
   name: 'characterDetails',
-  initialState: null as (null | CharacterDetailsState),
+  initialState: null as null | CharacterDetailsState,
   reducers: {
     setViewingCharacterDetails(state, action) {
       if (action.payload === null) {
@@ -121,7 +121,7 @@ const characterDetailsSlice = createSlice({
         return state;
       }
       state.npcMaxHealth = action.payload;
-    }
+    },
   },
 });
 
@@ -135,6 +135,6 @@ export const {
   setTopDetailsDisplayName,
   setTopDetailsInitiativeRoll,
   setNpcUrl,
-  setNpcMaxHealth
+  setNpcMaxHealth,
 } = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

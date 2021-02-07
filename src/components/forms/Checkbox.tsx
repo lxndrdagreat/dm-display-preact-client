@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import { h } from 'preact';
 
 interface CheckboxProps {
   id: string;
@@ -8,7 +8,6 @@ interface CheckboxProps {
 }
 
 function Checkbox(props: CheckboxProps) {
-
   function onChange(e: Event) {
     if (props.onChange) {
       props.onChange((e.target as HTMLInputElement).checked);
@@ -17,13 +16,13 @@ function Checkbox(props: CheckboxProps) {
 
   return (
     <div className="Checkbox">
-      <input id={`${props.id}-checkbox`}
-             type="checkbox"
-             checked={props.checked}
-             onChange={onChange}/>
-      <label for={`${props.id}-checkbox`}>
-        {props.label}
-      </label>
+      <input
+        id={`${props.id}-checkbox`}
+        type="checkbox"
+        checked={props.checked}
+        onChange={onChange}
+      />
+      <label for={`${props.id}-checkbox`}>{props.label}</label>
     </div>
   );
 }

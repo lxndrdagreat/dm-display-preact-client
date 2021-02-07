@@ -15,19 +15,18 @@ interface State {
 }
 
 function AdminCombatTracker() {
-
   const [state, setState] = useState<State>({});
 
   function onNextClick() {
     SocketClient.instance.send({
-      type: SocketMessageType.CombatTrackerNextTurn
+      type: SocketMessageType.CombatTrackerNextTurn,
     });
   }
 
   function onRestartClick() {
     if (window.confirm('Are you sure you want to restart this combat?')) {
       SocketClient.instance.send({
-        type: SocketMessageType.CombatTrackerRequestRestart
+        type: SocketMessageType.CombatTrackerRequestRestart,
       });
     }
   }
@@ -35,34 +34,36 @@ function AdminCombatTracker() {
   function onClearClick() {
     if (window.confirm('Are you sure you want to clear the combat tracker?')) {
       SocketClient.instance.send({
-        type: SocketMessageType.CombatTrackerRequestClear
+        type: SocketMessageType.CombatTrackerRequestClear,
       });
     }
   }
 
   function onAddCharacterClick() {
     setState({
-      addCharacterDialogOpen: true
+      addCharacterDialogOpen: true,
     });
   }
 
   function onAddCharacterDialogBackdropClick() {
     setState({
-      addCharacterDialogOpen: false
+      addCharacterDialogOpen: false,
     });
   }
 
   return (
     <div className="AdminCombatTracker">
       <header>
-        <RoundInfo/>
-        <div className='header-controls'>
+        <RoundInfo />
+        <div className="header-controls">
           <Button onClick={onAddCharacterClick}>Add Character</Button>
           <Button onClick={onNextClick}>Next</Button>
           <Button onClick={onRestartClick}>Restart Combat</Button>
-          <Button onClick={onClearClick} danger>Clear Combat</Button>
+          <Button onClick={onClearClick} danger>
+            Clear Combat
+          </Button>
         </div>
-        <HeaderStatus/>
+        <HeaderStatus />
       </header>
 
       <AddCharacterDialog
@@ -71,8 +72,8 @@ function AdminCombatTracker() {
       />
 
       <div class="split">
-        <AdminCharacterListPanel/>
-        <CombatTrackerCharacterScreen/>
+        <AdminCharacterListPanel />
+        <CombatTrackerCharacterScreen />
       </div>
     </div>
   );

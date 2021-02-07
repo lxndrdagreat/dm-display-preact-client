@@ -1,4 +1,4 @@
-import {combineReducers} from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
 import appRouteReducer from './slices/app-route.slice';
 import sessionReducer from './slices/session.slice';
 import userRoleReducer from './slices/user-role.slice';
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   userRole: userRoleReducer,
   combatTracker: combatTrackerReducer,
-  characterDetails: characterDetailsReducer
+  characterDetails: characterDetailsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,7 +1,7 @@
-import type {SessionUserRole} from '../schemas/session-user.schema';
-import type {ActiveScreen} from '../schemas/session.schema';
-import type {CombatTrackerSchema} from '../schemas/combat-tracker.schema';
-import type {CombatCharacterSchema} from '../schemas/combat-character.schema';
+import type { SessionUserRole } from '../schemas/session-user.schema';
+import type { ActiveScreen } from '../schemas/session.schema';
+import type { CombatTrackerSchema } from '../schemas/combat-tracker.schema';
+import type { CombatCharacterSchema } from '../schemas/combat-character.schema';
 
 export enum SocketMessageType {
   CreateNewSession,
@@ -26,12 +26,12 @@ export enum SocketMessageType {
   CombatTrackerActiveCharacter,
   CombatTrackerRound,
   CombatTrackerRequestRestart,
-  CombatTrackerRequestClear
+  CombatTrackerRequestClear,
 }
 
 export enum SessionConnectionRefusedReason {
   SessionNotFound,
-  InvalidPermissions
+  InvalidPermissions,
 }
 
 export interface SocketMessage {
@@ -57,7 +57,6 @@ export interface ServerCommandSessionConnected extends SocketMessage {
   type: SocketMessageType.SessionConnected;
   payload: string;
 }
-
 
 export interface ServerCommandFullState extends SocketMessage {
   type: SocketMessageType.FullState;

@@ -3,7 +3,7 @@ import type { CombatTrackerSchema } from '../../schemas/combat-tracker.schema';
 
 const combatTrackerSlice = createSlice({
   name: 'combatTracker',
-  initialState: null as (null | CombatTrackerSchema),
+  initialState: null as null | CombatTrackerSchema,
   reducers: {
     setCombatTracker(state, action) {
       return action.payload;
@@ -11,7 +11,9 @@ const combatTrackerSlice = createSlice({
 
     setCombatTrackerCharacters(state, action) {
       if (!state) {
-        throw new Error('Cannot set characters because the combattracker is null');
+        throw new Error(
+          'Cannot set characters because the combattracker is null',
+        );
       }
       state.characters = action.payload;
     },
@@ -41,14 +43,18 @@ const combatTrackerSlice = createSlice({
       if (!state) {
         throw new Error('CombatTracker is null');
       }
-      state.characters = state.characters.filter(ch => ch.id !== action.payload);
+      state.characters = state.characters.filter(
+        (ch) => ch.id !== action.payload,
+      );
     },
 
     updateCombatCharacter(state, action) {
       if (!state) {
         throw new Error('CombatTracker is null');
       }
-      state.characters = state.characters.map(ch => ch.id === action.payload.id ? action.payload : ch);
+      state.characters = state.characters.map((ch) =>
+        ch.id === action.payload.id ? action.payload : ch,
+      );
     },
   },
 });

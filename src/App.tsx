@@ -14,16 +14,14 @@ interface AppProps {
 }
 
 class App extends Component<AppProps> {
-
   constructor(props?: AppProps) {
     super(props);
   }
 
   componentDidMount() {
-    SocketClient.instance.connect()
-      .then(() => {
-        initStorage();
-      });
+    SocketClient.instance.connect().then(() => {
+      initStorage();
+    });
   }
 
   onClick() {
@@ -34,15 +32,11 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-        {
-          this.props.appRoute === AppRoute.Home
-          ? (
-            <HomeRoute/>
-            ) : this.props.appRoute === AppRoute.Admin
-          ? (
-            <AdminRoute/>
-            ) : null
-        }
+        {this.props.appRoute === AppRoute.Home ? (
+          <HomeRoute />
+        ) : this.props.appRoute === AppRoute.Admin ? (
+          <AdminRoute />
+        ) : null}
       </div>
     );
   }
@@ -50,7 +44,7 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: RootState): AppProps => {
   return {
-    appRoute: state.appRoute
+    appRoute: state.appRoute,
   };
 };
 

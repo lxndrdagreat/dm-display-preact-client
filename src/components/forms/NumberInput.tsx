@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import { h } from 'preact';
 import './NumberInput.css';
 
 interface NumberProps {
@@ -11,7 +11,6 @@ interface NumberProps {
 }
 
 function NumberInput(props: NumberProps) {
-
   function onChange(event: Event) {
     if (props.onChange) {
       try {
@@ -24,12 +23,14 @@ function NumberInput(props: NumberProps) {
   return (
     <div class="NumberInput">
       <label for={`${props.id}-input`}>{props.label}</label>
-      <input type="number"
-             id={`${props.id}-input`}
-             value={props.value}
-             min={props.min}
-             max={props.max}
-             onInput={onChange} />
+      <input
+        type="number"
+        id={`${props.id}-input`}
+        value={props.value}
+        min={props.min}
+        max={props.max}
+        onInput={onChange}
+      />
     </div>
   );
 }

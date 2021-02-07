@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import type {SessionUserRole} from '../../schemas/session-user.schema';
+import { createSlice } from '@reduxjs/toolkit';
+import type { SessionUserRole } from '../../schemas/session-user.schema';
 
 const userRoleSlice = createSlice({
   name: 'userRole',
@@ -7,9 +7,9 @@ const userRoleSlice = createSlice({
   reducers: {
     setUserRole(state, action) {
       return action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {setUserRole} = userRoleSlice.actions;
+export const { setUserRole } = userRoleSlice.actions;
 export default userRoleSlice.reducer;

@@ -1,4 +1,3 @@
-
 export interface NPCDetails {
   maxHealth: number;
   health: number;
@@ -20,7 +19,7 @@ export enum CharacterConditions {
   Prone,
   Restrained,
   Stunned,
-  Unconcious
+  Unconcious,
 }
 
 export interface CombatCharacterSchema {

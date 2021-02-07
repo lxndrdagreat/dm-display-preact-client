@@ -1,17 +1,17 @@
-import {h} from 'preact';
-import {connect} from 'react-redux';
-import type {RootState} from '../store/reducer';
+import { h } from 'preact';
+import { connect } from 'react-redux';
+import type { RootState } from '@store/reducer';
 import Button from '../components/buttons/Button';
 import JoinOrCreateForm from '../components/JoinOrCreateForm';
-import store, {dispatch} from '../store/store';
-import {setUserRole} from '../store/slices/user-role.slice';
-import {SessionUserRole} from '../schemas/session-user.schema';
-import {SocketClient} from '../networking/socket-client';
-import {SocketMessageType} from '../networking/socket-message-type.schema';
+import store, { dispatch } from '../store/store';
+import { setUserRole } from '@store/slices/user-role.slice';
+import { SessionUserRole } from '../schemas/session-user.schema';
+import { SocketClient } from '../networking/socket-client';
+import { SocketMessageType } from '../networking/socket-message-type.schema';
 
 enum HomeRouteState {
   JoinOrCreate,
-  AdminOrDisplay
+  AdminOrDisplay,
 }
 
 interface HomeRouteProps {
@@ -19,17 +19,16 @@ interface HomeRouteProps {
 }
 
 function HomeRoute(props: HomeRouteProps) {
-
   function connectWithRole(userRole: SessionUserRole) {
-    const {session} = store.getState();
+    const { session } = store.getState();
     dispatch(setUserRole(userRole));
     SocketClient.instance.send({
       type: SocketMessageType.ConnectToSession,
       payload: {
         role: userRole,
         sessionId: session.id as string,
-        password: session.password
-      }
+        password: session.password,
+      },
     });
   }
 
@@ -42,26 +41,17 @@ function HomeRoute(props: HomeRouteProps) {
   }
 
   return (
-    <div className='HomeRoute'>
+    <div className="HomeRoute">
       <h1>Welcome</h1>
 
-      {
-        props.state === HomeRouteState.JoinOrCreate
-        ? (
-            <JoinOrCreateForm/>
-          )
-          : (
-            <div>
-              <Button onClick={onDisplayClick}>
-                Display
-              </Button>
-              <Button onClick={onAdminClick}>
-                Admin
-              </Button>
-            </div>
-          )
-      }
-
+      {props.state === HomeRouteState.JoinOrCreate ? (
+        <JoinOrCreateForm />
+      ) : (
+        <div>
+          <Button onClick={onDisplayClick}>Display</Button>
+          <Button onClick={onAdminClick}>Admin</Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -69,12 +59,12 @@ function HomeRoute(props: HomeRouteProps) {
 function mapStateToProps(state: RootState): HomeRouteProps {
   if (state.session.id && state.session.password) {
     return {
-      state: HomeRouteState.AdminOrDisplay
+      state: HomeRouteState.AdminOrDisplay,
     };
   } else {
     return {
-      state: HomeRouteState.JoinOrCreate
-    }
+      state: HomeRouteState.JoinOrCreate,
+    };
   }
 }
 

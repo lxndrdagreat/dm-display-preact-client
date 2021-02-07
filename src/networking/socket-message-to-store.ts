@@ -1,7 +1,14 @@
-import type { ServerCommandFullState, SocketMessage } from './socket-message-type.schema';
+import type {
+  ServerCommandFullState,
+  SocketMessage,
+} from './socket-message-type.schema';
 import { SocketMessageType } from './socket-message-type.schema';
 import { SocketClient } from './socket-client';
-import { clearSession, setSessionId, setSessionToken } from '../store/slices/session.slice';
+import {
+  clearSession,
+  setSessionId,
+  setSessionToken,
+} from '../store/slices/session.slice';
 import { AppRoute, setRoute } from '../store/slices/app-route.slice';
 import store, { dispatch } from '../store/store';
 import type { RootState } from '../store/reducer';
@@ -26,7 +33,7 @@ function handleMessage(message: SocketMessage): void {
     case SocketMessageType.SessionConnected:
       const token = message.payload;
       dispatch(setSessionToken(token));
-      const {userRole} = state;
+      const { userRole } = state;
       if (userRole === SessionUserRole.Display) {
         dispatch(setRoute(AppRoute.Display));
       } else if (userRole === SessionUserRole.Admin) {
@@ -34,7 +41,7 @@ function handleMessage(message: SocketMessage): void {
       }
       break;
     case SocketMessageType.FullState:
-      const {combatTracker} = (message as ServerCommandFullState).payload;
+      const { combatTracker } = (message as ServerCommandFullState).payload;
       dispatch(setCombatTracker(combatTracker));
       break;
     case SocketMessageType.CombatTrackerState:

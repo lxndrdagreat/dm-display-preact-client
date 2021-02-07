@@ -1,8 +1,8 @@
-import type {SessionUserSchema} from './session-user.schema';
-import type {CombatTrackerSchema} from './combat-tracker.schema';
+import type { SessionUserSchema } from './session-user.schema';
+import type { CombatTrackerSchema } from './combat-tracker.schema';
 
 export enum ActiveScreen {
-  CombatTracker
+  CombatTracker,
 }
 
 export interface SessionSchema {

@@ -1,17 +1,16 @@
 import { h } from 'preact';
 import './CombatTrackerCharacterScreen.css';
-import type { CharacterConditions, CombatCharacterSchema } from '../../schemas/combat-character.schema';
+import type {
+  CharacterConditions,
+  CombatCharacterSchema,
+} from '../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
-import type { RootState } from '../../store/reducer';
+import type { RootState } from '@store/reducer';
 import Button from '../../components/buttons/Button';
 import Icon from '../../components/Icon';
-import RangeSlider from '../../components/forms/RangeSlider';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
-import type {
-  CharacterDetailsState
-} from '../../store/slices/character-details.slice';
-import NumberInput from '../../components/forms/NumberInput';
+import type { CharacterDetailsState } from '@store/slices/character-details.slice';
 import CharacterConditionList from './CharacterConditionList';
 import CharacterDetailsTop from './CharacterDetailsTop';
 import NpcUrl from './NpcUrl';
@@ -23,7 +22,6 @@ interface CharacterScreenProps {
 }
 
 function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
-
   const { character } = props;
 
   function onToggleActiveChange() {
@@ -44,13 +42,13 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       return;
     }
     const dupe: Partial<CombatCharacterSchema> = {
-      ...character
+      ...character,
     };
     delete dupe.id;
     delete dupe.conditions;
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerAddCharacter,
-      payload: dupe as Omit<CombatCharacterSchema, 'id' | 'conditions'>
+      payload: dupe as Omit<CombatCharacterSchema, 'id' | 'conditions'>,
     });
   }
 
@@ -76,7 +74,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     if (!character) {
       return;
     }
-    if (window.confirm('Are you sure you want to remove this NPC Details block?')) {
+    if (
+      window.confirm('Are you sure you want to remove this NPC Details block?')
+    ) {
       SocketClient.instance.send({
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
@@ -99,8 +99,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
           id: character.id,
-          conditions: cons
-        }
+          conditions: cons,
+        },
       });
     } else {
       const cons = character.conditions.slice();
@@ -109,8 +109,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
           id: character.id,
-          conditions: cons
-        }
+          conditions: cons,
+        },
       });
     }
   }
@@ -119,79 +119,84 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     if (!character) {
       return;
     }
-    if (window.confirm(`Are you sure you want to delete "${character.displayName}"?`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete "${character.displayName}"?`,
+      )
+    ) {
       SocketClient.instance.send({
         type: SocketMessageType.CombatTrackerRemoveCharacter,
-        payload: character.id
+        payload: character.id,
       });
     }
   }
 
   return (
-    <div className='CombatTrackerCharacterScreen'>
+    <div className="CombatTrackerCharacterScreen">
       <h2>Character Details</h2>
-      {
-        !character ? (
-          <em>Select a character from the list to the left to see detailed information.</em>
-        ) : (
-          <div className='body'>
+      {!character ? (
+        <em>
+          Select a character from the list to the left to see detailed
+          information.
+        </em>
+      ) : (
+        <div className="body">
+          <CharacterDetailsTop />
 
-            <CharacterDetailsTop/>
+          <div className="info-row">
+            <CharacterConditionList
+              conditions={character.conditions}
+              onConditionChange={onConditionChange}
+            />
 
-            <div className='info-row'>
-              <CharacterConditionList conditions={character.conditions}
-                                      onConditionChange={onConditionChange} />
-
+            <div>
               <div>
-                <div>
-                  {
-                    character.active
-                      ? (
-                        <Button danger
-                                onClick={onToggleActiveChange}>Deactivate</Button>
-                      )
-                      : (
-                        <Button primary
-                                onClick={onToggleActiveChange}>Activate</Button>
-                      )
-                  }
-                </div>
-                <div>
-                  <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
-                </div>
-                <div>
-                  <Button danger
-                          onClick={onDeleteCharacterClick}>Delete</Button>
-                </div>
+                {character.active ? (
+                  <Button danger onClick={onToggleActiveChange}>
+                    Deactivate
+                  </Button>
+                ) : (
+                  <Button primary onClick={onToggleActiveChange}>
+                    Activate
+                  </Button>
+                )}
+              </div>
+              <div>
+                <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
+              </div>
+              <div>
+                <Button danger onClick={onDeleteCharacterClick}>
+                  Delete
+                </Button>
               </div>
             </div>
-
-            {
-              /* Character NPC Block */
-              character.npc ? (
-                <div class='npc-details'>
-
-                  <NpcUrl/>
-
-                  <CharacterHealth/>
-
-                  <div>
-                    <Icon name='shield' />
-                    {character.npc.armorClass}
-                  </div>
-
-                  <Button onClick={onRemoveNPCDetailsClick} danger>Remove NPC Details</Button>
-                </div>
-              ) : (
-                <div>
-                  <Button onClick={onAddNPCDetailsClick}>Add NPC Details</Button>
-                </div>
-              )
-            }
-
           </div>
-        )
-      }
+
+          {
+            /* Character NPC Block */
+            character.npc ? (
+              <div class="npc-details">
+                <NpcUrl />
+
+                <CharacterHealth />
+
+                <div>
+                  <Icon name="shield" />
+                  {character.npc.armorClass}
+                </div>
+
+                <Button onClick={onRemoveNPCDetailsClick} danger>
+                  Remove NPC Details
+                </Button>
+              </div>
+            ) : (
+              <div>
+                <Button onClick={onAddNPCDetailsClick}>Add NPC Details</Button>
+              </div>
+            )
+          }
+        </div>
+      )}
     </div>
   );
 }
@@ -200,12 +205,12 @@ function mapStateToProps(state: RootState): CharacterScreenProps {
   if (state.characterDetails && state.combatTracker) {
     const id = state.characterDetails.characterId;
     return {
-      character: state.combatTracker.characters.find(ch => ch.id === id),
-      details: state.characterDetails
+      character: state.combatTracker.characters.find((ch) => ch.id === id),
+      details: state.characterDetails,
     };
   }
   return {
-    details: null
+    details: null,
   };
 }
 

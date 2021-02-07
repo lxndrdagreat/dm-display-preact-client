@@ -4,15 +4,14 @@ import store, { dispatch } from './store/store';
 import type { RootState } from './store/reducer';
 import { SocketClient } from './networking/socket-client';
 import { SocketMessageType } from './networking/socket-message-type.schema';
-import {setSessionId, setSessionPassword} from './store/slices/session.slice';
-import {setUserRole} from './store/slices/user-role.slice';
+import { setSessionId, setSessionPassword } from './store/slices/session.slice';
+import { setUserRole } from './store/slices/user-role.slice';
 
 interface StoreInfo extends SessionInfo {
   userRole: SessionUserRole | null;
 }
 
 function saveSession(info: StoreInfo): void {
-
   if (!window.sessionStorage) {
     return;
   }
@@ -46,8 +45,8 @@ export function initStorage(): void {
         payload: {
           password: existing.password,
           sessionId: existing.id,
-          role: existing.userRole
-        }
+          role: existing.userRole,
+        },
       });
     }
   }
@@ -56,7 +55,7 @@ export function initStorage(): void {
     const state = store.getState() as RootState;
     const info = {
       ...state.session,
-      userRole: state.userRole
+      userRole: state.userRole,
     };
     saveSession(info);
   });

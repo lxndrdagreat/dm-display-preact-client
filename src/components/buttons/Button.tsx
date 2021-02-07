@@ -13,17 +13,15 @@ interface ButtonProps {
 function Button(props: RenderableProps<ButtonProps>) {
   return (
     <button
-      class={
-        classNames({
-          'Button': true,
-          primary: props.primary,
-          danger: props.danger,
-          icon: props.icon
-        })
-      }
-      type='button'
+      class={classNames({
+        Button: true,
+        primary: props.primary,
+        danger: props.danger,
+        icon: props.icon,
+      })}
+      type="button"
       title={props.title}
-      onClick={ props.onClick }
+      onClick={props.onClick}
     >
       {props.children}
     </button>

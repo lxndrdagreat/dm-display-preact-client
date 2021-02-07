@@ -1,4 +1,4 @@
-import type {CombatCharacterSchema} from './combat-character.schema';
+import type { CombatCharacterSchema } from './combat-character.schema';
 
 export interface CombatTrackerSchema {
   characters: CombatCharacterSchema[];

@@ -1,5 +1,5 @@
-import {h} from 'preact';
-import type { RootState } from '../../store/reducer';
+import { h } from 'preact';
+import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
 import './HeaderStatus.css';
 
@@ -8,19 +8,16 @@ interface Props {
 }
 
 function HeaderStatus(props: Props) {
-
   return (
     <div class="HeaderStatus">
-      <div className='session-id'>
-        { props.sessionId }
-      </div>
+      <div className="session-id">{props.sessionId}</div>
     </div>
   );
 }
 
 function mapStateToProps(state: RootState): Props {
   return {
-    sessionId: state.session.id
+    sessionId: state.session.id,
   };
 }
 
