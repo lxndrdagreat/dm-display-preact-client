@@ -1,7 +1,6 @@
 import {h} from 'preact';
 import './RangeSlider.css';
 import { useState } from 'preact/hooks';
-import validate = WebAssembly.validate;
 
 interface RangeSliderProps {
   min: number;
@@ -19,6 +18,7 @@ interface State {
   active: boolean;
   startingValue: number;
   value: number;
+  lastId: string;
 }
 
 function RangeSlider(props: RangeSliderProps) {
@@ -26,8 +26,19 @@ function RangeSlider(props: RangeSliderProps) {
   const [state, setState] = useState<State>({
     active: false,
     startingValue: props.value ?? props.min,
-    value: props.value ?? props.min
+    value: props.value ?? props.min,
+    lastId: props.id
   });
+
+  if (props.id !== state.lastId) {
+    // force input update
+    setState({
+      active: false,
+      startingValue: props.value ?? props.min,
+      value: props.value ?? props.min,
+      lastId: props.id
+    });
+  }
 
   function parseInputValue(input: HTMLInputElement): number {
     try {
@@ -52,7 +63,8 @@ function RangeSlider(props: RangeSliderProps) {
     setState({
       active: true,
       startingValue: v,
-      value: v
+      value: v,
+      lastId: state.lastId
     });
   }
 
@@ -60,7 +72,8 @@ function RangeSlider(props: RangeSliderProps) {
     setState({
       active: false,
       startingValue: state.value,
-      value: state.value
+      value: state.value,
+      lastId: state.lastId
     });
     if (props.onChange) {
       props.onChange(state.value);

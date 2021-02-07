@@ -66,7 +66,7 @@ function CharacterHealth({character, editing, maxHealth}: Props) {
         min={0}
         max={character.npc!.maxHealth}
         value={character.npc!.health}
-        id='health-slider'
+        id={`health-slider-${character.id}`}
         label='HP'
         labelMinMax
         labelValue
