@@ -15,6 +15,7 @@ import NumberInput from '../../components/forms/NumberInput';
 import CharacterConditionList from './CharacterConditionList';
 import CharacterDetailsTop from './CharacterDetailsTop';
 import NpcUrl from './NpcUrl';
+import CharacterHealth from './CharacterHealth';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
@@ -84,59 +85,6 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         },
       });
     }
-  }
-
-  function onNPCHealthChange(value: number) {
-    if (!character || !character.npc) {
-      return;
-    }
-    // FIXME: make it so we don't send the entire NPC data block
-    SocketClient.instance.send({
-      type: SocketMessageType.CombatTrackerUpdateCharacter,
-      payload: {
-        id: character.id,
-        npc: {
-          ...character.npc,
-          health: value,
-        },
-      },
-    });
-  }
-
-  function onNPCMaxHealthChange(value: number) {
-    // setFormStates({
-    //   ...formStates,
-    //   npcMaxHealth: value,
-    // });
-  }
-
-  function onEditNPCHealthClick() {
-    if (!character || !character.npc) {
-      return;
-    }
-    // if (!props.editingNPCHealth) {
-    //   // turn on editing
-    //   setFormStates({
-    //     ...formStates,
-    //     npcMaxHealth: character.npc.maxHealth,
-    //   });
-    //   dispatch(setEditingCharacterHealth(true));
-    // } else {
-    //   // turn off editing
-    //   if (formStates.npcMaxHealth !== character.npc.maxHealth) {
-    //     SocketClient.instance.send({
-    //       type: SocketMessageType.CombatTrackerUpdateCharacter,
-    //       payload: {
-    //         id: character.id,
-    //         npc: {
-    //           ...character.npc,
-    //           maxHealth: formStates.npcMaxHealth,
-    //         },
-    //       },
-    //     });
-    //   }
-    //   dispatch(setEditingCharacterHealth(false));
-    // }
   }
 
   function onConditionChange(condition: CharacterConditions) {
@@ -225,37 +173,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
 
                   <NpcUrl/>
 
-                  <div class='character-health'>
-                    <RangeSlider
-                      min={0}
-                      max={character.npc.maxHealth}
-                      value={character.npc.health}
-                      id='health-slider'
-                      label='HP'
-                      labelMinMax
-                      labelValue
-                      trackChanges
-                      onChange={onNPCHealthChange}
-                    />
-
-                    {
-                      false ? (
-                        <NumberInput
-                          id='edit-character-max-health'
-                          label='Max Health'
-                          value={0}
-                          onChange={onNPCMaxHealthChange}
-                        />
-                      ) : null
-                    }
-
-                    <Button icon
-                            title='Edit Health'
-                            onClick={onEditNPCHealthClick}>
-                      <Icon name='pencil' />
-                    </Button>
-
-                  </div>
+                  <CharacterHealth/>
 
                   <div>
                     <Icon name='shield' />

@@ -9,6 +9,7 @@ export interface CharacterDetailsState {
   editingNPCHealth: boolean;
   topDetails: Pick<CombatCharacterSchema, 'displayName' | 'adminName' | 'roll'>;
   npcUrl: string;
+  npcMaxHealth: number;
 }
 
 function initCharacterDetailsState(id: string): CharacterDetailsState {
@@ -25,7 +26,8 @@ function initCharacterDetailsState(id: string): CharacterDetailsState {
       roll: 0,
     },
 
-    npcUrl: ''
+    npcUrl: '',
+    npcMaxHealth: 0,
   };
 }
 
@@ -112,6 +114,13 @@ const characterDetailsSlice = createSlice({
         return state;
       }
       state.npcUrl = action.payload;
+    },
+
+    setNpcMaxHealth(state, action) {
+      if (!state) {
+        return state;
+      }
+      state.npcMaxHealth = action.payload;
     }
   },
 });
@@ -125,6 +134,7 @@ export const {
   setTopDetailsAdminName,
   setTopDetailsDisplayName,
   setTopDetailsInitiativeRoll,
-  setNpcUrl
+  setNpcUrl,
+  setNpcMaxHealth
 } = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

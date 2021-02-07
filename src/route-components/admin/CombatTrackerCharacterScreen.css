@@ -36,19 +36,6 @@
     width: 100%;
 }
 
-.character-health {
-    display: flex;
-    margin: 16px 0;
-}
-
-.character-health .RangeSlider {
-    width: 100%;
-}
-
-.character-health .Button {
-    margin: auto;
-}
-
 .CombatTrackerCharacterScreen .info-row {
     display: flex;
     box-sizing: border-box;
