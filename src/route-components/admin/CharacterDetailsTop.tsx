@@ -17,6 +17,7 @@ import {
 import './CharacterDetailsTop.css';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
+import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -111,16 +112,9 @@ function CharacterDetailsTop({ character, editing, displayName, adminName, roll 
               />
             </div>
 
-            <Button icon
-                    title='Discard Changes'
-                    onClick={onCancelEditClick}>
-              <Icon name='cancel' />
-            </Button>
-            <Button icon
-                    title='Save Changes'
-                    onClick={onSaveEditClick}>
-              <Icon name='confirm' />
-            </Button>
+            <ConfirmOrCancel label="Changes"
+                             onConfirm={onSaveEditClick}
+                             onCancel={onCancelEditClick}/>
           </div>
         )
       }

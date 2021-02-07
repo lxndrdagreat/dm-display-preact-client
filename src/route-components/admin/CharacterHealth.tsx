@@ -11,6 +11,7 @@ import { setEditingCharacterHealth, setNpcMaxHealth } from '@store/slices/charac
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
 import './CharacterHealth.css';
+import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -97,21 +98,9 @@ function CharacterHealth({character, editing, maxHealth}: Props) {
 
       {
         editing ? (
-          <Button icon
-                  title='Discard Health'
-                  onClick={onDiscardClick}>
-            <Icon name='cancel' />
-          </Button>
-        ) : null
-      }
-
-      {
-        editing ? (
-          <Button icon
-                  title='Save Health'
-                  onClick={onSaveClick}>
-            <Icon name='confirm' />
-          </Button>
+          <ConfirmOrCancel label="Health"
+                           onConfirm={onSaveClick}
+                           onCancel={onDiscardClick}/>
         ) : null
       }
     </div>
