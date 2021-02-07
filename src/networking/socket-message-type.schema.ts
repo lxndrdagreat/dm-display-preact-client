@@ -1,7 +1,7 @@
 import type { SessionUserRole } from '../schemas/session-user.schema';
 import type { ActiveScreen } from '../schemas/session.schema';
 import type { CombatTrackerSchema } from '../schemas/combat-tracker.schema';
-import type { CombatCharacterSchema } from '../schemas/combat-character.schema';
+import type { CombatCharacterSchema, NPCDetails } from '../schemas/combat-character.schema';
 
 export enum SocketMessageType {
   CreateNewSession,
@@ -27,6 +27,7 @@ export enum SocketMessageType {
   CombatTrackerRound,
   CombatTrackerRequestRestart,
   CombatTrackerRequestClear,
+  CombatTrackerUpdateCharacterNPC
 }
 
 export enum SessionConnectionRefusedReason {
@@ -122,4 +123,12 @@ export interface ClientClearCombat extends SocketMessage {
 
 export interface ClientRestartCombat extends SocketMessage {
   type: SocketMessageType.CombatTrackerRequestRestart;
+}
+
+export interface ClientUpdateCharacterNPC extends SocketMessage {
+  type: SocketMessageType.CombatTrackerUpdateCharacterNPC;
+  payload: {
+    id: string;
+    npc: Partial<NPCDetails>;
+  }
 }

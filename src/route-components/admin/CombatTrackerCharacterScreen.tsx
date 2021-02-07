@@ -15,6 +15,8 @@ import CharacterConditionList from './CharacterConditionList';
 import CharacterDetailsTop from './CharacterDetailsTop';
 import NpcUrl from './NpcUrl';
 import CharacterHealth from './CharacterHealth';
+import LabelledStat from './LabelledStat';
+import CharacterArmorClass from './CharacterArmorClass';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
@@ -180,10 +182,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
 
                 <CharacterHealth />
 
-                <div>
-                  <Icon name="shield" />
-                  {character.npc.armorClass}
-                </div>
+                <CharacterArmorClass/>
 
                 <Button onClick={onRemoveNPCDetailsClick} danger>
                   Remove NPC Details
