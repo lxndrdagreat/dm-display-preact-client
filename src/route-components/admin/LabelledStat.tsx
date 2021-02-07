@@ -1,4 +1,4 @@
-import {h} from 'preact';
+import { h } from 'preact';
 import './LabelledStat.css';
 import type { IconName } from '../../components/Icon';
 import Icon from '../../components/Icon';
@@ -10,21 +10,12 @@ interface Props {
   icon?: IconName;
 }
 
-function LabelledStat({label, value, icon, hideLabel}: Props) {
+function LabelledStat({ label, value, icon, hideLabel }: Props) {
   return (
-    <div className='LabelledStat'>
-      {
-        icon ? (
-          <Icon name={icon}/>
-        ) : null
-      }
-      {
-        hideLabel ? null
-          : (
-            <strong>{label}</strong>
-          )
-      }
-      <span>{ value }</span>
+    <div className="LabelledStat">
+      {icon ? <Icon name={icon} /> : null}
+      {hideLabel ? null : <strong>{label}</strong>}
+      <span>{value}</span>
     </div>
   );
 }

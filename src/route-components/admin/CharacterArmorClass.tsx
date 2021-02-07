@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import Button from '../../components/buttons/Button';
 import Icon from '../../components/Icon';
 import { dispatch } from '@store/store';
-import { setEditingCharacterArmorClass, setNpcArmorClass } from '@store/slices/character-details.slice';
+import {
+  setEditingCharacterArmorClass,
+  setNpcArmorClass,
+} from '@store/slices/character-details.slice';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import NumberInput from '../../components/forms/NumberInput';
 import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
 import './CharacterArmorClass.css';
-
 
 interface Props {
   characterId: string;
@@ -20,8 +22,12 @@ interface Props {
   value: number;
 }
 
-function CharacterArmorClass({ characterId, characterAC, editing, value }: Props) {
-
+function CharacterArmorClass({
+  characterId,
+  characterAC,
+  editing,
+  value,
+}: Props) {
   function onEditClick() {
     dispatch(setEditingCharacterArmorClass(true));
     dispatch(setNpcArmorClass(characterAC));
@@ -50,21 +56,27 @@ function CharacterArmorClass({ characterId, characterAC, editing, value }: Props
 
   if (editing) {
     return (
-      <div className='CharacterArmorClass'>
+      <div className="CharacterArmorClass">
         <NumberInput
           id={`edit-armorclass-${characterId}`}
-          label='A/C'
+          label="A/C"
           value={value}
           onChange={onValueChange}
         />
-        <ConfirmOrCancel label='Armor Class' onConfirm={onSaveClick} onCancel={onDiscardClick} />
+        <ConfirmOrCancel
+          label="Armor Class"
+          onConfirm={onSaveClick}
+          onCancel={onDiscardClick}
+        />
       </div>
     );
   }
   return (
-    <div className='CharacterArmorClass'>
-      <LabelledStat label='A/C' value={characterAC} icon='shield' />
-      <Button icon onClick={onEditClick}><Icon name='pencil' /></Button>
+    <div className="CharacterArmorClass">
+      <LabelledStat label="A/C" value={characterAC} icon="shield" />
+      <Button icon onClick={onEditClick}>
+        <Icon name="pencil" />
+      </Button>
     </div>
   );
 }

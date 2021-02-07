@@ -1,7 +1,13 @@
 import { h } from 'preact';
 import './Icon.css';
 
-export type IconName = 'shield' | 'health' | 'pencil' | 'knocked-out' | 'confirm' | 'cancel';
+export type IconName =
+  | 'shield'
+  | 'health'
+  | 'pencil'
+  | 'knocked-out'
+  | 'confirm'
+  | 'cancel';
 
 interface Props {
   name: IconName;

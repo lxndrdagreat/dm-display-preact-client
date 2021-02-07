@@ -182,7 +182,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
 
                 <CharacterHealth />
 
-                <CharacterArmorClass/>
+                <CharacterArmorClass />
 
                 <Button onClick={onRemoveNPCDetailsClick} danger>
                   Remove NPC Details
