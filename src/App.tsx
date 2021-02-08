@@ -1,13 +1,14 @@
 import { Component, h } from 'preact';
 import { connect } from 'react-redux';
 import './App.css';
-import { AppRoute, setRoute } from './store/slices/app-route.slice';
-import { dispatch } from './store/store';
+import { AppRoute, setRoute } from '@store/slices/app-route.slice';
+import { dispatch } from '@store/store';
 import HomeRoute from './route-components/HomeRoute';
 import AdminRoute from './route-components/AdminRoute';
-import type { RootState } from './store/reducer';
+import type { RootState } from '@store/reducer';
 import { SocketClient } from './networking/socket-client';
 import { initStorage } from './storage-service';
+import DisplayRoute from './route-components/display/DisplayRoute';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -36,7 +37,9 @@ class App extends Component<AppProps> {
           <HomeRoute />
         ) : this.props.appRoute === AppRoute.Admin ? (
           <AdminRoute />
-        ) : null}
+        ) : (
+          <DisplayRoute />
+        )}
       </div>
     );
   }

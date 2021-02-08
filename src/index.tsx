@@ -5,6 +5,7 @@ import './index.css';
 import { Provider } from 'react-redux';
 import store from './store/store';
 import { bindSocketMessagesToStore } from './networking/socket-message-to-store';
+import './utils/array-rotate';
 
 const root = document.getElementById('root');
 
