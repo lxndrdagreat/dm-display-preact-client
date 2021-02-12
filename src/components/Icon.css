@@ -1,12 +1,12 @@
 .Icon {
-    width: 1em;
-    line-height: 1em;
-    display: inline-block;
-    color: currentColor;
-    vertical-align: middle;
+  width: 1em;
+  line-height: 1em;
+  display: inline-block;
+  color: currentColor;
+  vertical-align: middle;
 }
 
 .Icon svg {
-    max-width: 100%;
-    fill: currentColor;
+  max-width: 100%;
+  fill: currentColor;
 }

@@ -1,9 +1,9 @@
 .DisplayCombatHeader {
-    box-sizing: border-box;
-    padding: 16px;
-    font-size: 24px;
-    font-weight: bold;
-    vertical-align: middle;
-    background-color: yellow;
-    border-bottom: 2px solid #000000;
+  box-sizing: border-box;
+  padding: 16px;
+  font-size: 24px;
+  font-weight: bold;
+  vertical-align: middle;
+  background-color: yellow;
+  border-bottom: 2px solid #000000;
 }

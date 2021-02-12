@@ -1,17 +1,17 @@
 .CharacterConditionList {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .CharacterConditionList ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .CharacterConditionList li {
-    margin: auto 8px;
+  margin: auto 8px;
 }
 
 .CharacterConditionList legend {
-    font-weight: bold;
+  font-weight: bold;
 }

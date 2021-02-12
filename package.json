@@ -5,8 +5,8 @@
     "start": "snowpack dev --reload",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{ts,tsx}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "lint": "prettier --check \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
     "preact": "^10.0.0"
