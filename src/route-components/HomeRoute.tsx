@@ -48,8 +48,7 @@ function HomeRoute(props: HomeRouteProps) {
         <JoinOrCreateForm />
       ) : (
         <div>
-          <Button onClick={onDisplayClick}>Display</Button>
-          <Button onClick={onAdminClick}>Admin</Button>
+          Loading...
         </div>
       )}
     </div>
