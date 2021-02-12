@@ -2,7 +2,9 @@
   font-size: 42px;
   box-sizing: border-box;
   padding: 24px;
-  width: 100%;
+  width: 40%;
+  height: 100%;
+  border-right: 2px solid #333333;
 }
 
 .DisplayInitiativeList .character {

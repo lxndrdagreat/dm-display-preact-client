@@ -20,9 +20,15 @@ function DisplayPrimaryCharacters({ activeCharacter, onDeckCharacter }: Props) {
 
   return (
     <div className="DisplayPrimaryCharacters">
-      <div className="active-character">{activeCharacter.displayName}</div>
+      <div className="active-character">
+        <h2>Active Character:</h2>
+        {activeCharacter.displayName}
+      </div>
       {onDeckCharacter ? (
-        <div className="next-character">{onDeckCharacter.displayName}</div>
+        <div className="next-character">
+          <h2>Next Up:</h2>
+          {onDeckCharacter.displayName}
+        </div>
       ) : null}
     </div>
   );
