@@ -42,42 +42,48 @@ function JoinOrCreateForm() {
   function onClick() {
     const role =
       state.role === 'admin' ? SessionUserRole.Admin : SessionUserRole.Display;
-    if (state.active === 'join') {
-      if (state.sessionId.length && state.password.length) {
-        dispatch(setSessionPassword(state.password));
-        dispatch(setSessionId(state.sessionId));
-        dispatch(setUserRole(role));
-        SocketClient.instance.send({
-          type: SocketMessageType.ConnectToSession,
-          payload: {
-            role: role,
-            sessionId: state.sessionId,
-            password: state.password
-          }
-        });
-      }
-    } else {
-      if (state.password.length) {
-        dispatch(setSessionPassword(state.password));
-        dispatch(setUserRole(role));
-        SocketClient.instance
-          .send({
-            type: SocketMessageType.CreateNewSession,
-            payload: state.password
-          })
-          .nextOfType(SocketMessageType.NewSessionCreated, (message) => {
-            const sessionId = message.payload as string;
-            SocketClient.instance.send({
-              type: SocketMessageType.ConnectToSession,
-              payload: {
-                role: role,
-                sessionId: sessionId,
-                password: state.password
-              }
-            });
-          });
-      }
+    let wait = Promise.resolve();
+    if (!SocketClient.instance.connected) {
+      wait = SocketClient.instance.connect();
     }
+    wait.then(() => {
+      if (state.active === 'join') {
+        if (state.sessionId.length && state.password.length) {
+          dispatch(setSessionPassword(state.password));
+          dispatch(setSessionId(state.sessionId));
+          dispatch(setUserRole(role));
+          SocketClient.instance.send({
+            type: SocketMessageType.ConnectToSession,
+            payload: {
+              role: role,
+              sessionId: state.sessionId,
+              password: state.password
+            }
+          });
+        }
+      } else {
+        if (state.password.length) {
+          dispatch(setSessionPassword(state.password));
+          dispatch(setUserRole(role));
+          SocketClient.instance
+            .send({
+              type: SocketMessageType.CreateNewSession,
+              payload: state.password
+            })
+            .nextOfType(SocketMessageType.NewSessionCreated, (message) => {
+              const sessionId = message.payload as string;
+              SocketClient.instance.send({
+                type: SocketMessageType.ConnectToSession,
+                payload: {
+                  role: role,
+                  sessionId: sessionId,
+                  password: state.password
+                }
+              });
+            });
+        }
+      }
+    });
   }
 
   function onTabChange(event: Event) {

@@ -46,10 +46,13 @@ export class SocketClient {
       };
 
       this.socket.onclose = () => {
-        console.log('socket closed');
         this.socket = null;
       };
     });
+  }
+
+  get connected(): boolean {
+    return this.socket !== null;
   }
 
   subscribe(sub: OnSocketMessageSubscriber): UnsubscribeFunction {

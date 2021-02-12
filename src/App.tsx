@@ -9,6 +9,9 @@ import type { RootState } from '@store/reducer';
 import { SocketClient } from './networking/socket-client';
 import { initStorage } from './storage-service';
 import DisplayRoute from './route-components/display/DisplayRoute';
+import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
+import { setUserRole } from '@store/slices/user-role.slice';
+import { SocketMessageType } from './networking/socket-message-type.schema';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -20,9 +23,27 @@ class App extends Component<AppProps> {
   }
 
   componentDidMount() {
-    SocketClient.instance.connect().then(() => {
-      initStorage();
-    });
+    const storedSession = initStorage();
+    // attempt to connect to socket
+    if (storedSession?.id && storedSession.token && storedSession.userRole) {
+      dispatch(setSessionId(storedSession.id));
+      dispatch(setSessionPassword(storedSession.password));
+      dispatch(setUserRole(storedSession.userRole));
+      let wait = Promise.resolve();
+      if (!SocketClient.instance.connected) {
+        wait = SocketClient.instance.connect();
+      }
+      wait.then(() => {
+        SocketClient.instance.send({
+          type: SocketMessageType.ConnectToSession,
+          payload: {
+            password: storedSession.password,
+            sessionId: storedSession.id,
+            role: storedSession.userRole
+          }
+        });
+      });
+    }
   }
 
   onClick() {

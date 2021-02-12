@@ -31,25 +31,8 @@ function loadSession(): StoreInfo | null {
   return JSON.parse(data);
 }
 
-export function initStorage(): void {
+export function initStorage(): StoreInfo | null {
   const existing = loadSession();
-
-  if (existing) {
-    // attempt to connect to socket
-    if (existing.id && existing.token && existing.userRole) {
-      dispatch(setSessionId(existing.id));
-      dispatch(setSessionPassword(existing.password));
-      dispatch(setUserRole(existing.userRole));
-      SocketClient.instance.send({
-        type: SocketMessageType.ConnectToSession,
-        payload: {
-          password: existing.password,
-          sessionId: existing.id,
-          role: existing.userRole
-        }
-      });
-    }
-  }
 
   store.subscribe(() => {
     const state = store.getState() as RootState;
@@ -59,4 +42,6 @@ export function initStorage(): void {
     };
     saveSession(info);
   });
+
+  return existing;
 }
