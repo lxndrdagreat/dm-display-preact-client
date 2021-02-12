@@ -7,8 +7,8 @@ const userRoleSlice = createSlice({
   reducers: {
     setUserRole(state, action) {
       return action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setUserRole } = userRoleSlice.actions;

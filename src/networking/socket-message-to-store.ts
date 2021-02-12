@@ -1,13 +1,13 @@
 import type {
   ServerCommandFullState,
-  SocketMessage,
+  SocketMessage
 } from './socket-message-type.schema';
 import { SocketMessageType } from './socket-message-type.schema';
 import { SocketClient } from './socket-client';
 import {
   clearSession,
   setSessionId,
-  setSessionToken,
+  setSessionToken
 } from '../store/slices/session.slice';
 import { AppRoute, setRoute } from '../store/slices/app-route.slice';
 import store, { dispatch } from '../store/store';
@@ -19,7 +19,7 @@ import {
   setCombatTracker,
   setCombatTrackerActiveCharacterId,
   setCombatTrackerRound,
-  updateCombatCharacter,
+  updateCombatCharacter
 } from '../store/slices/combat-tracker.slice';
 
 function handleMessage(message: SocketMessage): void {

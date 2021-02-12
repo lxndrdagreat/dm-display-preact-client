@@ -12,7 +12,7 @@ const combatTrackerSlice = createSlice({
     setCombatTrackerCharacters(state, action) {
       if (!state) {
         throw new Error(
-          'Cannot set characters because the combattracker is null',
+          'Cannot set characters because the combattracker is null'
         );
       }
       state.characters = action.payload;
@@ -44,7 +44,7 @@ const combatTrackerSlice = createSlice({
         throw new Error('CombatTracker is null');
       }
       state.characters = state.characters.filter(
-        (ch) => ch.id !== action.payload,
+        (ch) => ch.id !== action.payload
       );
     },
 
@@ -53,10 +53,10 @@ const combatTrackerSlice = createSlice({
         throw new Error('CombatTracker is null');
       }
       state.characters = state.characters.map((ch) =>
-        ch.id === action.payload.id ? action.payload : ch,
+        ch.id === action.payload.id ? action.payload : ch
       );
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -66,6 +66,6 @@ export const {
   setCombatTrackerRound,
   addCombatCharacter,
   updateCombatCharacter,
-  removeCombatCharacter,
+  removeCombatCharacter
 } = combatTrackerSlice.actions;
 export default combatTrackerSlice.reducer;

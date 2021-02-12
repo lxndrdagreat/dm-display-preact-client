@@ -7,7 +7,7 @@ import Icon from '../../components/Icon';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterArmorClass,
-  setNpcArmorClass,
+  setNpcArmorClass
 } from '@store/slices/character-details.slice';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
@@ -26,7 +26,7 @@ function CharacterArmorClass({
   characterId,
   characterAC,
   editing,
-  value,
+  value
 }: Props) {
   function onEditClick() {
     dispatch(setEditingCharacterArmorClass(true));
@@ -47,9 +47,9 @@ function CharacterArmorClass({
       payload: {
         id: characterId,
         npc: {
-          armorClass: value,
-        },
-      },
+          armorClass: value
+        }
+      }
     });
     dispatch(setEditingCharacterArmorClass(false));
   }
@@ -83,7 +83,7 @@ function CharacterArmorClass({
 
 function mapStateToProps(state: RootState): Props {
   const character = state.combatTracker!.characters.find(
-    (ch) => ch.id === state.characterDetails!.characterId,
+    (ch) => ch.id === state.characterDetails!.characterId
   );
   if (!character || !state.characterDetails) {
     throw new Error(`No active character.`);
@@ -92,7 +92,7 @@ function mapStateToProps(state: RootState): Props {
     characterId: character.id,
     characterAC: character.npc!.armorClass,
     editing: state.characterDetails.editingNPCAC,
-    value: state.characterDetails.npcAC,
+    value: state.characterDetails.npcAC
   };
 }
 

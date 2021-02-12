@@ -26,7 +26,7 @@ function RangeSlider(props: RangeSliderProps) {
     active: false,
     startingValue: props.value ?? props.min,
     value: props.value ?? props.min,
-    lastId: props.id,
+    lastId: props.id
   });
 
   if (props.id !== state.lastId) {
@@ -35,7 +35,7 @@ function RangeSlider(props: RangeSliderProps) {
       active: false,
       startingValue: props.value ?? props.min,
       value: props.value ?? props.min,
-      lastId: props.id,
+      lastId: props.id
     });
   }
 
@@ -52,7 +52,7 @@ function RangeSlider(props: RangeSliderProps) {
       const v = parseInputValue(event.target as HTMLInputElement);
       setState({
         ...state,
-        value: v,
+        value: v
       });
     }
   }
@@ -63,7 +63,7 @@ function RangeSlider(props: RangeSliderProps) {
       active: true,
       startingValue: v,
       value: v,
-      lastId: state.lastId,
+      lastId: state.lastId
     });
   }
 
@@ -72,7 +72,7 @@ function RangeSlider(props: RangeSliderProps) {
       active: false,
       startingValue: state.value,
       value: state.value,
-      lastId: state.lastId,
+      lastId: state.lastId
     });
     if (props.onChange) {
       props.onChange(state.value);

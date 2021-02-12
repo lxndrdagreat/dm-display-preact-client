@@ -24,12 +24,12 @@ function initCharacterDetailsState(id: string): CharacterDetailsState {
     topDetails: {
       displayName: '',
       adminName: '',
-      roll: 0,
+      roll: 0
     },
 
     npcUrl: '',
     npcMaxHealth: 0,
-    npcAC: 0,
+    npcAC: 0
   };
 }
 
@@ -98,7 +98,7 @@ const characterDetailsSlice = createSlice({
       }
       state.topDetails = {
         ...state.topDetails,
-        ...action.payload,
+        ...action.payload
       };
     },
 
@@ -142,8 +142,8 @@ const characterDetailsSlice = createSlice({
         return state;
       }
       state.npcAC = payload;
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -158,6 +158,6 @@ export const {
   setTopDetailsInitiativeRoll,
   setNpcUrl,
   setNpcMaxHealth,
-  setNpcArmorClass,
+  setNpcArmorClass
 } = characterDetailsSlice.actions;
 export default characterDetailsSlice.reducer;

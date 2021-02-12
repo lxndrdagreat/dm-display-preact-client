@@ -17,7 +17,7 @@ function HeaderStatus(props: Props) {
 
 function mapStateToProps(state: RootState): Props {
   return {
-    sessionId: state.session.id,
+    sessionId: state.session.id
   };
 }
 

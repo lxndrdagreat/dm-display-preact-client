@@ -35,15 +35,20 @@ function mapStateToProps(state: RootState): Props {
       onDeckCharacter: null
     };
   }
-  const characters = state.combatTracker.characters.slice().sort((a, b) => b.roll - a.roll);
-  const activeIndex = characters.findIndex(ch => ch.id === state.combatTracker!.activeCharacterId);
+  const characters = state.combatTracker.characters
+    .slice()
+    .sort((a, b) => b.roll - a.roll);
+  const activeIndex = characters.findIndex(
+    (ch) => ch.id === state.combatTracker!.activeCharacterId
+  );
   if (activeIndex < 0) {
     return {
       activeCharacter: null,
       onDeckCharacter: null
     };
   }
-  const nextUpIndex = activeIndex + 1 >= characters.length ? 0 : activeIndex + 1;
+  const nextUpIndex =
+    activeIndex + 1 >= characters.length ? 0 : activeIndex + 1;
   return {
     activeCharacter: state.combatTracker.characters[activeIndex],
     onDeckCharacter: state.combatTracker.characters[nextUpIndex]

@@ -2,7 +2,7 @@ import { h } from 'preact';
 import './CombatTrackerCharacterScreen.css';
 import type {
   CharacterConditions,
-  CombatCharacterSchema,
+  CombatCharacterSchema
 } from '../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
@@ -34,8 +34,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       type: SocketMessageType.CombatTrackerUpdateCharacter,
       payload: {
         id: character.id,
-        active: !character.active,
-      },
+        active: !character.active
+      }
     });
   }
 
@@ -44,13 +44,13 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
       return;
     }
     const dupe: Partial<CombatCharacterSchema> = {
-      ...character,
+      ...character
     };
     delete dupe.id;
     delete dupe.conditions;
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerAddCharacter,
-      payload: dupe as Omit<CombatCharacterSchema, 'id' | 'conditions'>,
+      payload: dupe as Omit<CombatCharacterSchema, 'id' | 'conditions'>
     });
   }
 
@@ -66,9 +66,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
           armorClass: 0,
           health: 10,
           maxHealth: 10,
-          url: '',
-        },
-      },
+          url: ''
+        }
+      }
     });
   }
 
@@ -83,8 +83,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
           id: character.id,
-          npc: null,
-        },
+          npc: null
+        }
       });
     }
   }
@@ -101,8 +101,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
           id: character.id,
-          conditions: cons,
-        },
+          conditions: cons
+        }
       });
     } else {
       const cons = character.conditions.slice();
@@ -111,8 +111,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         type: SocketMessageType.CombatTrackerUpdateCharacter,
         payload: {
           id: character.id,
-          conditions: cons,
-        },
+          conditions: cons
+        }
       });
     }
   }
@@ -123,12 +123,12 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     }
     if (
       window.confirm(
-        `Are you sure you want to delete "${character.displayName}"?`,
+        `Are you sure you want to delete "${character.displayName}"?`
       )
     ) {
       SocketClient.instance.send({
         type: SocketMessageType.CombatTrackerRemoveCharacter,
-        payload: character.id,
+        payload: character.id
       });
     }
   }
@@ -205,11 +205,11 @@ function mapStateToProps(state: RootState): CharacterScreenProps {
     const id = state.characterDetails.characterId;
     return {
       character: state.combatTracker.characters.find((ch) => ch.id === id),
-      details: state.characterDetails,
+      details: state.characterDetails
     };
   }
   return {
-    details: null,
+    details: null
   };
 }
 

@@ -12,7 +12,7 @@ interface AdminCharacterListPanelProps {
 
 function AdminCharacterListPanel({
   characters,
-  activeCharacterId,
+  activeCharacterId
 }: AdminCharacterListPanelProps) {
   return (
     <div className="AdminCharacterListPanel">
@@ -34,7 +34,7 @@ function mapStateToProps(state: RootState): AdminCharacterListPanelProps {
   if (!state.combatTracker) {
     return {
       characters: [],
-      activeCharacterId: null,
+      activeCharacterId: null
     };
   }
 
@@ -42,7 +42,7 @@ function mapStateToProps(state: RootState): AdminCharacterListPanelProps {
     characters: state.combatTracker.characters
       .slice()
       .sort((a, b) => b.roll - a.roll),
-    activeCharacterId: state.combatTracker.activeCharacterId,
+    activeCharacterId: state.combatTracker.activeCharacterId
   };
 }
 

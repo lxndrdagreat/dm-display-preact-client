@@ -11,7 +11,7 @@ const sessionSlice = createSlice({
   initialState: {
     id: null,
     token: null,
-    password: '',
+    password: ''
   } as SessionInfo,
   reducers: {
     setSessionId(state, action) {
@@ -30,17 +30,17 @@ const sessionSlice = createSlice({
       return {
         id: null,
         token: null,
-        password: '',
+        password: ''
       };
-    },
-  },
+    }
+  }
 });
 
 export const {
   setSessionId,
   setSessionToken,
   setSessionPassword,
-  clearSession,
+  clearSession
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

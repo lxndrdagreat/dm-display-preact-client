@@ -15,65 +15,65 @@ interface Condition {
 
 function CharacterConditionList({
   conditions,
-  onConditionChange,
+  onConditionChange
 }: RenderableProps<Props>) {
   const conditionItems: Condition[] = [
     {
       label: 'Blinded',
-      condition: CharacterConditions.Blinded,
+      condition: CharacterConditions.Blinded
     },
     {
       label: 'Charmed',
-      condition: CharacterConditions.Charmed,
+      condition: CharacterConditions.Charmed
     },
     {
       label: 'Deafened',
-      condition: CharacterConditions.Deafened,
+      condition: CharacterConditions.Deafened
     },
     {
       label: 'Frightened',
-      condition: CharacterConditions.Frightened,
+      condition: CharacterConditions.Frightened
     },
     {
       label: 'Grappled',
-      condition: CharacterConditions.Grappled,
+      condition: CharacterConditions.Grappled
     },
     {
       label: 'Incapacitated',
-      condition: CharacterConditions.Incapacitated,
+      condition: CharacterConditions.Incapacitated
     },
     {
       label: 'Invisible',
-      condition: CharacterConditions.Invisible,
+      condition: CharacterConditions.Invisible
     },
     {
       label: 'Paralyzed',
-      condition: CharacterConditions.Paralyzed,
+      condition: CharacterConditions.Paralyzed
     },
     {
       label: 'Petrified',
-      condition: CharacterConditions.Petrified,
+      condition: CharacterConditions.Petrified
     },
     {
       label: 'Poisoned',
-      condition: CharacterConditions.Poisoned,
+      condition: CharacterConditions.Poisoned
     },
     {
       label: 'Prone',
-      condition: CharacterConditions.Prone,
+      condition: CharacterConditions.Prone
     },
     {
       label: 'Restrained',
-      condition: CharacterConditions.Restrained,
+      condition: CharacterConditions.Restrained
     },
     {
       label: 'Stunned',
-      condition: CharacterConditions.Stunned,
+      condition: CharacterConditions.Stunned
     },
     {
       label: 'Unconcious',
-      condition: CharacterConditions.Unconcious,
-    },
+      condition: CharacterConditions.Unconcious
+    }
   ];
 
   return (

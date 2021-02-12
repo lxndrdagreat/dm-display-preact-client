@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterURL,
-  setNpcUrl,
+  setNpcUrl
 } from '@store/slices/character-details.slice';
 import './NpcUrl.css';
 import { SocketClient } from '../../networking/socket-client';
@@ -33,9 +33,9 @@ function NpcUrl({ character, editing, npcUrl }: Props) {
         id: character.id,
         npc: {
           ...character.npc,
-          url: npcUrl,
-        },
-      },
+          url: npcUrl
+        }
+      }
     });
     dispatch(setEditingCharacterURL(false));
   }
@@ -83,7 +83,7 @@ function NpcUrl({ character, editing, npcUrl }: Props) {
 
 function mapStateToProps(state: RootState): Props {
   const character = state.combatTracker!.characters.find(
-    (ch) => ch.id === state.characterDetails!.characterId,
+    (ch) => ch.id === state.characterDetails!.characterId
   );
   if (!character || !state.characterDetails) {
     throw new Error(`No active character.`);
@@ -91,7 +91,7 @@ function mapStateToProps(state: RootState): Props {
   return {
     character: character,
     editing: state.characterDetails.editingNPCURL,
-    npcUrl: state.characterDetails.npcUrl,
+    npcUrl: state.characterDetails.npcUrl
   };
 }
 

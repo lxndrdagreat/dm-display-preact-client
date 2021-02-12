@@ -12,7 +12,7 @@ import {
   setTopDetails,
   setTopDetailsAdminName,
   setTopDetailsDisplayName,
-  setTopDetailsInitiativeRoll,
+  setTopDetailsInitiativeRoll
 } from '@store/slices/character-details.slice';
 import './CharacterDetailsTop.css';
 import { SocketClient } from '../../networking/socket-client';
@@ -32,7 +32,7 @@ function CharacterDetailsTop({
   editing,
   displayName,
   adminName,
-  roll,
+  roll
 }: Props) {
   function onEditClick() {
     if (!editing) {
@@ -41,8 +41,8 @@ function CharacterDetailsTop({
         setTopDetails({
           displayName: character.displayName,
           adminName: character.adminName,
-          roll: character.roll,
-        }),
+          roll: character.roll
+        })
       );
     }
   }
@@ -59,8 +59,8 @@ function CharacterDetailsTop({
         id: character.id,
         displayName: displayName,
         adminName: adminName,
-        roll: roll,
-      },
+        roll: roll
+      }
     });
   }
 
@@ -128,7 +128,7 @@ function CharacterDetailsTop({
 
 function mapStateToProps(state: RootState): Props {
   const character = state.combatTracker!.characters.find(
-    (ch) => ch.id === state.characterDetails!.characterId,
+    (ch) => ch.id === state.characterDetails!.characterId
   );
   if (!character || !state.characterDetails) {
     throw new Error(`No active character.`);
@@ -136,7 +136,7 @@ function mapStateToProps(state: RootState): Props {
   return {
     character: character,
     editing: state.characterDetails.editingTopDetails,
-    ...state.characterDetails.topDetails,
+    ...state.characterDetails.topDetails
   };
 }
 

@@ -3,7 +3,7 @@ import type { ActiveScreen } from '../schemas/session.schema';
 import type { CombatTrackerSchema } from '../schemas/combat-tracker.schema';
 import type {
   CombatCharacterSchema,
-  NPCDetails,
+  NPCDetails
 } from '../schemas/combat-character.schema';
 
 export enum SocketMessageType {
@@ -30,12 +30,12 @@ export enum SocketMessageType {
   CombatTrackerRound,
   CombatTrackerRequestRestart,
   CombatTrackerRequestClear,
-  CombatTrackerUpdateCharacterNPC,
+  CombatTrackerUpdateCharacterNPC
 }
 
 export enum SessionConnectionRefusedReason {
   SessionNotFound,
-  InvalidPermissions,
+  InvalidPermissions
 }
 
 export interface SocketMessage {

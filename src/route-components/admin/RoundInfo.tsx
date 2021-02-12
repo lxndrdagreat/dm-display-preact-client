@@ -13,7 +13,7 @@ function RoundInfo({ round }: Props) {
 
 function mapStateToProps(state: RootState): Props {
   return {
-    round: state.combatTracker ? state.combatTracker.round : 1,
+    round: state.combatTracker ? state.combatTracker.round : 1
   };
 }
 

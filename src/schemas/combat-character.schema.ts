@@ -19,7 +19,7 @@ export enum CharacterConditions {
   Prone,
   Restrained,
   Stunned,
-  Unconcious,
+  Unconcious
 }
 
 export interface CombatCharacterSchema {

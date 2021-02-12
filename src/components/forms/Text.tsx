@@ -21,7 +21,7 @@ function Text(props: TextProps) {
     <div
       class={classNames({
         Text: true,
-        'no-label': props.noLabel,
+        'no-label': props.noLabel
       })}
     >
       <label for={`${props.id}-input`}>{props.label}</label>

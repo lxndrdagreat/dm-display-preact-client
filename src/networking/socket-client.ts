@@ -57,7 +57,7 @@ export class SocketClient {
     return () => {
       this.onSocketMessageSubscribers.splice(
         this.onSocketMessageSubscribers.indexOf(sub),
-        1,
+        1
       );
     };
   }
@@ -74,7 +74,7 @@ export class SocketClient {
   // FIXME: not convinced that this is a healthy way to accomplish this
   nextOfType(
     messageType: SocketMessageType,
-    callback: OnSocketMessageSubscriber,
+    callback: OnSocketMessageSubscriber
   ): SocketClient {
     if (!this.nextOfTypeCallbacks[messageType]) {
       this.nextOfTypeCallbacks[messageType] = [];

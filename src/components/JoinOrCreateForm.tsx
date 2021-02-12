@@ -22,20 +22,20 @@ function JoinOrCreateForm() {
     active: 'join',
     role: 'display',
     password: '',
-    sessionId: '',
+    sessionId: ''
   });
 
   function onSessionIdInput(value: string) {
     setState({
       ...state,
-      sessionId: value,
+      sessionId: value
     });
   }
 
   function onPasswordInput(value: string) {
     setState({
       ...state,
-      password: value,
+      password: value
     });
   }
 
@@ -52,8 +52,8 @@ function JoinOrCreateForm() {
           payload: {
             role: role,
             sessionId: state.sessionId,
-            password: state.password,
-          },
+            password: state.password
+          }
         });
       }
     } else {
@@ -63,7 +63,7 @@ function JoinOrCreateForm() {
         SocketClient.instance
           .send({
             type: SocketMessageType.CreateNewSession,
-            payload: state.password,
+            payload: state.password
           })
           .nextOfType(SocketMessageType.NewSessionCreated, (message) => {
             const sessionId = message.payload as string;
@@ -72,8 +72,8 @@ function JoinOrCreateForm() {
               payload: {
                 role: role,
                 sessionId: sessionId,
-                password: state.password,
-              },
+                password: state.password
+              }
             });
           });
       }
@@ -83,14 +83,14 @@ function JoinOrCreateForm() {
   function onTabChange(event: Event) {
     setState({
       ...state,
-      active: (event.target as HTMLInputElement).value as 'join' | 'create',
+      active: (event.target as HTMLInputElement).value as 'join' | 'create'
     });
   }
 
   function onRoleChange(event: Event) {
     setState({
       ...state,
-      role: (event.target as HTMLInputElement).value as 'display' | 'admin',
+      role: (event.target as HTMLInputElement).value as 'display' | 'admin'
     });
   }
 

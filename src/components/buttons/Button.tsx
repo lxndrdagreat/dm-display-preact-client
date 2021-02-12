@@ -17,7 +17,7 @@ function Button(props: RenderableProps<ButtonProps>) {
         Button: true,
         primary: props.primary,
         danger: props.danger,
-        icon: props.icon,
+        icon: props.icon
       })}
       type="button"
       title={props.title}

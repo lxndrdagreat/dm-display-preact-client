@@ -33,7 +33,7 @@ function mapStateToProps(state: RootState): Props {
   if (!state.combatTracker) {
     return {
       characters: [],
-      total: 0,
+      total: 0
     };
   }
 
@@ -42,14 +42,14 @@ function mapStateToProps(state: RootState): Props {
     .sort((a, b) => b.roll - a.roll);
   characters.push(null);
   const activeCharacterIndex = characters.findIndex(
-    (ch) => ch && ch.id === state.combatTracker!.activeCharacterId,
+    (ch) => ch && ch.id === state.combatTracker!.activeCharacterId
   );
   characters = characters
     .rotate(activeCharacterIndex >= 0 ? activeCharacterIndex : 0)
     .slice(0, maxShowing);
   return {
     characters: characters,
-    total: state.combatTracker.characters.length,
+    total: state.combatTracker.characters.length
   };
 }
 

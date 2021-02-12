@@ -47,7 +47,7 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: RootState): AppProps => {
   return {
-    appRoute: state.appRoute,
+    appRoute: state.appRoute
   };
 };
 

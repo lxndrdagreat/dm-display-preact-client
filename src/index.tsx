@@ -16,6 +16,6 @@ if (root) {
     <Provider store={store}>
       <App />
     </Provider>,
-    root,
+    root
   );
 }

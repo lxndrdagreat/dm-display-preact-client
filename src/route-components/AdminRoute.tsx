@@ -21,7 +21,7 @@ function AdminRoute({ activeScreen }: AdminRouteProps) {
 
 function mapStateToProps(state: RootState): AdminRouteProps {
   return {
-    activeScreen: ActiveScreen.CombatTracker,
+    activeScreen: ActiveScreen.CombatTracker
   };
 }
 

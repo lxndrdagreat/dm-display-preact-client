@@ -20,7 +20,7 @@ function AdminCombatCharacterItem({ character, isTurn }: Props) {
     <li
       className={classnames({
         AdminCombatCharacterItem: true,
-        'active-turn': isTurn,
+        'active-turn': isTurn
       })}
       onClick={onClick}
     >

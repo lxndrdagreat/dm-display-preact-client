@@ -26,7 +26,7 @@ function initForm(): State {
     displayName: '',
     adminName: '',
     nameVisible: true,
-    npc: null,
+    npc: null
   };
 }
 
@@ -35,7 +35,7 @@ function initNPCDetails(): NPCDetails {
     url: '',
     maxHealth: 0,
     health: 0,
-    armorClass: 0,
+    armorClass: 0
   };
 }
 
@@ -46,12 +46,12 @@ function AddCharacterForm() {
     if (checked) {
       setState({
         ...state,
-        npc: initNPCDetails(),
+        npc: initNPCDetails()
       });
     } else {
       setState({
         ...state,
-        npc: null,
+        npc: null
       });
     }
   }
@@ -59,28 +59,28 @@ function AddCharacterForm() {
   function onRollInitClick() {
     setState({
       ...state,
-      roll: randomInt(1, 21),
+      roll: randomInt(1, 21)
     });
   }
 
   function onAddCharacterDisplayNameChange(value: string) {
     setState({
       ...state,
-      displayName: value,
+      displayName: value
     });
   }
 
   function onAddCharacterAdminNameChange(value: string) {
     setState({
       ...state,
-      adminName: value,
+      adminName: value
     });
   }
 
   function onAddCharacterRollChange(value: number) {
     setState({
       ...state,
-      roll: value,
+      roll: value
     });
   }
 
@@ -92,8 +92,8 @@ function AddCharacterForm() {
       ...state,
       npc: {
         ...state.npc,
-        url: value,
-      },
+        url: value
+      }
     });
   }
 
@@ -106,8 +106,8 @@ function AddCharacterForm() {
       npc: {
         ...state.npc,
         maxHealth: value,
-        health: value,
-      },
+        health: value
+      }
     });
   }
 
@@ -119,8 +119,8 @@ function AddCharacterForm() {
       ...state,
       npc: {
         ...state.npc,
-        armorClass: value,
-      },
+        armorClass: value
+      }
     });
   }
 
@@ -131,14 +131,14 @@ function AddCharacterForm() {
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerAddCharacter,
       payload: {
-        ...state,
-      },
+        ...state
+      }
     });
     SocketClient.instance.nextOfType(
       SocketMessageType.CombatTrackerCharacterAdded,
       () => {
         setState(initForm());
-      },
+      }
     );
   }
 

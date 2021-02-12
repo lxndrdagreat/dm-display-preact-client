@@ -9,7 +9,7 @@ import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterHealth,
-  setNpcMaxHealth,
+  setNpcMaxHealth
 } from '@store/slices/character-details.slice';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
@@ -30,9 +30,9 @@ function CharacterHealth({ character, editing, maxHealth }: Props) {
         id: character.id,
         npc: {
           ...character.npc,
-          health: value,
-        },
-      },
+          health: value
+        }
+      }
     });
   }
 
@@ -52,9 +52,9 @@ function CharacterHealth({ character, editing, maxHealth }: Props) {
         id: character.id,
         npc: {
           ...character.npc,
-          maxHealth: maxHealth,
-        },
-      },
+          maxHealth: maxHealth
+        }
+      }
     });
     dispatch(setEditingCharacterHealth(false));
   }
@@ -105,7 +105,7 @@ function CharacterHealth({ character, editing, maxHealth }: Props) {
 
 function mapStateToProps(state: RootState): Props {
   const character = state.combatTracker!.characters.find(
-    (ch) => ch.id === state.characterDetails!.characterId,
+    (ch) => ch.id === state.characterDetails!.characterId
   );
   if (!character || !state.characterDetails) {
     throw new Error(`No active character.`);
@@ -113,7 +113,7 @@ function mapStateToProps(state: RootState): Props {
   return {
     character: character,
     editing: state.characterDetails.editingNPCHealth,
-    maxHealth: state.characterDetails.npcMaxHealth,
+    maxHealth: state.characterDetails.npcMaxHealth
   };
 }
 

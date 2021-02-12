@@ -11,7 +11,7 @@ import { SocketMessageType } from '../networking/socket-message-type.schema';
 
 enum HomeRouteState {
   JoinOrCreate,
-  AdminOrDisplay,
+  AdminOrDisplay
 }
 
 interface HomeRouteProps {
@@ -27,8 +27,8 @@ function HomeRoute(props: HomeRouteProps) {
       payload: {
         role: userRole,
         sessionId: session.id as string,
-        password: session.password,
-      },
+        password: session.password
+      }
     });
   }
 
@@ -59,11 +59,11 @@ function HomeRoute(props: HomeRouteProps) {
 function mapStateToProps(state: RootState): HomeRouteProps {
   if (state.session.id && state.session.password) {
     return {
-      state: HomeRouteState.AdminOrDisplay,
+      state: HomeRouteState.AdminOrDisplay
     };
   } else {
     return {
-      state: HomeRouteState.JoinOrCreate,
+      state: HomeRouteState.JoinOrCreate
     };
   }
 }

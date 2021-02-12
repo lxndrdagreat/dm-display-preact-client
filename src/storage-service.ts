@@ -45,8 +45,8 @@ export function initStorage(): void {
         payload: {
           password: existing.password,
           sessionId: existing.id,
-          role: existing.userRole,
-        },
+          role: existing.userRole
+        }
       });
     }
   }
@@ -55,7 +55,7 @@ export function initStorage(): void {
     const state = store.getState() as RootState;
     const info = {
       ...state.session,
-      userRole: state.userRole,
+      userRole: state.userRole
     };
     saveSession(info);
   });

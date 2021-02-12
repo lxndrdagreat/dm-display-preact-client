@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   userRole: userRoleReducer,
   combatTracker: combatTrackerReducer,
-  characterDetails: characterDetailsReducer,
+  characterDetails: characterDetailsReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export enum AppRoute {
   Home,
   Admin,
-  Display,
+  Display
 }
 
 const appRouteSlice = createSlice({
@@ -12,8 +12,8 @@ const appRouteSlice = createSlice({
   reducers: {
     setRoute(state, action) {
       return action.payload;
-    },
-  },
+    }
+  }
 });
 
 export const { setRoute } = appRouteSlice.actions;

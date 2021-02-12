@@ -19,14 +19,14 @@ function AdminCombatTracker() {
 
   function onNextClick() {
     SocketClient.instance.send({
-      type: SocketMessageType.CombatTrackerNextTurn,
+      type: SocketMessageType.CombatTrackerNextTurn
     });
   }
 
   function onRestartClick() {
     if (window.confirm('Are you sure you want to restart this combat?')) {
       SocketClient.instance.send({
-        type: SocketMessageType.CombatTrackerRequestRestart,
+        type: SocketMessageType.CombatTrackerRequestRestart
       });
     }
   }
@@ -34,20 +34,20 @@ function AdminCombatTracker() {
   function onClearClick() {
     if (window.confirm('Are you sure you want to clear the combat tracker?')) {
       SocketClient.instance.send({
-        type: SocketMessageType.CombatTrackerRequestClear,
+        type: SocketMessageType.CombatTrackerRequestClear
       });
     }
   }
 
   function onAddCharacterClick() {
     setState({
-      addCharacterDialogOpen: true,
+      addCharacterDialogOpen: true
     });
   }
 
   function onAddCharacterDialogBackdropClick() {
     setState({
-      addCharacterDialogOpen: false,
+      addCharacterDialogOpen: false
     });
   }
 
