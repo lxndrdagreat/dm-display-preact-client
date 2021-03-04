@@ -23,7 +23,7 @@ export class SocketClient {
     }
 
     return new Promise((resolve) => {
-      const protocol = 'wss'; // location.protocol.startsWith('https') ? 'wss' : 'ws';
+      const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
       this.socket = new WebSocket(`${protocol}://localhost:3090`);
       // this.socket.binaryType = 'arraybuffer';
 
