@@ -26,22 +26,20 @@ function Text(props: TextProps) {
       })}
     >
       <label for={`${props.id}-input`}>{props.label}</label>
-      {
-        !props.long ? (
-          <input
-            type="text"
-            id={`${props.id}-input`}
-            value={props.value}
-            onInput={onChange}
-          />
-        ) : (
-          <textarea
-            id={`${props.id}-input`}
-            value={props.value}
-            onInput={onChange}/>
-        )
-      }
-
+      {!props.long ? (
+        <input
+          type="text"
+          id={`${props.id}-input`}
+          value={props.value}
+          onInput={onChange}
+        />
+      ) : (
+        <textarea
+          id={`${props.id}-input`}
+          value={props.value}
+          onInput={onChange}
+        />
+      )}
     </div>
   );
 }
