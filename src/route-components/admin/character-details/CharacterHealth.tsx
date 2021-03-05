@@ -1,11 +1,11 @@
 import { h } from 'preact';
-import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
-import RangeSlider from '../../components/forms/RangeSlider';
-import NumberInput from '../../components/forms/NumberInput';
-import Button from '../../components/buttons/Button';
-import Icon from '../../components/Icon';
-import { SocketClient } from '../../networking/socket-client';
-import { SocketMessageType } from '../../networking/socket-message-type.schema';
+import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
+import RangeSlider from '../../../components/forms/RangeSlider';
+import NumberInput from '../../../components/forms/NumberInput';
+import Button from '../../../components/buttons/Button';
+import Icon from '../../../components/Icon';
+import { SocketClient } from '../../../networking/socket-client';
+import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterHealth,
@@ -14,7 +14,7 @@ import {
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
 import './CharacterHealth.css';
-import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
+import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
 
 interface Props {
   character: CombatCharacterSchema;

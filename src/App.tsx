@@ -25,7 +25,11 @@ class App extends Component<AppProps> {
   componentDidMount() {
     const storedSession = initStorage();
     // attempt to connect to socket
-    if (storedSession?.id && storedSession.token && storedSession.userRole !== null) {
+    if (
+      storedSession?.id &&
+      storedSession.token &&
+      storedSession.userRole !== null
+    ) {
       dispatch(setSessionId(storedSession.id));
       dispatch(setSessionPassword(storedSession.password));
       dispatch(setUserRole(storedSession.userRole));

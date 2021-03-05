@@ -2,17 +2,17 @@ import { h } from 'preact';
 import LabelledStat from './LabelledStat';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import Button from '../../components/buttons/Button';
-import Icon from '../../components/Icon';
+import Button from '../../../components/buttons/Button';
+import Icon from '../../../components/Icon';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterArmorClass,
   setNpcArmorClass
 } from '@store/slices/character-details.slice';
-import { SocketClient } from '../../networking/socket-client';
-import { SocketMessageType } from '../../networking/socket-message-type.schema';
-import NumberInput from '../../components/forms/NumberInput';
-import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
+import { SocketClient } from '../../../networking/socket-client';
+import { SocketMessageType } from '../../../networking/socket-message-type.schema';
+import NumberInput from '../../../components/forms/NumberInput';
+import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
 import './CharacterArmorClass.css';
 
 interface Props {

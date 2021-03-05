@@ -26,3 +26,13 @@
   font-size: inherit;
   box-sizing: border-box;
 }
+
+.Text textarea {
+  box-sizing: border-box;
+  padding: 8px;
+  width: 100%;
+  min-height: 8rem;
+  max-width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+}

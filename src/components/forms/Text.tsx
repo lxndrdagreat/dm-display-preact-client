@@ -5,6 +5,7 @@ import classNames from 'classnames';
 interface TextProps {
   id: string;
   label: string;
+  long?: boolean;
   value?: string;
   noLabel?: boolean;
   onChange?: (value: string) => void;
@@ -25,12 +26,22 @@ function Text(props: TextProps) {
       })}
     >
       <label for={`${props.id}-input`}>{props.label}</label>
-      <input
-        type="text"
-        id={`${props.id}-input`}
-        value={props.value}
-        onInput={onChange}
-      />
+      {
+        !props.long ? (
+          <input
+            type="text"
+            id={`${props.id}-input`}
+            value={props.value}
+            onInput={onChange}
+          />
+        ) : (
+          <textarea
+            id={`${props.id}-input`}
+            value={props.value}
+            onInput={onChange}/>
+        )
+      }
+
     </div>
   );
 }

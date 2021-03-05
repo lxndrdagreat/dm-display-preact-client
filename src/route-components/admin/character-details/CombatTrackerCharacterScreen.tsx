@@ -3,13 +3,13 @@ import './CombatTrackerCharacterScreen.css';
 import type {
   CharacterConditions,
   CombatCharacterSchema
-} from '../../schemas/combat-character.schema';
+} from '../../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import Button from '../../components/buttons/Button';
-import Icon from '../../components/Icon';
-import { SocketClient } from '../../networking/socket-client';
-import { SocketMessageType } from '../../networking/socket-message-type.schema';
+import Button from '../../../components/buttons/Button';
+import Icon from '../../../components/Icon';
+import { SocketClient } from '../../../networking/socket-client';
+import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import type { CharacterDetailsState } from '@store/slices/character-details.slice';
 import CharacterConditionList from './CharacterConditionList';
 import CharacterDetailsTop from './CharacterDetailsTop';
@@ -17,6 +17,7 @@ import NpcUrl from './NpcUrl';
 import CharacterHealth from './CharacterHealth';
 import LabelledStat from './LabelledStat';
 import CharacterArmorClass from './CharacterArmorClass';
+import CharacterActionsList from './CharacterActionsList';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
@@ -183,6 +184,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                 <CharacterHealth />
 
                 <CharacterArmorClass />
+
+                <CharacterActionsList />
 
                 <Button onClick={onRemoveNPCDetailsClick} danger>
                   Remove NPC Details

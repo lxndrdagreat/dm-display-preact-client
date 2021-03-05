@@ -35,7 +35,8 @@ function initNPCDetails(): NPCDetails {
     url: '',
     maxHealth: 0,
     health: 0,
-    armorClass: 0
+    armorClass: 0,
+    actions: []
   };
 }
 

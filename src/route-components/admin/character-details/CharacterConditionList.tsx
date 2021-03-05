@@ -1,7 +1,7 @@
 import { h, RenderableProps } from 'preact';
-import { CharacterConditions } from '../../schemas/combat-character.schema';
+import { CharacterConditions } from '../../../schemas/combat-character.schema';
 import './CharacterConditionList.css';
-import Checkbox from '../../components/forms/Checkbox';
+import Checkbox from '../../../components/forms/Checkbox';
 
 interface Props {
   conditions: CharacterConditions[];

@@ -2,7 +2,7 @@ import { h } from 'preact';
 import Button from '../../components/buttons/Button';
 import './AdminCombatTracker.css';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
-import CombatTrackerCharacterScreen from './CombatTrackerCharacterScreen';
+import CombatTrackerCharacterScreen from './character-details/CombatTrackerCharacterScreen';
 import AddCharacterDialog from './AddCharacterDialog';
 import { useState } from 'preact/hooks';
 import { SocketClient } from '../../networking/socket-client';

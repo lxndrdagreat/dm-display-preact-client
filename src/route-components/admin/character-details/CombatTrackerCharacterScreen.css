@@ -1,5 +1,6 @@
 .CombatTrackerCharacterScreen {
   height: 100%;
+  overflow-y: scroll;
   width: 100%;
   box-sizing: border-box;
   padding: 24px;

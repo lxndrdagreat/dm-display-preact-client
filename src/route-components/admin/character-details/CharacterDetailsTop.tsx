@@ -1,11 +1,11 @@
 import { h } from 'preact';
-import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
+import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import Button from '../../components/buttons/Button';
-import Icon from '../../components/Icon';
-import NumberInput from '../../components/forms/NumberInput';
-import Text from '../../components/forms/Text';
+import Button from '../../../components/buttons/Button';
+import Icon from '../../../components/Icon';
+import NumberInput from '../../../components/forms/NumberInput';
+import Text from '../../../components/forms/Text';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterTopDetails,
@@ -15,9 +15,9 @@ import {
   setTopDetailsInitiativeRoll
 } from '@store/slices/character-details.slice';
 import './CharacterDetailsTop.css';
-import { SocketClient } from '../../networking/socket-client';
-import { SocketMessageType } from '../../networking/socket-message-type.schema';
-import ConfirmOrCancel from '../../components/buttons/ConfirmOrCancel';
+import { SocketClient } from '../../../networking/socket-client';
+import { SocketMessageType } from '../../../networking/socket-message-type.schema';
+import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
 
 interface Props {
   character: CombatCharacterSchema;

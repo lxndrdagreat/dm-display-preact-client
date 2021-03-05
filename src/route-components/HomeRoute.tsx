@@ -47,9 +47,7 @@ function HomeRoute(props: HomeRouteProps) {
       {props.state === HomeRouteState.JoinOrCreate ? (
         <JoinOrCreateForm />
       ) : (
-        <div>
-          Loading...
-        </div>
+        <div>Loading...</div>
       )}
     </div>
   );

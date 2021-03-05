@@ -1,7 +1,7 @@
 import { h } from 'preact';
 import './LabelledStat.css';
-import type { IconName } from '../../components/Icon';
-import Icon from '../../components/Icon';
+import type { IconName } from '../../../components/Icon';
+import Icon from '../../../components/Icon';
 
 interface Props {
   label: string;
