@@ -1,11 +1,7 @@
-import type { SessionInfo } from './store/slices/session.slice';
+import type { SessionInfo } from '@store/slices/session.slice';
 import type { SessionUserRole } from './schemas/session-user.schema';
-import store, { dispatch } from './store/store';
-import type { RootState } from './store/reducer';
-import { SocketClient } from './networking/socket-client';
-import { SocketMessageType } from './networking/socket-message-type.schema';
-import { setSessionId, setSessionPassword } from './store/slices/session.slice';
-import { setUserRole } from './store/slices/user-role.slice';
+import store from './store/store';
+import type { RootState } from '@store/reducer';
 
 interface StoreInfo extends SessionInfo {
   userRole: SessionUserRole | null;

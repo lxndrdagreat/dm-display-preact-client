@@ -1,3 +1,6 @@
+
+process.env.SNOWPACK_PUBLIC_SERVER_HOST = 'ws://localhost:3090';
+
 /** @type {import("snowpack").SnowpackUserConfig } */
 module.exports = {
   mount: {

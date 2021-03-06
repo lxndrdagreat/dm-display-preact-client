@@ -23,8 +23,8 @@ export class SocketClient {
     }
 
     return new Promise((resolve) => {
-      const protocol = location.protocol.startsWith('https') ? 'wss' : 'ws';
-      this.socket = new WebSocket(`${protocol}://localhost:3090`);
+      // @ts-ignore
+      this.socket = new WebSocket(`${import.meta.env.SNOWPACK_PUBLIC_SERVER_HOST}`);
       // this.socket.binaryType = 'arraybuffer';
 
       this.socket.onmessage = (event: MessageEvent) => {
