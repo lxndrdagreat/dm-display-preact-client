@@ -17,13 +17,42 @@ interface State {
   password: string;
 }
 
-function JoinOrCreateForm() {
-  const [state, setState] = useState<State>({
+function initState(): State {
+  let sessionId = '';
+  let role: 'display' | 'admin' = 'display';
+
+  // check if session key is in query string
+  if (window.location.search && window.location.search.length > 1) {
+    const parts = window.location.search.substr(1).split('&');
+    const sessionPart = parts.find((part) =>
+      part.toLowerCase().startsWith('session=')
+    );
+    if (sessionPart) {
+      const [, key] = sessionPart.split('=');
+      sessionId = key;
+    }
+    // check if user role
+    const rolePart = parts.find((part) =>
+      part.toLowerCase().startsWith('role=')
+    );
+    if (rolePart) {
+      const [, roleValue] = rolePart.split('=');
+      if (roleValue.toLowerCase() === 'admin') {
+        role = 'admin';
+      }
+    }
+  }
+
+  return {
     active: 'join',
-    role: 'display',
+    role,
     password: '',
-    sessionId: ''
-  });
+    sessionId
+  };
+}
+
+function JoinOrCreateForm() {
+  const [state, setState] = useState<State>(initState());
 
   function onSessionIdInput(value: string) {
     setState({

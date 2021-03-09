@@ -42,7 +42,7 @@ function HomeRoute(props: HomeRouteProps) {
 
   return (
     <div className="HomeRoute">
-      <h1>Welcome</h1>
+      <h1>Welcome to DM Display!</h1>
 
       {props.state === HomeRouteState.JoinOrCreate ? (
         <JoinOrCreateForm />

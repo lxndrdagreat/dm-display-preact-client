@@ -12,6 +12,7 @@ import DisplayRoute from './route-components/display/DisplayRoute';
 import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
+import { SessionUserRole } from './schemas/session-user.schema';
 
 interface AppProps {
   appRoute: AppRoute;
