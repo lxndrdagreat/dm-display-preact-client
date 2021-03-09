@@ -196,7 +196,7 @@ function JoinOrCreateForm() {
           </div>
         </div>
 
-        <Button onClick={onClick}>
+        <Button onClick={onClick} primary>
           {state.active === 'join' ? 'Join' : 'Create'}
         </Button>
       </div>
