@@ -1,6 +1,7 @@
 {
   "name": "dm-display-preact-client",
   "description": "Web client for DM Display written in Preact",
+  "version": "0.1.0",
   "scripts": {
     "start": "snowpack dev --reload",
     "build": "snowpack build",
@@ -24,6 +25,7 @@
     "@web/test-runner": "^0.12.15",
     "chai": "^4.3.0",
     "classnames": "^2.2.6",
+    "dotenv": "^8.2.0",
     "prettier": "^2.0.5",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",

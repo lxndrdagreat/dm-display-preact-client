@@ -1,5 +1,6 @@
 import type { SocketMessage } from './socket-message-type.schema';
 import type { SocketMessageType } from './socket-message-type.schema';
+import { serverHostURL } from '../app.globals';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
 type UnsubscribeFunction = () => void;
@@ -23,10 +24,7 @@ export class SocketClient {
     }
 
     return new Promise((resolve) => {
-      // @ts-ignore
-      this.socket = new WebSocket(
-        `${import.meta.env.SNOWPACK_PUBLIC_SERVER_HOST}`
-      );
+      this.socket = new WebSocket(serverHostURL);
       // this.socket.binaryType = 'arraybuffer';
 
       this.socket.onmessage = (event: MessageEvent) => {
@@ -51,6 +49,13 @@ export class SocketClient {
         this.socket = null;
       };
     });
+  }
+
+  close(): void {
+    if (!this.socket) {
+      return;
+    }
+    this.socket.close();
   }
 
   get connected(): boolean {
@@ -87,5 +92,16 @@ export class SocketClient {
     this.nextOfTypeCallbacks[messageType].push(callback);
 
     return this;
+  }
+
+  static async testServerExists(): Promise<boolean> {
+    const client = new SocketClient();
+    try {
+      await client.connect();
+      client.close();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

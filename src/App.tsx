@@ -13,6 +13,7 @@ import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
 import { SessionUserRole } from './schemas/session-user.schema';
+import { setServerOffline } from '@store/slices/server-offline.slice';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -25,7 +26,7 @@ class App extends Component<AppProps> {
 
   componentDidMount() {
     const storedSession = initStorage();
-    // attempt to connect to socket
+    // attempt to reconnect to socket
     if (
       storedSession?.id &&
       storedSession.token &&
@@ -49,6 +50,11 @@ class App extends Component<AppProps> {
         });
       });
     }
+
+    // test server existence
+    SocketClient.testServerExists().then((exists) => {
+      dispatch(setServerOffline(!exists));
+    });
   }
 
   onClick() {
