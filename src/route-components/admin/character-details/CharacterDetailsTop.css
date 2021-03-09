@@ -1,0 +1,15 @@
+.edit-character-top-details {
+  display: flex;
+}
+
+.edit-roll {
+  width: 5rem;
+}
+
+.edit-character-name {
+  width: 100%;
+}
+
+.edit-character-admin-name {
+  width: 100%;
+}

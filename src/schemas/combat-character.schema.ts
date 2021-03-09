@@ -1,9 +1,26 @@
-
 export interface NPCDetails {
   maxHealth: number;
   health: number;
   armorClass: number;
   url?: string;
+  actions: { name: string; info: string }[];
+}
+
+export enum CharacterConditions {
+  Blinded,
+  Charmed,
+  Deafened,
+  Frightened,
+  Grappled,
+  Incapacitated,
+  Invisible,
+  Paralyzed,
+  Petrified,
+  Poisoned,
+  Prone,
+  Restrained,
+  Stunned,
+  Unconcious
 }
 
 export interface CombatCharacterSchema {
@@ -13,10 +30,6 @@ export interface CombatCharacterSchema {
   nameVisible: boolean;
   active: boolean;
   roll: number;
-  npc?: NPCDetails;
-}
-
-export interface AddCharacterRequest {
-  token: string;
-  character: Omit<CombatCharacterSchema, 'id'>;
+  conditions: CharacterConditions[];
+  npc: NPCDetails | null;
 }

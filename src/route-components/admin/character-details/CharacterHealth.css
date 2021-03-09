@@ -1,0 +1,12 @@
+.CharacterHealth {
+  display: flex;
+  margin: 16px 0;
+}
+
+.CharacterHealth .RangeSlider {
+  width: 100%;
+}
+
+.CharacterHealth .Button {
+  margin: auto;
+}

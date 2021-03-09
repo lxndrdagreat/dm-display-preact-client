@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export enum AppRoute {
   Home,
@@ -16,5 +16,5 @@ const appRouteSlice = createSlice({
   }
 });
 
-export const {setRoute} = appRouteSlice.actions;
+export const { setRoute } = appRouteSlice.actions;
 export default appRouteSlice.reducer;

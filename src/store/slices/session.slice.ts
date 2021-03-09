@@ -24,10 +24,23 @@ const sessionSlice = createSlice({
 
     setSessionPassword(state, action) {
       state.password = action.payload;
+    },
+
+    clearSession() {
+      return {
+        id: null,
+        token: null,
+        password: ''
+      };
     }
   }
 });
 
-export const { setSessionId, setSessionToken, setSessionPassword } = sessionSlice.actions;
+export const {
+  setSessionId,
+  setSessionToken,
+  setSessionPassword,
+  clearSession
+} = sessionSlice.actions;
 
 export default sessionSlice.reducer;

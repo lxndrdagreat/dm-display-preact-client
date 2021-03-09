@@ -1,0 +1,23 @@
+.HomeRoute {
+  width: 100%;
+  max-width: 960px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.HomeRoute h1 {
+  margin: 0 0 2rem 0;
+}
+
+.HomeRoute .terms {
+
+}
+
+.HomeRoute footer {
+  width: 100%;
+  margin: auto 0 0 0;
+}

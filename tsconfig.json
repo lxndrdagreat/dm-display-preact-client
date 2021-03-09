@@ -14,7 +14,8 @@
       //     "*": [".snowpack/types/*"]
       // More info: https://www.snowpack.dev/guides/streaming-imports
       "react": ["node_modules/preact/compat"],
-      "react-dom": ["node_modules/preact/compat"]
+      "react-dom": ["node_modules/preact/compat"],
+      "@store/*": ["src/store/*"]
     },
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,

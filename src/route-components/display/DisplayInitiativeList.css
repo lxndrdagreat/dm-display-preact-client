@@ -1,0 +1,34 @@
+.DisplayInitiativeList {
+  font-size: 42px;
+  box-sizing: border-box;
+  padding: 24px;
+  width: 40%;
+  height: 100%;
+  border-right: 2px solid #333333;
+}
+
+.DisplayInitiativeList .character {
+  background-color: #dddddd;
+  padding: 8px;
+}
+
+.DisplayInitiativeList .character:first-child {
+  font-weight: bold;
+}
+
+.DisplayInitiativeList .character:nth-child(odd) {
+  background-color: #eeeeee;
+}
+
+.DisplayInitiativeList .character.next-round {
+  font-size: 0.6em;
+  background-color: transparent;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.DisplayInitiativeList .character.plus-more {
+  font-size: 0.6em;
+  background-color: transparent;
+  text-align: center;
+}

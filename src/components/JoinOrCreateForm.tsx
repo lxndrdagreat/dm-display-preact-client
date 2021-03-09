@@ -5,120 +5,201 @@ import './JoinOrCreateForm.css';
 import { useState } from 'preact/hooks';
 import { SocketClient } from '../networking/socket-client';
 import { SocketMessageType } from '../networking/socket-message-type.schema';
-import {dispatch} from '../store/store';
-import { setSessionPassword, setSessionId } from '../store/slices/session.slice';
+import { dispatch } from '@store/store';
+import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
+import { setUserRole } from '@store/slices/user-role.slice';
+import { SessionUserRole } from '../schemas/session-user.schema';
 
-interface JoinOrCreateFormProps {
-  showJoin: boolean;
-  showCreate: boolean;
-}
-
-interface JoinFormState {
+interface State {
+  active: 'join' | 'create';
+  role: 'display' | 'admin';
   sessionId: string;
   password: string;
-  joining: boolean;
 }
 
-interface CreateFormState {
-  password: string;
-  creating: boolean;
-}
+function initState(): State {
+  let sessionId = '';
+  let role: 'display' | 'admin' = 'display';
 
-function JoinOrCreateForm({ showJoin, showCreate }: JoinOrCreateFormProps) {
-
-  const [joinForm, setJoinForm] = useState<JoinFormState>({
-    sessionId: '',
-    password: '',
-    joining: false
-  });
-
-  const [createForm, setCreateForm] = useState<CreateFormState>({
-    password: '',
-    creating: false
-  });
-
-  function onJoinSessionIdInput(e: Event) {
-    setJoinForm({
-      ...joinForm,
-      sessionId: (e.target as HTMLInputElement).value
-    });
-  }
-
-  function onJoinPasswordInput(e: Event) {
-    setJoinForm({
-      ...joinForm,
-      password: (e.target as HTMLInputElement).value
-    });
-  }
-
-  function onJoinClick() {
-    if (joinForm.sessionId.length && joinForm.password.length) {
-      dispatch(setSessionPassword(joinForm.password));
-      dispatch(setSessionId(joinForm.sessionId));
+  // check if session key is in query string
+  if (window.location.search && window.location.search.length > 1) {
+    const parts = window.location.search.substr(1).split('&');
+    const sessionPart = parts.find((part) =>
+      part.toLowerCase().startsWith('session=')
+    );
+    if (sessionPart) {
+      const [, key] = sessionPart.split('=');
+      sessionId = key;
+    }
+    // check if user role
+    const rolePart = parts.find((part) =>
+      part.toLowerCase().startsWith('role=')
+    );
+    if (rolePart) {
+      const [, roleValue] = rolePart.split('=');
+      if (roleValue.toLowerCase() === 'admin') {
+        role = 'admin';
+      }
     }
   }
 
-  function onCreatePasswordInput(e: Event) {
-    setCreateForm({
-      ...createForm,
-      password: (e.target as HTMLInputElement).value
+  return {
+    active: 'join',
+    role,
+    password: '',
+    sessionId
+  };
+}
+
+function JoinOrCreateForm() {
+  const [state, setState] = useState<State>(initState());
+
+  function onSessionIdInput(value: string) {
+    setState({
+      ...state,
+      sessionId: value
     });
   }
 
-  function onCreateClick() {
-    if (createForm.password.length) {
-      dispatch(setSessionPassword(createForm.password));
-      SocketClient.instance.send({
-        type: SocketMessageType.CreateNewSession,
-        payload: createForm.password
-      });
+  function onPasswordInput(value: string) {
+    setState({
+      ...state,
+      password: value
+    });
+  }
+
+  function onClick() {
+    const role =
+      state.role === 'admin' ? SessionUserRole.Admin : SessionUserRole.Display;
+    let wait = Promise.resolve();
+    if (!SocketClient.instance.connected) {
+      wait = SocketClient.instance.connect();
     }
+    wait.then(() => {
+      if (state.active === 'join') {
+        if (state.sessionId.length && state.password.length) {
+          dispatch(setSessionPassword(state.password));
+          dispatch(setSessionId(state.sessionId));
+          dispatch(setUserRole(role));
+          SocketClient.instance.send({
+            type: SocketMessageType.ConnectToSession,
+            payload: {
+              role: role,
+              sessionId: state.sessionId,
+              password: state.password
+            }
+          });
+        }
+      } else {
+        if (state.password.length) {
+          dispatch(setSessionPassword(state.password));
+          dispatch(setUserRole(role));
+          SocketClient.instance
+            .send({
+              type: SocketMessageType.CreateNewSession,
+              payload: state.password
+            })
+            .nextOfType(SocketMessageType.NewSessionCreated, (message) => {
+              const sessionId = message.payload as string;
+              SocketClient.instance.send({
+                type: SocketMessageType.ConnectToSession,
+                payload: {
+                  role: role,
+                  sessionId: sessionId,
+                  password: state.password
+                }
+              });
+            });
+        }
+      }
+    });
+  }
+
+  function onTabChange(event: Event) {
+    setState({
+      ...state,
+      active: (event.target as HTMLInputElement).value as 'join' | 'create'
+    });
+  }
+
+  function onRoleChange(event: Event) {
+    setState({
+      ...state,
+      role: (event.target as HTMLInputElement).value as 'display' | 'admin'
+    });
   }
 
   return (
-    <div class='JoinOrCreateForm'>
-      <div role='region'
-           aria-labelledby='join'
-           class='form-block'>
-        <h2 id='join'>Join a session...</h2>
-
-        <Text
-          id="join-session-id"
-          label="Session Id"
-          value={joinForm.sessionId}
-          onChange={ onJoinSessionIdInput }
+    <div class="JoinOrCreateForm">
+      <div className="controls">
+        <input
+          type="radio"
+          id="join-or-create-tab-join"
+          value="join"
+          name="join-or-create-tab"
+          onChange={onTabChange}
+          checked={state.active === 'join'}
         />
+        <label for="join-or-create-tab-join">Join</label>
+
+        <input
+          type="radio"
+          id="join-or-create-tab-create"
+          value="create"
+          name="join-or-create-tab"
+          onChange={onTabChange}
+          checked={state.active === 'create'}
+        />
+        <label htmlFor="join-or-create-tab-create">Create</label>
+      </div>
+
+      <div class="form-body">
+        {state.active === 'join' ? (
+          <Text
+            id="join-session-id"
+            label="Session Id"
+            value={state.sessionId}
+            onChange={onSessionIdInput}
+          />
+        ) : null}
 
         <Text
           id="join-session-password"
           label="Session Password"
-          value={joinForm.password}
-          onChange={ onJoinPasswordInput }
+          value={state.password}
+          onChange={onPasswordInput}
         />
 
-        <Button onClick={onJoinClick}>
-          Join
+        <div className="toggle-role">
+          <div className="toggle-item">
+            <input
+              type="radio"
+              id="join-or-create-role-display"
+              value="display"
+              name="join-or-create-role"
+              onChange={onRoleChange}
+              checked={state.role === 'display'}
+            />
+            <label htmlFor="join-or-create-role-display">Display</label>
+          </div>
+
+          <div className="toggle-item">
+            <input
+              type="radio"
+              id="join-or-create-role-admin"
+              value="admin"
+              name="join-or-create-role"
+              onChange={onRoleChange}
+              checked={state.role === 'admin'}
+            />
+            <label htmlFor="join-or-create-role-admin">Admin</label>
+          </div>
+        </div>
+
+        <Button onClick={onClick} primary>
+          {state.active === 'join' ? 'Join' : 'Create'}
         </Button>
-
       </div>
-
-      <div role='region'
-           aria-labelledby='create'
-           class='form-block'>
-        <h2 id='create'>...or create a new one.</h2>
-
-        <Text
-          id="create-session-password"
-          label="Session Password"
-          onChange={ onCreatePasswordInput }
-        />
-
-        <Button onClick={onCreateClick}>
-          Create
-        </Button>
-
-      </div>
-
     </div>
   );
 }

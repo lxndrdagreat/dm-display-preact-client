@@ -1,0 +1,49 @@
+.CombatTrackerCharacterScreen {
+  height: 100%;
+  overflow-y: scroll;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.CombatTrackerCharacterScreen h2 {
+  margin-top: 0;
+}
+
+.CombatTrackerCharacterScreen .body {
+  background-color: #eeeeee;
+  min-height: 30vh;
+  border-radius: 3px;
+  border: 1px solid #888888;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.CombatTrackerCharacterScreen .body h3,
+.CombatTrackerCharacterScreen .body h4 {
+  margin-top: 0;
+}
+
+.CombatTrackerCharacterScreen .npc-block {
+  font-size: 16px;
+}
+
+.npc-details__url {
+  display: flex;
+}
+
+.npc-details__url .Text {
+  width: 100%;
+}
+
+.CombatTrackerCharacterScreen .info-row {
+  display: flex;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+}
+
+.CombatTrackerCharacterScreen .info-row .CharacterConditionList {
+  width: 50%;
+  margin-right: 24px;
+}
