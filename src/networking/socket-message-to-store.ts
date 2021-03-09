@@ -8,10 +8,10 @@ import {
   clearSession,
   setSessionId,
   setSessionToken
-} from '../store/slices/session.slice';
-import { AppRoute, setRoute } from '../store/slices/app-route.slice';
+} from '@store/slices/session.slice';
+import { AppRoute, setRoute } from '@store/slices/app-route.slice';
 import store, { dispatch } from '../store/store';
-import type { RootState } from '../store/reducer';
+import type { RootState } from '@store/reducer';
 import { SessionUserRole } from '../schemas/session-user.schema';
 import {
   addCombatCharacter,
@@ -20,7 +20,8 @@ import {
   setCombatTrackerActiveCharacterId,
   setCombatTrackerRound,
   updateCombatCharacter
-} from '../store/slices/combat-tracker.slice';
+} from '@store/slices/combat-tracker.slice';
+import { setServerOffline } from '@store/slices/server-offline.slice';
 
 function handleMessage(message: SocketMessage): void {
   const state = store.getState() as RootState;
@@ -73,4 +74,12 @@ function handleMessage(message: SocketMessage): void {
 
 export function bindSocketMessagesToStore() {
   SocketClient.instance.subscribe(handleMessage);
+
+  SocketClient.instance.onClose(() => {
+    dispatch(setServerOffline(true));
+  });
+
+  SocketClient.instance.onOpen(() => {
+    dispatch(setServerOffline(false));
+  });
 }

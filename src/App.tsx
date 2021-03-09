@@ -12,11 +12,13 @@ import DisplayRoute from './route-components/display/DisplayRoute';
 import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
-import { SessionUserRole } from './schemas/session-user.schema';
 import { setServerOffline } from '@store/slices/server-offline.slice';
+import ModalWrap from './components/ModalWrap';
+import Button from './components/buttons/Button';
 
 interface AppProps {
   appRoute: AppRoute;
+  showSocketDisconnectMessage: boolean;
 }
 
 class App extends Component<AppProps> {
@@ -25,6 +27,15 @@ class App extends Component<AppProps> {
   }
 
   componentDidMount() {
+    this.attemptConnection();
+
+    // test server existence
+    SocketClient.testServerExists().then((exists) => {
+      dispatch(setServerOffline(!exists));
+    });
+  }
+
+  attemptConnection() {
     const storedSession = initStorage();
     // attempt to reconnect to socket
     if (
@@ -50,15 +61,11 @@ class App extends Component<AppProps> {
         });
       });
     }
-
-    // test server existence
-    SocketClient.testServerExists().then((exists) => {
-      dispatch(setServerOffline(!exists));
-    });
   }
 
-  onClick() {
-    dispatch(setRoute(AppRoute.Admin));
+  onAttemptReconnectClick() {
+    // this.attemptConnection();
+    window.location.reload();
   }
 
   // Return the App component.
@@ -72,6 +79,19 @@ class App extends Component<AppProps> {
         ) : (
           <DisplayRoute />
         )}
+
+        <ModalWrap active={this.props.showSocketDisconnectMessage}>
+          <h3>Offline</h3>
+          <p>
+            Connection to the server has been lost. Please check your network
+            connection.
+          </p>
+          <p>
+            <Button primary onClick={this.onAttemptReconnectClick.bind(this)}>
+              Attempt to Reconnect
+            </Button>
+          </p>
+        </ModalWrap>
       </div>
     );
   }
@@ -79,7 +99,9 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: RootState): AppProps => {
   return {
-    appRoute: state.appRoute
+    appRoute: state.appRoute,
+    showSocketDisconnectMessage:
+      state.serverOffline && state.appRoute !== AppRoute.Home
   };
 };
 

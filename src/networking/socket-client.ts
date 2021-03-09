@@ -4,11 +4,15 @@ import { serverHostURL } from '../app.globals';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
 type UnsubscribeFunction = () => void;
+type OnSocketConnectionClosedSubscriber = () => void;
+type OnSocketConnectionOpenedSubscriber = () => void;
 
 export class SocketClient {
   private static _instance: SocketClient;
   private socket: WebSocket | null = null;
   private onSocketMessageSubscribers: OnSocketMessageSubscriber[] = [];
+  private onSocketConnectionClosedSubscribers: OnSocketConnectionClosedSubscriber[] = [];
+  private onSocketConnectionOpenedSubscribers: OnSocketConnectionOpenedSubscriber[] = [];
   private nextOfTypeCallbacks: Record<number, OnSocketMessageSubscriber[]> = {};
 
   static get instance(): SocketClient {
@@ -42,11 +46,17 @@ export class SocketClient {
       };
 
       this.socket.onopen = () => {
+        for (const sub of this.onSocketConnectionOpenedSubscribers) {
+          sub();
+        }
         resolve();
       };
 
       this.socket.onclose = () => {
         this.socket = null;
+        for (const sub of this.onSocketConnectionClosedSubscribers) {
+          sub();
+        }
       };
     });
   }
@@ -67,6 +77,26 @@ export class SocketClient {
     return () => {
       this.onSocketMessageSubscribers.splice(
         this.onSocketMessageSubscribers.indexOf(sub),
+        1
+      );
+    };
+  }
+
+  onClose(sub: OnSocketConnectionClosedSubscriber): UnsubscribeFunction {
+    this.onSocketConnectionClosedSubscribers.push(sub);
+    return () => {
+      this.onSocketConnectionClosedSubscribers.splice(
+        this.onSocketConnectionClosedSubscribers.indexOf(sub),
+        1
+      );
+    };
+  }
+
+  onOpen(sub: OnSocketConnectionOpenedSubscriber): UnsubscribeFunction {
+    this.onSocketConnectionOpenedSubscribers.push(sub);
+    return () => {
+      this.onSocketConnectionOpenedSubscribers.splice(
+        this.onSocketConnectionOpenedSubscribers.indexOf(sub),
         1
       );
     };
