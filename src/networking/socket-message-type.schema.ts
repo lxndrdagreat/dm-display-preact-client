@@ -135,3 +135,8 @@ export interface ClientUpdateCharacterNPC extends SocketMessage {
     npc: Partial<NPCDetails>;
   };
 }
+
+export interface CombatTrackerState extends SocketMessage {
+  type: SocketMessageType.CombatTrackerState;
+  payload: CombatTrackerSchema;
+}
