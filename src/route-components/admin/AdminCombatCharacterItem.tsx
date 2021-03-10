@@ -9,9 +9,10 @@ import Icon from '../../components/Icon';
 interface Props {
   character: CombatCharacterSchema;
   isTurn: boolean;
+  isEditing: boolean;
 }
 
-function AdminCombatCharacterItem({ character, isTurn }: Props) {
+function AdminCombatCharacterItem({ character, isTurn, isEditing }: Props) {
   function onClick() {
     dispatch(setViewingCharacterDetails(character.id));
   }
@@ -36,6 +37,7 @@ function AdminCombatCharacterItem({ character, isTurn }: Props) {
         character.npc.health <= Math.floor(character.npc.maxHealth / 2) ? (
           <Icon name="health" />
         ) : null}
+        {isEditing ? <Icon name="pencil" /> : null}
       </div>
     </li>
   );

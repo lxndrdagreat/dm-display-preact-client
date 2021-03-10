@@ -33,6 +33,7 @@
   width: 100%;
 }
 
-/*.AdminCombatCharacterItem .info {*/
-/*    font-size: 36px;*/
-/*}*/
+.AdminCombatCharacterItem .info {
+  width: 40%;
+  text-align: right;
+}
