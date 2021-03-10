@@ -1,7 +1,6 @@
 import { Component, h } from 'preact';
 import { connect } from 'react-redux';
-import './App.css';
-import { AppRoute, setRoute } from '@store/slices/app-route.slice';
+import { AppRoute } from '@store/slices/app-route.slice';
 import { dispatch } from '@store/store';
 import HomeRoute from './route-components/HomeRoute';
 import AdminRoute from './route-components/AdminRoute';

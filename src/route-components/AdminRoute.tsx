@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import './AdminRoute.css';
 import { ActiveScreen } from '../schemas/session.schema';
 import AdminCombatTracker from './admin/AdminCombatTracker';
 

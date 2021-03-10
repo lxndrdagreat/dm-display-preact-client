@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "snowpack dev --reload",
-    "build": "snowpack build",
+    "build": "snowpack build --reload --clean",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "lint": "prettier --check \"src/**/*.{ts,tsx,css}\""
