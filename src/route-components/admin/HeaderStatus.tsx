@@ -1,15 +1,15 @@
-import {h} from 'preact';
-import type { RootState } from "@store/reducer";
-import { connect } from "react-redux";
-import "./HeaderStatus.css";
-import ModalWrap from "../../components/ModalWrap";
-import { useState } from "preact/hooks";
-import Button from "../../components/buttons/Button";
-import { downloadDataAsFile, readFile } from "../../utils/file-access";
-import store from "@store/store";
-import type { CombatCharacterSchema } from "../../schemas/combat-character.schema";
-import { SocketClient } from "../../networking/socket-client";
-import { SocketMessageType } from "../../networking/socket-message-type.schema";
+import { h } from 'preact';
+import type { RootState } from '@store/reducer';
+import { connect } from 'react-redux';
+import './HeaderStatus.css';
+import ModalWrap from '../../components/ModalWrap';
+import { useState } from 'preact/hooks';
+import Button from '../../components/buttons/Button';
+import { downloadDataAsFile, readFile } from '../../utils/file-access';
+import store from '@store/store';
+import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
+import { SocketClient } from '../../networking/socket-client';
+import { SocketMessageType } from '../../networking/socket-message-type.schema';
 
 interface Props {
   sessionId: string | null;
@@ -68,8 +68,7 @@ function HeaderStatus(props: Props) {
   }
 
   function onExportClick() {
-
-    const {combatTracker} = store.getState() as RootState;
+    const { combatTracker } = store.getState() as RootState;
     if (!combatTracker) {
       return;
     }
@@ -103,9 +102,11 @@ function HeaderStatus(props: Props) {
           <div>
             <h4>Import JSON</h4>
             <p>
-              <em>Warning: this will overwrite the current CombatTracker state.</em>
+              <em>
+                Warning: this will overwrite the current CombatTracker state.
+              </em>
             </p>
-            <input type="file" onChange={onImportFileChange} accept=".json"/>
+            <input type="file" onChange={onImportFileChange} accept=".json" />
             <Button onClick={onImportClick}>Import</Button>
           </div>
           <div>
