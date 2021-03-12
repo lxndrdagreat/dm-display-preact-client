@@ -14,6 +14,8 @@ export enum SocketMessageType {
   SessionConnected,
   SessionConnectionRefused,
 
+  Heartbeat,
+
   FullState,
 
   /* Combat Tracker Messages */

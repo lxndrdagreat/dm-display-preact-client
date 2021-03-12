@@ -1,5 +1,5 @@
 import type { SocketMessage } from './socket-message-type.schema';
-import type { SocketMessageType } from './socket-message-type.schema';
+import { SocketMessageType } from './socket-message-type.schema';
 import { serverHostURL } from '../app.globals';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
@@ -14,6 +14,7 @@ export class SocketClient {
   private onSocketConnectionClosedSubscribers: OnSocketConnectionClosedSubscriber[] = [];
   private onSocketConnectionOpenedSubscribers: OnSocketConnectionOpenedSubscriber[] = [];
   private nextOfTypeCallbacks: Record<number, OnSocketMessageSubscriber[]> = {};
+  private lastMessageTime: number = performance.now();
 
   static get instance(): SocketClient {
     if (!SocketClient._instance) {
@@ -32,6 +33,7 @@ export class SocketClient {
       // this.socket.binaryType = 'arraybuffer';
 
       this.socket.onmessage = (event: MessageEvent) => {
+        this.lastMessageTime = performance.now();
         const data = JSON.parse(event.data) as SocketMessage;
         for (const sub of this.onSocketMessageSubscribers) {
           sub(data);
@@ -49,6 +51,7 @@ export class SocketClient {
         for (const sub of this.onSocketConnectionOpenedSubscribers) {
           sub();
         }
+        window.requestAnimationFrame(this.heartbeat.bind(this));
         resolve();
       };
 
@@ -59,6 +62,22 @@ export class SocketClient {
         }
       };
     });
+  }
+
+  private heartbeat() {
+    if (!this.socket) {
+      return;
+    }
+    // 45 seconds
+    const now = performance.now();
+    if (now - this.lastMessageTime >= 45000) {
+      this.lastMessageTime = now;
+      // send heartbeat
+      this.send({
+        type: SocketMessageType.Heartbeat
+      });
+    }
+    window.requestAnimationFrame(this.heartbeat.bind(this));
   }
 
   close(): void {
@@ -107,7 +126,7 @@ export class SocketClient {
       throw new Error('Cannot send: no socket connection.');
     }
     this.socket.send(JSON.stringify(message));
-
+    this.lastMessageTime = performance.now();
     return this;
   }
 

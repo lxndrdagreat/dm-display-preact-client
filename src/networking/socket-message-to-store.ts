@@ -66,6 +66,9 @@ function handleMessage(message: SocketMessage): void {
     case SocketMessageType.SessionConnectionRefused:
       dispatch(clearSession());
       break;
+    case SocketMessageType.Heartbeat:
+      // don't actually need to do anything
+      break;
     default:
       console.log('message unhandled', message);
       break;
