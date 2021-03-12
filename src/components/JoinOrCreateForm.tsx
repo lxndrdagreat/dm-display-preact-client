@@ -155,6 +155,18 @@ function JoinOrCreateForm() {
 
       <div class="form-body">
         {state.active === 'join' ? (
+          <p>
+            Join an existing session by entering the Session Id and password.
+          </p>
+        ) : (
+          <p>
+            Start a new session by providing a password. Don't forget the
+            password - you'll need to share it with others in order for them to
+            join the session.
+          </p>
+        )}
+
+        {state.active === 'join' ? (
           <Text
             id="join-session-id"
             label="Session Id"

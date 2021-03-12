@@ -14,6 +14,7 @@ import { SocketMessageType } from './networking/socket-message-type.schema';
 import { setServerOffline } from '@store/slices/server-offline.slice';
 import ModalWrap from './components/ModalWrap';
 import Button from './components/buttons/Button';
+import './App.css';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -71,6 +72,11 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
+        <div className="screen-too-small-message">
+          This site has not been optimized for small screens yet. Please use the
+          site from a device with a larger screen.
+        </div>
+
         {this.props.appRoute === AppRoute.Home ? (
           <HomeRoute />
         ) : this.props.appRoute === AppRoute.Admin ? (
