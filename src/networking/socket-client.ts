@@ -15,6 +15,7 @@ export class SocketClient {
   private onSocketConnectionOpenedSubscribers: OnSocketConnectionOpenedSubscriber[] = [];
   private nextOfTypeCallbacks: Record<number, OnSocketMessageSubscriber[]> = {};
   private lastMessageTime: number = performance.now();
+  private heartbeatInterval: number | null = null;
 
   static get instance(): SocketClient {
     if (!SocketClient._instance) {
@@ -51,7 +52,11 @@ export class SocketClient {
         for (const sub of this.onSocketConnectionOpenedSubscribers) {
           sub();
         }
-        window.requestAnimationFrame(this.heartbeat.bind(this));
+
+        this.heartbeatInterval = window.setInterval(() => {
+          this.heartbeat();
+        }, 30000);
+
         resolve();
       };
 
@@ -59,6 +64,9 @@ export class SocketClient {
         this.socket = null;
         for (const sub of this.onSocketConnectionClosedSubscribers) {
           sub();
+        }
+        if (this.heartbeatInterval !== null) {
+          window.clearInterval(this.heartbeatInterval);
         }
       };
     });
@@ -77,7 +85,6 @@ export class SocketClient {
         type: SocketMessageType.Heartbeat
       });
     }
-    window.requestAnimationFrame(this.heartbeat.bind(this));
   }
 
   close(): void {
