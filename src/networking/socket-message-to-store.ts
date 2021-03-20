@@ -2,7 +2,10 @@ import type {
   ServerCommandFullState,
   SocketMessage
 } from './socket-message-type.schema';
-import { SocketMessageType } from './socket-message-type.schema';
+import {
+  SocketCloseStatusCode,
+  SocketMessageType
+} from './socket-message-type.schema';
 import { SocketClient } from './socket-client';
 import {
   clearSession,
@@ -21,7 +24,8 @@ import {
   setCombatTrackerRound,
   updateCombatCharacter
 } from '@store/slices/combat-tracker.slice';
-import { setServerOffline } from '@store/slices/server-offline.slice';
+import { setConnected, setHadSession } from '@store/slices/connection.slice';
+import { whenDocumentBecomesVisible } from '../utils/document-hidden-check';
 
 function handleMessage(message: SocketMessage): void {
   const state = store.getState() as RootState;
@@ -40,6 +44,7 @@ function handleMessage(message: SocketMessage): void {
       } else if (userRole === SessionUserRole.Admin) {
         dispatch(setRoute(AppRoute.Admin));
       }
+      dispatch(setHadSession(true));
       break;
     case SocketMessageType.FullState:
       const { combatTracker } = (message as ServerCommandFullState).payload;
@@ -78,11 +83,35 @@ function handleMessage(message: SocketMessage): void {
 export function bindSocketMessagesToStore() {
   SocketClient.instance.subscribe(handleMessage);
 
-  SocketClient.instance.onClose(() => {
-    dispatch(setServerOffline(true));
+  SocketClient.instance.onClose(async (event) => {
+    dispatch(setConnected(false));
+
+    if (
+      !event.wasClean &&
+      event.code !== SocketCloseStatusCode.SessionNotFound &&
+      event.code !== SocketCloseStatusCode.InvalidRolePermissions
+    ) {
+      // confirm tab hasn't lost focus
+      await whenDocumentBecomesVisible();
+      // attempt reconnect
+      const { session, connection } = store.getState() as RootState;
+      if (connection.hadSession && session.token) {
+        await SocketClient.instance.connect();
+        SocketClient.instance.send({
+          type: SocketMessageType.Reconnect,
+          payload: session.token
+        });
+      }
+    } else if (
+      event.code === SocketCloseStatusCode.SessionNotFound ||
+      event.code === SocketCloseStatusCode.InvalidRolePermissions
+    ) {
+      dispatch(clearSession());
+      dispatch(setHadSession(false));
+    }
   });
 
   SocketClient.instance.onOpen(() => {
-    dispatch(setServerOffline(false));
+    dispatch(setConnected(true));
   });
 }

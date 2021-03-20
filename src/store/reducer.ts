@@ -5,6 +5,7 @@ import userRoleReducer from './slices/user-role.slice';
 import combatTrackerReducer from './slices/combat-tracker.slice';
 import characterDetailsReducer from './slices/character-details.slice';
 import serverOfflineReducer from './slices/server-offline.slice';
+import connectionReducer from './slices/connection.slice';
 
 const rootReducer = combineReducers({
   appRoute: appRouteReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   userRole: userRoleReducer,
   combatTracker: combatTrackerReducer,
   characterDetails: characterDetailsReducer,
-  serverOffline: serverOfflineReducer
+  serverOffline: serverOfflineReducer,
+  connection: connectionReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

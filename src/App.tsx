@@ -106,7 +106,9 @@ const mapStateToProps = (state: RootState): AppProps => {
   return {
     appRoute: state.appRoute,
     showSocketDisconnectMessage:
-      state.serverOffline && state.appRoute !== AppRoute.Home
+      state.appRoute !== AppRoute.Home &&
+      !state.connection.connected &&
+      state.connection.hadSession
   };
 };
 

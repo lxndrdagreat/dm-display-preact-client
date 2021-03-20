@@ -13,6 +13,7 @@ export enum SocketMessageType {
   ConnectToSession,
   SessionConnected,
   SessionConnectionRefused,
+  Reconnect,
 
   Heartbeat,
 
@@ -38,6 +39,13 @@ export enum SocketMessageType {
 export enum SessionConnectionRefusedReason {
   SessionNotFound,
   InvalidPermissions
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#status_codes
+// 4000-4999 are reserved for application use
+export enum SocketCloseStatusCode {
+  SessionNotFound = 4000,
+  InvalidRolePermissions = 4001
 }
 
 export interface SocketMessage {
@@ -141,4 +149,9 @@ export interface ClientUpdateCharacterNPC extends SocketMessage {
 export interface CombatTrackerState extends SocketMessage {
   type: SocketMessageType.CombatTrackerState;
   payload: CombatTrackerSchema;
+}
+
+export interface Reconnect extends SocketMessage {
+  type: SocketMessageType.Reconnect;
+  payload: string;
 }

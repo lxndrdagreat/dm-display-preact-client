@@ -4,7 +4,7 @@ import { serverHostURL } from '../app.globals';
 
 type OnSocketMessageSubscriber = (message: SocketMessage) => void;
 type UnsubscribeFunction = () => void;
-type OnSocketConnectionClosedSubscriber = () => void;
+type OnSocketConnectionClosedSubscriber = (event: CloseEvent) => void;
 type OnSocketConnectionOpenedSubscriber = () => void;
 
 export class SocketClient {
@@ -60,10 +60,10 @@ export class SocketClient {
         resolve();
       };
 
-      this.socket.onclose = () => {
+      this.socket.onclose = (ev: CloseEvent) => {
         this.socket = null;
         for (const sub of this.onSocketConnectionClosedSubscribers) {
-          sub();
+          sub(ev);
         }
         if (this.heartbeatInterval !== null) {
           window.clearInterval(this.heartbeatInterval);
