@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import { Fragment, h } from 'preact';
 import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
 import Button from '../../../components/buttons/Button';
 import Icon from '../../../components/Icon';
@@ -13,6 +13,9 @@ import {
 import './NpcUrl.css';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
+import { Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
+import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -44,40 +47,47 @@ function NpcUrl({ character, editing, npcUrl }: Props) {
     dispatch(setEditingCharacterURL(false));
   }
 
-  function onNpcUrlChange(value: string) {
-    dispatch(setNpcUrl(value));
+  function onNpcUrlChange(event: InputEvent) {
+    dispatch(setNpcUrl((event.target as HTMLInputElement).value));
   }
 
   return (
-    <div className="NpcUrl">
-      <strong>URL:</strong>&nbsp;
+    <Grid container spacing={1} alignItems="center">
+      <Grid item sm={1}>
+        <Typography variant="subtitle2">URL</Typography>
+      </Grid>
       {editing ? (
-        <div>
-          <Text
-            id="edit-character-url"
-            label="Edit URL"
-            noLabel
-            value={npcUrl}
-            onChange={onNpcUrlChange}
-          />
-          <Button icon title="Discard Changes" onClick={onDiscardClick}>
-            <Icon name="cancel" />
-          </Button>
-          <Button icon title="Save Changes" onClick={onSaveNpcUrlClick}>
-            <Icon name="confirm" />
-          </Button>
-        </div>
+        <Fragment>
+          <Grid item sm={9}>
+            <TextField
+              id="edit-npc-url-field"
+              onChange={onNpcUrlChange}
+              fullWidth
+              value={npcUrl}
+            />
+          </Grid>
+          <Grid item sm={2}>
+            <ConfirmOrCancel
+              onConfirm={onSaveNpcUrlClick}
+              onCancel={onDiscardClick}
+            />
+          </Grid>
+        </Fragment>
       ) : (
-        <div>
-          <a href={character.npc!.url} target="_blank">
-            {character.npc!.url}
-          </a>
-          <Button icon title="Change URL" onClick={onEditNpcUrlClick}>
-            <Icon name="pencil" />
-          </Button>
-        </div>
+        <Fragment>
+          <Grid item sm={10}>
+            <a href={character.npc!.url} target="_blank">
+              {character.npc!.url}
+            </a>
+          </Grid>
+          <Grid item sm={1}>
+            <IconButton onClick={onEditNpcUrlClick}>
+              <Edit />
+            </IconButton>
+          </Grid>
+        </Fragment>
       )}
-    </div>
+    </Grid>
   );
 }
 

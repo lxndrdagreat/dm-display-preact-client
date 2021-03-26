@@ -1,12 +1,10 @@
 import { h } from 'preact';
-import './CombatTrackerCharacterScreen.css';
 import type {
   CharacterConditions,
   CombatCharacterSchema
 } from '../../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import Button from '../../../components/buttons/Button';
 import Icon from '../../../components/Icon';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
@@ -18,11 +16,18 @@ import CharacterHealth from './CharacterHealth';
 import LabelledStat from './LabelledStat';
 import CharacterArmorClass from './CharacterArmorClass';
 import CharacterActionsList from './CharacterActionsList';
+import {Button, ButtonGroup, Container, Grid, makeStyles, Paper, Typography} from '@material-ui/core';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
   details: CharacterDetailsState | null;
 }
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2)
+  }
+}));
 
 function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
   const { character } = props;
@@ -134,72 +139,77 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
     }
   }
 
+  const classes = useStyles();
+
   return (
-    <div className="CombatTrackerCharacterScreen">
-      <h2>Character Details</h2>
-      {!character ? (
-        <em>
-          Select a character from the list to the left to see detailed
-          information.
-        </em>
-      ) : (
-        <div className="body">
-          <CharacterDetailsTop />
+    <Grid container spacing={3}>
+      <Grid item sm={12}>
+        <Paper className={classes.paper}>
+          {!character ? (
+            <em>
+              Select a character from the list to the left to see detailed
+              information.
+            </em>
+          ) : (
+            <Grid container spacing={3}>
+              <Grid item sm={12}>
+                <CharacterDetailsTop />
+              </Grid>
 
-          <div className="info-row">
-            <CharacterConditionList
-              conditions={character.conditions}
-              onConditionChange={onConditionChange}
-            />
+              <Grid item sm={12}>
+                <CharacterConditionList
+                  conditions={character.conditions}
+                  onConditionChange={onConditionChange}
+                />
+              </Grid>
 
-            <div>
-              <div>
-                {character.active ? (
-                  <Button danger onClick={onToggleActiveChange}>
-                    Deactivate
+              <Grid item sm={12}>
+                <ButtonGroup variant="outlined" size="small">
+                  {character.active ? (
+                    <Button onClick={onToggleActiveChange}>Deactivate</Button>
+                  ) : (
+                    <Button onClick={onToggleActiveChange}>Activate</Button>
+                  )}
+                  <Button onClick={onDuplicateCharacterClick}>
+                    Duplicate
                   </Button>
-                ) : (
-                  <Button primary onClick={onToggleActiveChange}>
-                    Activate
+                  <Button danger onClick={onDeleteCharacterClick}>
+                    Delete
                   </Button>
-                )}
-              </div>
-              <div>
-                <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
-              </div>
-              <div>
-                <Button danger onClick={onDeleteCharacterClick}>
-                  Delete
-                </Button>
-              </div>
-            </div>
+                </ButtonGroup>
+              </Grid>
+            </Grid>
+          )}
+        </Paper>
+      </Grid>
+
+      {
+        /* Character NPC Block */
+        character && character.npc ? (
+          <Grid item sm={12}>
+            <Paper className={classes.paper}>
+              <Typography variant="h5" component="h4">NPC Details</Typography>
+
+              <NpcUrl />
+
+              <CharacterHealth />
+
+              <CharacterArmorClass />
+
+              <CharacterActionsList />
+
+              <Button onClick={onRemoveNPCDetailsClick} color="secondary">
+                Remove NPC Details
+              </Button>
+            </Paper>
+          </Grid>
+        ) : character ? (
+          <div>
+            <Button onClick={onAddNPCDetailsClick} color="secondary">Add NPC Details</Button>
           </div>
-
-          {
-            /* Character NPC Block */
-            character.npc ? (
-              <div class="npc-details">
-                <NpcUrl />
-
-                <CharacterHealth />
-
-                <CharacterArmorClass />
-
-                <CharacterActionsList />
-
-                <Button onClick={onRemoveNPCDetailsClick} danger>
-                  Remove NPC Details
-                </Button>
-              </div>
-            ) : (
-              <div>
-                <Button onClick={onAddNPCDetailsClick}>Add NPC Details</Button>
-              </div>
-            )
-          }
-        </div>
-      )}
-    </div>
+        ) : null
+      }
+    </Grid>
   );
 }
 

@@ -72,10 +72,6 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-        <div className="screen-too-small-message">
-          This site has not been optimized for small screens yet. Please use the
-          site from a device with a larger screen.
-        </div>
 
         {this.props.appRoute === AppRoute.Home ? (
           <HomeRoute />
