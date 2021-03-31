@@ -4,7 +4,16 @@ import { useState } from 'preact/hooks';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import RoundInfo from './RoundInfo';
-import {Button, ButtonGroup, Dialog, DialogContent, DialogTitle, Grid, makeStyles, Paper} from '@material-ui/core';
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  makeStyles,
+  Paper
+} from '@material-ui/core';
 import clsx from 'clsx';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
 import CombatTrackerCharacterScreen from './character-details/CombatTrackerCharacterScreen';
@@ -19,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     display: 'flex',
     overflow: 'auto',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   fixedHeight: {
     height: 240
@@ -64,37 +73,58 @@ function AdminCombatTracker() {
     <div>
       <Grid container spacing={3}>
         <Grid item xs={12} md={2}>
-          <RoundInfo/>
+          <RoundInfo />
         </Grid>
         <Grid item xs={12} md={10}>
           <Grid container spacing={1}>
             <Grid item>
-              <Button variant="outlined" color="primary" onClick={onAddCharacterClick}>Add Character</Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={onAddCharacterClick}
+              >
+                Add Character
+              </Button>
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="secondary" onClick={onRestartClick}>Restart Combat</Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={onRestartClick}
+              >
+                Restart Combat
+              </Button>
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="secondary" onClick={onClearClick}>Clear Combat</Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={onClearClick}
+              >
+                Clear Combat
+              </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={3}>
-          <AdminCharacterListPanel/>
+          <AdminCharacterListPanel />
         </Grid>
         <Grid item xs={12} md={9}>
-          <CombatTrackerCharacterScreen/>
+          <CombatTrackerCharacterScreen />
         </Grid>
       </Grid>
 
-      <Dialog open={!!state.addCharacterDialogOpen} onClose={onAddCharacterDialogBackdropClick} aria-labelledby="add-character-dialog-title">
+      <Dialog
+        open={!!state.addCharacterDialogOpen}
+        onClose={onAddCharacterDialogBackdropClick}
+        aria-labelledby="add-character-dialog-title"
+      >
         <DialogTitle id="add-character-dialog-title">Add Character</DialogTitle>
         <DialogContent>
-          <AddCharacterForm/>
+          <AddCharacterForm />
         </DialogContent>
       </Dialog>
     </div>
-
   );
 }
 

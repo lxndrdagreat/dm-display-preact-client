@@ -2,7 +2,7 @@ import { h, RenderableProps } from 'preact';
 import { CharacterConditions } from '../../../schemas/combat-character.schema';
 import './CharacterConditionList.css';
 import Checkbox from '../../../components/forms/Checkbox';
-import {FormControlLabel, Grid, Switch} from '@material-ui/core';
+import { FormControlLabel, Grid, Switch } from '@material-ui/core';
 
 interface Props {
   conditions: CharacterConditions[];
@@ -73,38 +73,27 @@ function CharacterConditionList({
     },
     {
       label: 'Unconcious',
-      condition: CharacterConditions.Unconcious
+      condition: CharacterConditions.Unconscious
     }
   ];
 
-  /*
-  <ul>
-        <fieldset>
-          <legend>Conditions</legend>
-
-          {conditionItems.map((condition) => (
-            <li>
-              <Checkbox
-                id={`condition-${condition.label.toLowerCase()}`}
-                label={condition.label}
-                checked={conditions.includes(condition.condition)}
-                onChange={() => onConditionChange(condition.condition)}
-              />
-            </li>
-          ))}
-        </fieldset>
-      </ul>
-   */
-
   return (
     <Grid container>
-      {
-        conditionItems.map((condition) => <Grid item sm={2} md={4}>
-          <FormControlLabel control={
-            <Switch checked={conditions.includes(condition.condition)} name={condition.label} onChange={() => onConditionChange(condition.condition)} size="small"/>
-          } label={condition.label}/>
-        </Grid>)
-      }
+      {conditionItems.map((condition) => (
+        <Grid item sm={2} md={4}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={conditions.includes(condition.condition)}
+                name={condition.label}
+                onChange={() => onConditionChange(condition.condition)}
+                size="small"
+              />
+            }
+            label={condition.label}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 }

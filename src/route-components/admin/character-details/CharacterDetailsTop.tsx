@@ -13,8 +13,8 @@ import {
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
-import {Grid, IconButton, TextField, Typography} from '@material-ui/core';
-import {Edit} from '@material-ui/icons';
+import { Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -50,7 +50,7 @@ function CharacterDetailsTop({
 
   function onSaveEditClick() {
     dispatch(setEditingCharacterTopDetails(false));
-    console.log({displayName, adminName, roll});
+    console.log({ displayName, adminName, roll });
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerUpdateCharacter,
       payload: {
@@ -70,7 +70,9 @@ function CharacterDetailsTop({
   }
 
   function onDisplayNameChange(event: InputEvent) {
-    dispatch(setTopDetailsDisplayName((event.target as HTMLInputElement).value));
+    dispatch(
+      setTopDetailsDisplayName((event.target as HTMLInputElement).value)
+    );
   }
 
   function onAdminNameChange(event: InputEvent) {
@@ -78,35 +80,61 @@ function CharacterDetailsTop({
   }
 
   if (!editing) {
-    return <Grid container>
-      <Grid item sm={1}>
-        <Typography variant="body1">{ character.roll }</Typography>
+    return (
+      <Grid container>
+        <Grid item sm={1}>
+          <Typography variant="body1">{character.roll}</Typography>
+        </Grid>
+        <Grid item sm={10}>
+          <Typography variant="h4" component="h3">
+            {character.displayName}
+          </Typography>
+          {character.adminName ? (
+            <Typography variant="caption">({character.adminName})</Typography>
+          ) : null}
+        </Grid>
+        <Grid item sm={1}>
+          <IconButton onClick={onEditClick}>
+            <Edit />
+          </IconButton>
+        </Grid>
       </Grid>
-      <Grid item sm={10}>
-        <Typography variant="h4" component="h3">{ character.displayName }</Typography>
-        {
-          character.adminName ? <Typography variant="caption">({ character.adminName })</Typography> : null
-        }
-      </Grid>
-      <Grid item sm={1}>
-        <IconButton onClick={onEditClick}>
-          <Edit/>
-        </IconButton>
-      </Grid>
-    </Grid>;
+    );
   }
 
   return (
     <Grid container>
       <Grid item sm={2}>
-        <TextField id="edit-character-initiative" label="Initiative" variant="filled" type="number" value={roll} onChange={onInitiativeChange}/>
+        <TextField
+          id="edit-character-initiative"
+          label="Initiative"
+          variant="filled"
+          type="number"
+          value={roll}
+          onChange={onInitiativeChange}
+        />
       </Grid>
       <Grid item sm={8}>
-        <TextField id="edit-character-display-name" label="Name" variant="filled" value={character.displayName} onChange={onDisplayNameChange}/>
-        <TextField id="edit-character-admin-notes" label="Admin Note" variant="filled" value={character.adminName} onChange={onAdminNameChange}/>
+        <TextField
+          id="edit-character-display-name"
+          label="Name"
+          variant="filled"
+          value={character.displayName}
+          onChange={onDisplayNameChange}
+        />
+        <TextField
+          id="edit-character-admin-notes"
+          label="Admin Note"
+          variant="filled"
+          value={character.adminName}
+          onChange={onAdminNameChange}
+        />
       </Grid>
       <Grid item sm={2}>
-        <ConfirmOrCancel onConfirm={onSaveEditClick} onCancel={onCancelEditClick}/>
+        <ConfirmOrCancel
+          onConfirm={onSaveEditClick}
+          onCancel={onCancelEditClick}
+        />
       </Grid>
     </Grid>
   );

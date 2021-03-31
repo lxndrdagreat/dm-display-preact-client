@@ -1,24 +1,26 @@
-import {h} from 'preact';
+import { h } from 'preact';
 import {
   Button,
-  Dialog, DialogActions,
+  Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
   ListItem,
   ListItemIcon,
-  ListItemText, makeStyles
+  ListItemText,
+  makeStyles
 } from '@material-ui/core';
-import {Dashboard, SaveAlt, Publish, OpenInNew} from '@material-ui/icons';
-import type {RootState} from '@store/reducer';
-import {connect} from 'react-redux';
-import {downloadDataAsFile, readFile} from '../../utils/file-access';
-import type {CombatCharacterSchema} from '../../schemas/combat-character.schema';
-import {SocketClient} from '../../networking/socket-client';
-import {SocketMessageType} from '../../networking/socket-message-type.schema';
+import { Dashboard, SaveAlt, Publish, OpenInNew } from '@material-ui/icons';
+import type { RootState } from '@store/reducer';
+import { connect } from 'react-redux';
+import { downloadDataAsFile, readFile } from '../../utils/file-access';
+import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
+import { SocketClient } from '../../networking/socket-client';
+import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import store from '@store/store';
-import {useState} from 'preact/hooks';
+import { useState } from 'preact/hooks';
 
 interface Props {
   sessionId: string | null;
@@ -35,8 +37,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function AdminDrawer({sessionId}: Props) {
-
+function AdminDrawer({ sessionId }: Props) {
   const classes = useStyles();
 
   const [state, setState] = useState<State>({
@@ -76,7 +77,6 @@ function AdminDrawer({sessionId}: Props) {
     } catch (e) {
       console.error(e);
     }
-
   }
 
   function onImportDialogClose() {
@@ -100,59 +100,68 @@ function AdminDrawer({sessionId}: Props) {
     <div>
       <ListItem button>
         <ListItemIcon>
-          <Dashboard/>
+          <Dashboard />
         </ListItemIcon>
-        <ListItemText primary="Combat"/>
+        <ListItemText primary="Combat" />
       </ListItem>
-      <Divider/>
+      <Divider />
 
       <ListItem>
-        <ListItemText primary={sessionId}/>
+        <ListItemText primary={sessionId} />
       </ListItem>
       <ListItem button component="a" href={displayURL} target="_blank" dense>
         <ListItemIcon>
-          <OpenInNew/>
+          <OpenInNew />
         </ListItemIcon>
         <ListItemText secondary="Display" />
       </ListItem>
       <ListItem button component="a" href={adminURL} target="_blank" dense>
         <ListItemIcon>
-          <OpenInNew/>
+          <OpenInNew />
         </ListItemIcon>
         <ListItemText secondary="Admin" />
       </ListItem>
 
-      <Divider/>
+      <Divider />
       <ListItem button onClick={onExportClick}>
         <ListItemIcon>
-          <SaveAlt/>
+          <SaveAlt />
         </ListItemIcon>
-        <ListItemText secondary="Save"/>
+        <ListItemText secondary="Save" />
       </ListItem>
       <ListItem button onClick={onImportClick}>
         <ListItemIcon>
-          <Publish/>
+          <Publish />
         </ListItemIcon>
-        <ListItemText secondary="Load"/>
+        <ListItemText secondary="Load" />
       </ListItem>
 
-      <Dialog open={state.importOpen} onClose={onImportDialogClose} aria-labelledby="import-dialog-title">
+      <Dialog
+        open={state.importOpen}
+        onClose={onImportDialogClose}
+        aria-labelledby="import-dialog-title"
+      >
         <DialogTitle id="import-dialog-title">Import JSON</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Import Combat Tracker state by selecting a JSON file. <em>Warning: this will overwrite the current Combat Tracker.</em>
+            Import Combat Tracker state by selecting a JSON file.{' '}
+            <em>Warning: this will overwrite the current Combat Tracker.</em>
           </DialogContentText>
 
-          <input type="file" onChange={onImportFileChange} accept=".json" id="import-json-file" className={classes.importInput}/>
+          <input
+            type="file"
+            onChange={onImportFileChange}
+            accept=".json"
+            id="import-json-file"
+            className={classes.importInput}
+          />
           <label htmlFor="import-json-file">
             <Button variant="contained" color="primary" component="span">
               Upload
             </Button>
           </label>
-
         </DialogContent>
       </Dialog>
-
     </div>
   );
 }

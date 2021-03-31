@@ -3,9 +3,9 @@ import type { CombatCharacterSchema } from '../../schemas/combat-character.schem
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
 import AdminCombatCharacterItem from './AdminCombatCharacterItem';
-import {Button, ButtonGroup, Grid} from '@material-ui/core';
-import {SocketClient} from '../../networking/socket-client';
-import {SocketMessageType} from '../../networking/socket-message-type.schema';
+import { Button, ButtonGroup, Grid, List } from '@material-ui/core';
+import { SocketClient } from '../../networking/socket-client';
+import { SocketMessageType } from '../../networking/socket-message-type.schema';
 
 interface AdminCharacterListPanelProps {
   characters: CombatCharacterSchema[];
@@ -18,7 +18,6 @@ function AdminCharacterListPanel({
   activeCharacterId,
   editingCharacterId
 }: AdminCharacterListPanelProps) {
-
   function onNextClick() {
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerNextTurn
@@ -40,15 +39,17 @@ function AdminCharacterListPanel({
         </ButtonGroup>
       </Grid>
       <Grid item xs={12}>
-        {characters.map((character) => {
-          return (
-            <AdminCombatCharacterItem
-              character={character}
-              isTurn={activeCharacterId === character.id}
-              isEditing={editingCharacterId === character.id}
-            />
-          );
-        })}
+        <List component="nav" aria-label="character list">
+          {characters.map((character) => {
+            return (
+              <AdminCombatCharacterItem
+                character={character}
+                isTurn={activeCharacterId === character.id}
+                isEditing={editingCharacterId === character.id}
+              />
+            );
+          })}
+        </List>
       </Grid>
     </Grid>
   );

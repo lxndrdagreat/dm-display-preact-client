@@ -16,7 +16,15 @@ import CharacterHealth from './CharacterHealth';
 import LabelledStat from './LabelledStat';
 import CharacterArmorClass from './CharacterArmorClass';
 import CharacterActionsList from './CharacterActionsList';
-import {Button, ButtonGroup, Container, Grid, makeStyles, Paper, Typography} from '@material-ui/core';
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  Grid,
+  makeStyles,
+  Paper,
+  Typography
+} from '@material-ui/core';
 
 interface CharacterScreenProps {
   character?: CombatCharacterSchema;
@@ -170,9 +178,7 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
                   ) : (
                     <Button onClick={onToggleActiveChange}>Activate</Button>
                   )}
-                  <Button onClick={onDuplicateCharacterClick}>
-                    Duplicate
-                  </Button>
+                  <Button onClick={onDuplicateCharacterClick}>Duplicate</Button>
                   <Button danger onClick={onDeleteCharacterClick}>
                     Delete
                   </Button>
@@ -188,7 +194,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
         character && character.npc ? (
           <Grid item sm={12}>
             <Paper className={classes.paper}>
-              <Typography variant="h5" component="h4">NPC Details</Typography>
+              <Typography variant="h5" component="h4">
+                NPC Details
+              </Typography>
 
               <NpcUrl />
 
@@ -205,7 +213,9 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
           </Grid>
         ) : character ? (
           <div>
-            <Button onClick={onAddNPCDetailsClick} color="secondary">Add NPC Details</Button>
+            <Button onClick={onAddNPCDetailsClick} color="secondary">
+              Add NPC Details
+            </Button>
           </div>
         ) : null
       }

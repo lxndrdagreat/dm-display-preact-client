@@ -72,7 +72,6 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-
         {this.props.appRoute === AppRoute.Home ? (
           <HomeRoute />
         ) : this.props.appRoute === AppRoute.Admin ? (
