@@ -1,14 +1,24 @@
 import { h } from 'preact';
 import CharacterActionsListItem from './CharacterActionsListItem';
-import Button from '../../../components/buttons/Button';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import './CharacterActionsList.css';
 import { useState } from 'preact/hooks';
-import ModalWrap from '../../../components/ModalWrap';
-import Text from '../../../components/forms/Text';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  List,
+  TextField,
+  Typography
+} from '@material-ui/core';
+import { ExpandMore } from '@material-ui/icons';
 
 interface Props {
   characterId: string;
@@ -41,25 +51,28 @@ function CharacterActionsList({ actions, characterId }: Props) {
 
   function onSaveActionClick() {
     if (state.nameField.trim() && state.infoField.trim()) {
+      const updatedActions = actions.slice();
       if (state.index === -1) {
-        const updatedActions = actions.slice();
         updatedActions.push({
           name: state.nameField,
           info: state.infoField
         });
-        // new action
-        SocketClient.instance.send({
-          type: SocketMessageType.CombatTrackerUpdateCharacterNPC,
-          payload: {
-            id: characterId,
-            npc: {
-              actions: updatedActions
-            }
-          }
-        });
-      } else {
-        // TODO: handle editing vs new
+      } else if (state.index < actions.length) {
+        const updatedActions = actions.slice();
+        updatedActions[state.index] = {
+          name: state.nameField,
+          info: state.infoField
+        };
       }
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerUpdateCharacterNPC,
+        payload: {
+          id: characterId,
+          npc: {
+            actions: updatedActions
+          }
+        }
+      });
     }
 
     setState({
@@ -79,57 +92,101 @@ function CharacterActionsList({ actions, characterId }: Props) {
     });
   }
 
-  function onActionNameChange(value: string) {
+  function onActionNameChange(event: InputEvent) {
     setState({
       ...state,
-      nameField: value
+      nameField: (event.target as HTMLInputElement).value
     });
   }
 
-  function onActionInfoChange(value: string) {
+  function onActionInfoChange(event: InputEvent) {
     setState({
       ...state,
-      infoField: value
+      infoField: (event.target as HTMLInputElement).value
+    });
+  }
+
+  function onEditActionClick(index: number) {
+    setState({
+      index: index,
+      nameField: actions[index].name,
+      infoField: actions[index].info,
+      editing: true
     });
   }
 
   return (
-    <div className="CharacterActionsList">
-      <h4>Actions:</h4>
-      <ul>
-        {actions.map((action) => (
-          <CharacterActionsListItem
-            info={action.info}
-            name={action.name}
-            onEditClick={() => {}}
-          />
-        ))}
-      </ul>
-
-      <ModalWrap
-        active={state.editing}
-        onBackgroundClick={onEditModalBackdropClick}
+    <Accordion>
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        aria-controls="actions-accordion"
+        id="actions-accordion-header"
       >
-        <div className="add-action-modal-body">
-          <Text
-            id="edit-action-name"
-            label="Name"
-            onChange={onActionNameChange}
-          />
-          <Text
-            id="edit-action-info"
-            label="Info"
-            long
-            onChange={onActionInfoChange}
-          />
-          <Button primary onClick={onSaveActionClick}>
-            Save
-          </Button>
-        </div>
-      </ModalWrap>
+        <Typography>Actions</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Grid container alignContent="center" alignItems="center">
+          <Grid item xs={12}>
+            <Button onClick={onAddActionClick} variant="outlined">
+              Add
+            </Button>
+          </Grid>
 
-      <Button onClick={onAddActionClick}>Add</Button>
-    </div>
+          <Grid item xs={12}>
+            <List>
+              {actions.map((action, index) => (
+                <CharacterActionsListItem
+                  info={action.info}
+                  name={action.name}
+                  onEditClick={() => {
+                    onEditActionClick(index);
+                  }}
+                />
+              ))}
+            </List>
+          </Grid>
+        </Grid>
+
+        <Dialog
+          open={state.editing}
+          aria-labelledby="edit-character-action-dialog"
+          onClose={onEditModalBackdropClick}
+        >
+          <DialogTitle id="edit-character-action-dialog">Action</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Name"
+                  fullWidth
+                  value={state.nameField}
+                  onChange={onActionNameChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Text"
+                  fullWidth
+                  multiline
+                  rows={5}
+                  value={state.infoField}
+                  onChange={onActionInfoChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={onSaveActionClick}
+                >
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 

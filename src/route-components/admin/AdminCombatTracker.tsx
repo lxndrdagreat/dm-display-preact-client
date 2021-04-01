@@ -1,5 +1,4 @@
 import { h } from 'preact';
-import './AdminCombatTracker.css';
 import { useState } from 'preact/hooks';
 import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';

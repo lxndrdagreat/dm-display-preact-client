@@ -5,7 +5,6 @@ import type {
 } from '../../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import Icon from '../../../components/Icon';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import type { CharacterDetailsState } from '@store/slices/character-details.slice';
@@ -13,13 +12,12 @@ import CharacterConditionList from './CharacterConditionList';
 import CharacterDetailsTop from './CharacterDetailsTop';
 import NpcUrl from './NpcUrl';
 import CharacterHealth from './CharacterHealth';
-import LabelledStat from './LabelledStat';
 import CharacterArmorClass from './CharacterArmorClass';
 import CharacterActionsList from './CharacterActionsList';
 import {
   Button,
   ButtonGroup,
-  Container,
+  Divider,
   Grid,
   makeStyles,
   Paper,
@@ -205,6 +203,8 @@ function CombatTrackerCharacterScreen(props: CharacterScreenProps) {
               <CharacterArmorClass />
 
               <CharacterActionsList />
+
+              <Divider />
 
               <Button onClick={onRemoveNPCDetailsClick} color="secondary">
                 Remove NPC Details
