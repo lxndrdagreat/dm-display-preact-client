@@ -1,14 +1,10 @@
 import { h } from 'preact';
 import type { NPCDetails } from '../../schemas/combat-character.schema';
 import { useState } from 'preact/hooks';
-import Text from '../../components/forms/Text';
-import Checkbox from '../../components/forms/Checkbox';
-import NumberInput from '../../components/forms/NumberInput';
-import FormRow from '../../components/forms/FormRow';
-import Button from '../../components/buttons/Button';
 import { SocketClient } from '../../networking/socket-client';
 import { randomInt } from '../../utils/random';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
+import {Button, FormControlLabel, Grid, Switch, TextField} from '@material-ui/core';
 
 interface State {
   active: boolean;
@@ -64,24 +60,34 @@ function AddCharacterForm() {
     });
   }
 
-  function onAddCharacterDisplayNameChange(value: string) {
+  function onAddCharacterDisplayNameChange(event: InputEvent) {
+    const value = (event.target as HTMLInputElement).value;
     setState({
       ...state,
       displayName: value
     });
   }
 
-  function onAddCharacterAdminNameChange(value: string) {
+  function onAddCharacterAdminNameChange(event: InputEvent) {
+    const value = (event.target as HTMLInputElement).value;
     setState({
       ...state,
       adminName: value
     });
   }
 
-  function onAddCharacterRollChange(value: number) {
+  function onAddCharacterRollChange(event: InputEvent) {
+    const value = parseInt((event.target as HTMLInputElement).value);
     setState({
       ...state,
       roll: value
+    });
+  }
+
+  function onActiveChange(event: InputEvent) {
+    setState({
+      ...state,
+      active: !state.active
     });
   }
 
@@ -143,42 +149,7 @@ function AddCharacterForm() {
     );
   }
 
-  return (
-    <div className="AddCharacterForm">
-      <fieldset>
-        <legend>Add Character</legend>
-
-        <FormRow>
-          <Text
-            id="add-character-display-name"
-            label="Name"
-            value={state.displayName}
-            onChange={onAddCharacterDisplayNameChange}
-          />
-
-          <Text
-            id="add-character-admin-name"
-            label="Admin-only label"
-            value={state.adminName}
-            onChange={onAddCharacterAdminNameChange}
-          />
-        </FormRow>
-
-        <FormRow>
-          <NumberInput
-            id="add-character-roll"
-            label="Initiative"
-            value={state.roll}
-            onChange={onAddCharacterRollChange}
-          />
-          <div>
-            <Button onClick={onRollInitClick}>Roll</Button>
-          </div>
-        </FormRow>
-
-        <FormRow>
-          <Checkbox id="add-character-active" label="Active" />
-        </FormRow>
+  /*
 
         <FormRow>
           <Checkbox
@@ -217,12 +188,27 @@ function AddCharacterForm() {
             </FormRow>
           </div>
         ) : null}
+   */
 
-        <div class="add-character-controls">
-          <Button onClick={onAddCharacterClick}>Add Character</Button>
-        </div>
-      </fieldset>
-    </div>
+  return (
+    <Grid container spacing={1}>
+      <Grid item xs={12} md={6}>
+        <TextField label="Name" value={state.displayName} onChange={onAddCharacterDisplayNameChange} fullWidth/>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <TextField label="Admin Note" value={state.adminName} onChange={onAddCharacterAdminNameChange} fullWidth/>
+      </Grid>
+      <Grid item xs={12}>
+        <TextField label="Initiative" type="number" value={state.roll} onChange={onAddCharacterRollChange} />
+        <Button variant="text" color="secondary" onClick={onRollInitClick}>Roll</Button>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControlLabel control={<Switch checked={state.active} name="Active" onChange={onActiveChange}/>} label="Active"/>
+      </Grid>
+      <Grid item xs={12}>
+        <Button color="primary" variant="contained" onClick={onAddCharacterClick}>Add</Button>
+      </Grid>
+    </Grid>
   );
 }
 

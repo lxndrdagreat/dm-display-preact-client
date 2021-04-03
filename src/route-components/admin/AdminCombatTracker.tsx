@@ -113,6 +113,7 @@ function AdminCombatTracker() {
         </Grid>
       </Grid>
 
+
       <Dialog
         open={!!state.addCharacterDialogOpen}
         onClose={onAddCharacterDialogBackdropClick}
