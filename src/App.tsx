@@ -15,11 +15,22 @@ import { setServerOffline } from '@store/slices/server-offline.slice';
 import ModalWrap from './components/ModalWrap';
 import Button from './components/buttons/Button';
 import './App.css';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import brown from '@material-ui/core/colors/brown';
 
 interface AppProps {
   appRoute: AppRoute;
   showSocketDisconnectMessage: boolean;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: blueGrey,
+    secondary: brown
+  }
+});
 
 class App extends Component<AppProps> {
   constructor(props?: AppProps) {
@@ -72,26 +83,28 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-        {this.props.appRoute === AppRoute.Home ? (
-          <HomeRoute />
-        ) : this.props.appRoute === AppRoute.Admin ? (
-          <AdminRoute />
-        ) : (
-          <DisplayRoute />
-        )}
+        <ThemeProvider theme={theme}>
+          {this.props.appRoute === AppRoute.Home ? (
+            <HomeRoute />
+          ) : this.props.appRoute === AppRoute.Admin ? (
+            <AdminRoute />
+          ) : (
+            <DisplayRoute />
+          )}
 
-        <ModalWrap active={this.props.showSocketDisconnectMessage}>
-          <h3>Offline</h3>
-          <p>
-            Connection to the server has been lost. Please check your network
-            connection.
-          </p>
-          <p>
-            <Button primary onClick={this.onAttemptReconnectClick.bind(this)}>
-              Attempt to Reconnect
-            </Button>
-          </p>
-        </ModalWrap>
+          <ModalWrap active={this.props.showSocketDisconnectMessage}>
+            <h3>Offline</h3>
+            <p>
+              Connection to the server has been lost. Please check your network
+              connection.
+            </p>
+            <p>
+              <Button primary onClick={this.onAttemptReconnectClick.bind(this)}>
+                Attempt to Reconnect
+              </Button>
+            </p>
+          </ModalWrap>
+        </ThemeProvider>
       </div>
     );
   }
