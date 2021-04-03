@@ -5,55 +5,53 @@ import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import RoundInfo from './RoundInfo';
 import {
   Button,
-  ButtonGroup,
   Dialog,
+  DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
-  Grid,
-  makeStyles,
-  Paper
+  Grid
 } from '@material-ui/core';
-import clsx from 'clsx';
 import AdminCharacterListPanel from './AdminCharacterListPanel';
 import CombatTrackerCharacterScreen from './character-details/CombatTrackerCharacterScreen';
 import AddCharacterForm from './AddCharacterForm';
 
 interface State {
   addCharacterDialogOpen?: boolean;
+  confirm?: 'restart' | 'clear';
 }
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
-  },
-  fixedHeight: {
-    height: 240
-  }
-}));
 
 function AdminCombatTracker() {
   const [state, setState] = useState<State>({});
 
-  const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   function onRestartClick() {
-    if (window.confirm('Are you sure you want to restart this combat?')) {
-      SocketClient.instance.send({
-        type: SocketMessageType.CombatTrackerRequestRestart
-      });
-    }
+    setState({
+      confirm: 'restart'
+    });
   }
 
   function onClearClick() {
-    if (window.confirm('Are you sure you want to clear the combat tracker?')) {
+    setState({
+      confirm: 'clear'
+    });
+  }
+
+  function handleConfirm() {
+    if (state.confirm === 'restart') {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRequestRestart
+      });
+    } else if (state.confirm === 'clear') {
       SocketClient.instance.send({
         type: SocketMessageType.CombatTrackerRequestClear
       });
     }
+
+    setState({});
+  }
+
+  function handleConfirmClose() {
+    setState({});
   }
 
   function onAddCharacterClick() {
@@ -113,7 +111,6 @@ function AdminCombatTracker() {
         </Grid>
       </Grid>
 
-
       <Dialog
         open={!!state.addCharacterDialogOpen}
         onClose={onAddCharacterDialogBackdropClick}
@@ -123,6 +120,37 @@ function AdminCombatTracker() {
         <DialogContent>
           <AddCharacterForm />
         </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={!!state.confirm}
+        onClose={handleConfirmClose}
+        aria-labelledby="confirm-dialog-title"
+      >
+        <DialogTitle id="confirm-dialog-title">
+          {state.confirm === 'clear'
+            ? 'Clear Combat Tracker?'
+            : 'Restart Combat?'}
+        </DialogTitle>
+        <DialogContent>
+          {state.confirm === 'clear' ? (
+            <DialogContentText>
+              This will completely reset the combat tracker.
+            </DialogContentText>
+          ) : (
+            <DialogContentText>
+              This will restart the current combat from the first round.
+            </DialogContentText>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirmClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirm} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   );
