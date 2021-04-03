@@ -4,7 +4,13 @@ import { useState } from 'preact/hooks';
 import { SocketClient } from '../../networking/socket-client';
 import { randomInt } from '../../utils/random';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
-import {Button, FormControlLabel, Grid, Switch, TextField} from '@material-ui/core';
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  Switch,
+  TextField
+} from '@material-ui/core';
 
 interface State {
   active: boolean;
@@ -193,20 +199,52 @@ function AddCharacterForm() {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
-        <TextField label="Name" value={state.displayName} onChange={onAddCharacterDisplayNameChange} fullWidth/>
+        <TextField
+          label="Name"
+          value={state.displayName}
+          onChange={onAddCharacterDisplayNameChange}
+          fullWidth
+        />
       </Grid>
       <Grid item xs={12} md={6}>
-        <TextField label="Admin Note" value={state.adminName} onChange={onAddCharacterAdminNameChange} fullWidth/>
+        <TextField
+          label="Admin Note"
+          value={state.adminName}
+          onChange={onAddCharacterAdminNameChange}
+          fullWidth
+        />
       </Grid>
       <Grid item xs={12}>
-        <TextField label="Initiative" type="number" value={state.roll} onChange={onAddCharacterRollChange} />
-        <Button variant="text" color="secondary" onClick={onRollInitClick}>Roll</Button>
+        <TextField
+          label="Initiative"
+          type="number"
+          value={state.roll}
+          onChange={onAddCharacterRollChange}
+        />
+        <Button variant="text" color="secondary" onClick={onRollInitClick}>
+          Roll
+        </Button>
       </Grid>
       <Grid item xs={12}>
-        <FormControlLabel control={<Switch checked={state.active} name="Active" onChange={onActiveChange}/>} label="Active"/>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={state.active}
+              name="Active"
+              onChange={onActiveChange}
+            />
+          }
+          label="Active"
+        />
       </Grid>
       <Grid item xs={12}>
-        <Button color="primary" variant="contained" onClick={onAddCharacterClick}>Add</Button>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={onAddCharacterClick}
+        >
+          Add
+        </Button>
       </Grid>
     </Grid>
   );
