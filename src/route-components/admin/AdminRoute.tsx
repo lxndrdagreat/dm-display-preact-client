@@ -1,8 +1,8 @@
 import { h } from 'preact';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import { ActiveScreen } from '../schemas/session.schema';
-import AdminCombatTracker from './admin/AdminCombatTracker';
+import { ActiveScreen } from '../../schemas/session.schema';
+import AdminCombatTracker from './AdminCombatTracker';
 import {
   AppBar,
   Container,
@@ -18,7 +18,7 @@ import { useState } from 'preact/hooks';
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import AdminDrawer from './admin/AdminDrawer';
+import AdminDrawer from './AdminDrawer';
 
 interface AdminRouteProps {
   activeScreen: ActiveScreen;

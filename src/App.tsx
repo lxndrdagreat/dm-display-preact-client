@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppRoute } from '@store/slices/app-route.slice';
 import { dispatch } from '@store/store';
 import HomeRoute from './route-components/HomeRoute';
-import AdminRoute from './route-components/AdminRoute';
+import AdminRoute from './route-components/admin/AdminRoute';
 import type { RootState } from '@store/reducer';
 import { SocketClient } from './networking/socket-client';
 import { initStorage } from './storage-service';
