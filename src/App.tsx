@@ -23,6 +23,7 @@ import {
   DialogContentText,
   DialogTitle
 } from '@material-ui/core';
+import { getDarkModePreference } from './utils/detect-dark-mode';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -31,7 +32,7 @@ interface AppProps {
 
 const theme = createMuiTheme({
   palette: {
-    type: 'dark',
+    type: getDarkModePreference(),
     primary: blueGrey,
     secondary: brown
   }

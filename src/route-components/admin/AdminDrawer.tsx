@@ -7,10 +7,14 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  FormControlLabel,
+  List,
   ListItem,
   ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
-  makeStyles
+  makeStyles,
+  Switch
 } from '@material-ui/core';
 import { Dashboard, SaveAlt, Publish, OpenInNew } from '@material-ui/icons';
 import type { RootState } from '@store/reducer';
@@ -21,6 +25,10 @@ import { SocketClient } from '../../networking/socket-client';
 import { SocketMessageType } from '../../networking/socket-message-type.schema';
 import store from '@store/store';
 import { useState } from 'preact/hooks';
+import {
+  getDarkModePreference,
+  setDarkModePreference
+} from '../../utils/detect-dark-mode';
 
 interface Props {
   sessionId: string | null;
@@ -39,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 function AdminDrawer({ sessionId }: Props) {
   const classes = useStyles();
+
+  const colorScheme = getDarkModePreference();
 
   const [state, setState] = useState<State>({
     importOpen: false,
@@ -96,8 +106,14 @@ function AdminDrawer({ sessionId }: Props) {
     downloadDataAsFile(asString, 'combat-tracker-export.json');
   }
 
+  function onDarkModeChange() {
+    setDarkModePreference(colorScheme === 'light' ? 'dark' : 'light');
+    // TODO: accomplish this without refresh
+    window.location.reload();
+  }
+
   return (
-    <div>
+    <List>
       <ListItem button>
         <ListItemIcon>
           <Dashboard />
@@ -136,6 +152,22 @@ function AdminDrawer({ sessionId }: Props) {
         <ListItemText secondary="Load" />
       </ListItem>
 
+      <Divider />
+
+      <ListItem>
+        <ListItemIcon />
+        <ListItemText id="dark-mode-switch" secondary="Dark Mode" />
+        <ListItemSecondaryAction>
+          <Switch
+            name="Dark Mode"
+            checked={colorScheme === 'dark'}
+            onChange={onDarkModeChange}
+            edge="end"
+            inputProps={{ 'aria-labelledby': 'dark-mode-switch' }}
+          />
+        </ListItemSecondaryAction>
+      </ListItem>
+
       <Dialog
         open={state.importOpen}
         onClose={onImportDialogClose}
@@ -162,7 +194,7 @@ function AdminDrawer({ sessionId }: Props) {
           </label>
         </DialogContent>
       </Dialog>
-    </div>
+    </List>
   );
 }
 
