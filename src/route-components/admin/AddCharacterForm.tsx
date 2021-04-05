@@ -155,47 +155,6 @@ function AddCharacterForm() {
     );
   }
 
-  /*
-
-        <FormRow>
-          <Checkbox
-            id="add-character-npc-block"
-            label="NPC Block"
-            checked={!!state.npc}
-            onChange={onNPCBlockChange}
-          />
-        </FormRow>
-        {state.npc ? (
-          <div class="add-character-npc-block">
-            <FormRow>
-              <Text
-                id="add-character-npc-url"
-                label="URL"
-                onChange={onAddCharacterNPCURLChange}
-              />
-            </FormRow>
-
-            <FormRow>
-              <NumberInput
-                id="add-character-npc-health"
-                label="Health"
-                value={state.npc.maxHealth}
-                min={0}
-                onChange={onAddCharacterNPCHealthChange}
-              />
-
-              <NumberInput
-                id="add-character-npc-armorclass"
-                label="A/C"
-                value={state.npc.armorClass}
-                min={0}
-                onChange={onAddCharacterNPCArmorClassChange}
-              />
-            </FormRow>
-          </div>
-        ) : null}
-   */
-
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>

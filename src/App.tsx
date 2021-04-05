@@ -12,12 +12,17 @@ import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
 import { setServerOffline } from '@store/slices/server-offline.slice';
-import ModalWrap from './components/ModalWrap';
-import Button from './components/buttons/Button';
-import './App.css';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import brown from '@material-ui/core/colors/brown';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@material-ui/core';
 
 interface AppProps {
   appRoute: AppRoute;
@@ -82,7 +87,7 @@ class App extends Component<AppProps> {
   // Return the App component.
   render() {
     return (
-      <div className="App">
+      <div>
         <ThemeProvider theme={theme}>
           {this.props.appRoute === AppRoute.Home ? (
             <HomeRoute />
@@ -92,18 +97,24 @@ class App extends Component<AppProps> {
             <DisplayRoute />
           )}
 
-          <ModalWrap active={this.props.showSocketDisconnectMessage}>
-            <h3>Offline</h3>
-            <p>
-              Connection to the server has been lost. Please check your network
-              connection.
-            </p>
-            <p>
-              <Button primary onClick={this.onAttemptReconnectClick.bind(this)}>
+          <Dialog open={this.props.showSocketDisconnectMessage}>
+            <DialogTitle>Offline</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Connection to the server has been lost. Please check your
+                network connection.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={this.onAttemptReconnectClick.bind(this)}
+              >
                 Attempt to Reconnect
               </Button>
-            </p>
-          </ModalWrap>
+            </DialogActions>
+          </Dialog>
         </ThemeProvider>
       </div>
     );

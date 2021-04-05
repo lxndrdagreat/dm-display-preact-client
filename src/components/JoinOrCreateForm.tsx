@@ -13,7 +13,6 @@ import {
   ButtonGroup,
   Grid,
   Paper,
-  PropTypes,
   Tab,
   Tabs,
   TextField,

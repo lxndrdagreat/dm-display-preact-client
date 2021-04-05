@@ -1,9 +1,5 @@
 import { h } from 'preact';
 import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
-import RangeSlider from '../../../components/forms/RangeSlider';
-import NumberInput from '../../../components/forms/NumberInput';
-import Button from '../../../components/buttons/Button';
-import Icon from '../../../components/Icon';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import { dispatch } from '@store/store';
@@ -13,12 +9,10 @@ import {
 } from '@store/slices/character-details.slice';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import './CharacterHealth.css';
 import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
 import {
   Grid,
   IconButton,
-  Paper,
   Slider,
   TextField,
   Typography
@@ -72,43 +66,6 @@ function CharacterHealth({ character, editing, maxHealth }: Props) {
   function onDiscardClick() {
     dispatch(setEditingCharacterHealth(false));
   }
-
-  // <div className="CharacterHealth">
-  //   <RangeSlider
-  //     min={0}
-  //     max={character.npc!.maxHealth}
-  //     value={character.npc!.health}
-  //     id={`health-slider-${character.id}`}
-  //     label="HP"
-  //     labelMinMax
-  //     labelValue
-  //     trackChanges
-  //     onChange={onHealthChange}
-  //   />
-  //
-  //   {editing ? (
-  //     <NumberInput
-  //       id="edit-character-max-health"
-  //       label="Max Health"
-  //       value={maxHealth}
-  //       onChange={onMaxHealthChange}
-  //     />
-  //   ) : null}
-  //
-  //   {!editing ? (
-  //     <Button icon title="Edit Health" onClick={onEditClick}>
-  //       <Icon name="pencil" />
-  //     </Button>
-  //   ) : null}
-  //
-  //   {editing ? (
-  //     <ConfirmOrCancel
-  //       label="Health"
-  //       onConfirm={onSaveClick}
-  //       onCancel={onDiscardClick}
-  //     />
-  //   ) : null}
-  // </div>
 
   if (editing) {
     return (

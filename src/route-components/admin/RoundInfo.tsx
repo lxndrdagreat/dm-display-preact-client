@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import './RoundInfo.css';
 import { Typography } from '@material-ui/core';
 
 interface Props {

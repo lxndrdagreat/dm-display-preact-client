@@ -1,8 +1,5 @@
 import { Fragment, h } from 'preact';
 import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
-import Button from '../../../components/buttons/Button';
-import Icon from '../../../components/Icon';
-import Text from '../../../components/forms/Text';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
 import { dispatch } from '@store/store';
@@ -10,7 +7,6 @@ import {
   setEditingCharacterURL,
   setNpcUrl
 } from '@store/slices/character-details.slice';
-import './NpcUrl.css';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import { Grid, IconButton, TextField, Typography } from '@material-ui/core';

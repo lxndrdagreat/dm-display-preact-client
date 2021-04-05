@@ -1,7 +1,5 @@
 import { h, RenderableProps } from 'preact';
 import { CharacterConditions } from '../../../schemas/combat-character.schema';
-import './CharacterConditionList.css';
-import Checkbox from '../../../components/forms/Checkbox';
 import { FormControlLabel, Grid, Switch } from '@material-ui/core';
 
 interface Props {
