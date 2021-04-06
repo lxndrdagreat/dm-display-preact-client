@@ -2,11 +2,6 @@ import { Fragment, h } from 'preact';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
 import JoinOrCreateForm from '../components/JoinOrCreateForm';
-import store, { dispatch } from '../store/store';
-import { setUserRole } from '@store/slices/user-role.slice';
-import type { SessionUserRole } from '../schemas/session-user.schema';
-import { SocketClient } from '../networking/socket-client';
-import { SocketMessageType } from '../networking/socket-message-type.schema';
 import { appVersion } from '../app.globals';
 import {
   Button,
@@ -52,19 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeRoute(props: HomeRouteProps) {
   const classes = useStyles();
-
-  function connectWithRole(userRole: SessionUserRole) {
-    const { session } = store.getState();
-    dispatch(setUserRole(userRole));
-    SocketClient.instance.send({
-      type: SocketMessageType.ConnectToSession,
-      payload: {
-        role: userRole,
-        sessionId: session.id as string,
-        password: session.password
-      }
-    });
-  }
 
   function onRefreshClick() {
     window.location.reload();

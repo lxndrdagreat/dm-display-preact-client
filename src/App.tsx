@@ -12,7 +12,7 @@ import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
 import { setServerOffline } from '@store/slices/server-offline.slice';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import brown from '@material-ui/core/colors/brown';
 import {
@@ -77,6 +77,27 @@ class App extends Component<AppProps> {
           }
         });
       });
+    } else if (window.location.search && window.location.search.length > 1) {
+      // check for quick link
+      const parts = window.location.search.substr(1).split('&');
+      const quickJoinPart = parts.find((part) =>
+        part.toLowerCase().startsWith('join=')
+      );
+      if (quickJoinPart) {
+        const [, quickJoin] = quickJoinPart.split('=');
+        let wait = Promise.resolve();
+        if (!SocketClient.instance.connected) {
+          wait = SocketClient.instance.connect();
+        }
+        wait.then(() => {
+          SocketClient.instance.send({
+            type: SocketMessageType.ConnectToSession,
+            payload: {
+              quick: quickJoin
+            }
+          });
+        });
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 import type {
   ServerCommandFullState,
+  ServerCommandSessionConnected,
   SocketMessage
 } from './socket-message-type.schema';
 import {
@@ -9,6 +10,7 @@ import {
 import { SocketClient } from './socket-client';
 import {
   clearSession,
+  setQuickJoin,
   setSessionId,
   setSessionToken
 } from '@store/slices/session.slice';
@@ -26,6 +28,7 @@ import {
 } from '@store/slices/combat-tracker.slice';
 import { setConnected, setHadSession } from '@store/slices/connection.slice';
 import { whenDocumentBecomesVisible } from '../utils/document-hidden-check';
+import { setUserRole } from '@store/slices/user-role.slice';
 
 function handleMessage(message: SocketMessage): void {
   const state = store.getState() as RootState;
@@ -36,19 +39,30 @@ function handleMessage(message: SocketMessage): void {
       dispatch(setSessionId(sessionId));
       break;
     case SocketMessageType.SessionConnected:
-      const token = message.payload;
+      const {
+        token,
+        role,
+        session
+      } = (message as ServerCommandSessionConnected).payload;
       dispatch(setSessionToken(token));
-      const { userRole } = state;
-      if (userRole === SessionUserRole.Display) {
+      if (state.session.id !== session) {
+        dispatch(setSessionId(session));
+      }
+      dispatch(setUserRole(role));
+      if (role === SessionUserRole.Display) {
         dispatch(setRoute(AppRoute.Display));
-      } else if (userRole === SessionUserRole.Admin) {
+      } else if (role === SessionUserRole.Admin) {
         dispatch(setRoute(AppRoute.Admin));
       }
       dispatch(setHadSession(true));
       break;
     case SocketMessageType.FullState:
-      const { combatTracker } = (message as ServerCommandFullState).payload;
+      const {
+        combatTracker,
+        quickJoin
+      } = (message as ServerCommandFullState).payload;
       dispatch(setCombatTracker(combatTracker));
+      dispatch(setQuickJoin(quickJoin));
       break;
     case SocketMessageType.CombatTrackerState:
       dispatch(setCombatTracker(message.payload));

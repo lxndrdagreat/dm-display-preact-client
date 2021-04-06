@@ -2,12 +2,10 @@ import { h } from 'preact';
 import {
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Divider,
-  FormControlLabel,
   List,
   ListItem,
   ListItemIcon,
@@ -32,6 +30,8 @@ import {
 
 interface Props {
   sessionId: string | null;
+  quickJoinAdmin: string;
+  quickJoinDisplay: string;
 }
 
 interface State {
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function AdminDrawer({ sessionId }: Props) {
+function AdminDrawer({ sessionId, quickJoinAdmin, quickJoinDisplay }: Props) {
   const classes = useStyles();
 
   const colorScheme = getDarkModePreference();
@@ -55,8 +55,8 @@ function AdminDrawer({ sessionId }: Props) {
     file: null
   });
 
-  const displayURL = `/?session=${sessionId}`;
-  const adminURL = `/?session=${sessionId}&role=admin`;
+  const displayURL = `/?join=${quickJoinDisplay}`;
+  const adminURL = `/?join=${quickJoinAdmin}`;
 
   function onImportClick() {
     setState({
@@ -200,7 +200,9 @@ function AdminDrawer({ sessionId }: Props) {
 
 function mapStateToProps(state: RootState): Props {
   return {
-    sessionId: state.session.id
+    sessionId: state.session.id,
+    quickJoinDisplay: state.session.quickJoin.display,
+    quickJoinAdmin: state.session.quickJoin.admin
   };
 }
 
