@@ -15,6 +15,7 @@ import {
 import AdminCharacterListPanel from './AdminCharacterListPanel';
 import CombatTrackerCharacterScreen from './character-details/CombatTrackerCharacterScreen';
 import AddCharacterForm from './AddCharacterForm';
+import CombatTrackerImportExportControls from './CombatTrackerImportExportControls';
 
 interface State {
   addCharacterDialogOpen?: boolean;
@@ -101,6 +102,7 @@ function AdminCombatTracker() {
                 Clear Combat
               </Button>
             </Grid>
+            <CombatTrackerImportExportControls />
           </Grid>
         </Grid>
         <Grid item xs={12} md={3}>
