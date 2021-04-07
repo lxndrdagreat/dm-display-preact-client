@@ -1,7 +1,11 @@
 import { h } from 'preact';
-import './CharacterActionsListItem.css';
-import Button from '../../../components/buttons/Button';
-import Icon from '../../../components/Icon';
+import {
+  IconButton,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText
+} from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 
 interface Props {
   name: string;
@@ -11,15 +15,15 @@ interface Props {
 
 export default function ({ name, info, onEditClick }: Props) {
   return (
-    <li className="CharacterActionsListItem">
-      <div className="info">
+    <ListItem>
+      <ListItemText>
         <strong>{name}</strong>&nbsp;{info}
-      </div>
-      <div className="edit">
-        <Button icon onClick={onEditClick}>
-          <Icon name="pencil" />
-        </Button>
-      </div>
-    </li>
+      </ListItemText>
+      <ListItemSecondaryAction>
+        <IconButton onClick={onEditClick} edge="end">
+          <Edit />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   );
 }

@@ -2,10 +2,6 @@ import { h } from 'preact';
 import type { CombatCharacterSchema } from '../../../schemas/combat-character.schema';
 import { connect } from 'react-redux';
 import type { RootState } from '@store/reducer';
-import Button from '../../../components/buttons/Button';
-import Icon from '../../../components/Icon';
-import NumberInput from '../../../components/forms/NumberInput';
-import Text from '../../../components/forms/Text';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterTopDetails,
@@ -14,10 +10,11 @@ import {
   setTopDetailsDisplayName,
   setTopDetailsInitiativeRoll
 } from '@store/slices/character-details.slice';
-import './CharacterDetailsTop.css';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
 import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
+import { Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 
 interface Props {
   character: CombatCharacterSchema;
@@ -53,6 +50,7 @@ function CharacterDetailsTop({
 
   function onSaveEditClick() {
     dispatch(setEditingCharacterTopDetails(false));
+    console.log({ displayName, adminName, roll });
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerUpdateCharacter,
       payload: {
@@ -64,65 +62,81 @@ function CharacterDetailsTop({
     });
   }
 
-  function onInitiativeChange(value: number) {
-    dispatch(setTopDetailsInitiativeRoll(value));
+  function onInitiativeChange(event: InputEvent) {
+    try {
+      const value = parseInt((event.target as HTMLInputElement).value);
+      dispatch(setTopDetailsInitiativeRoll(value));
+    } catch (e) {}
   }
 
-  function onDisplayNameChange(value: string) {
-    dispatch(setTopDetailsDisplayName(value));
+  function onDisplayNameChange(event: InputEvent) {
+    dispatch(
+      setTopDetailsDisplayName((event.target as HTMLInputElement).value)
+    );
   }
 
-  function onAdminNameChange(value: string) {
-    dispatch(setTopDetailsAdminName(value));
+  function onAdminNameChange(event: InputEvent) {
+    dispatch(setTopDetailsAdminName((event.target as HTMLInputElement).value));
+  }
+
+  if (!editing) {
+    return (
+      <Grid container>
+        <Grid item sm={1}>
+          <Typography variant="body1">{character.roll}</Typography>
+        </Grid>
+        <Grid item sm={10}>
+          <Typography variant="h4" component="h3">
+            {character.displayName}
+          </Typography>
+          {character.adminName ? (
+            <Typography variant="caption">({character.adminName})</Typography>
+          ) : null}
+        </Grid>
+        <Grid item sm={1}>
+          <IconButton onClick={onEditClick}>
+            <Edit />
+          </IconButton>
+        </Grid>
+      </Grid>
+    );
   }
 
   return (
-    <div className="CharacterDetailsTop">
-      {!editing ? (
-        <h3>
-          <span className="roll">{character.roll}</span> {character.displayName}{' '}
-          {character.adminName ? `(${character.adminName})` : ''}
-          <Button icon title="Edit" onClick={onEditClick}>
-            <Icon name="pencil" />
-          </Button>
-        </h3>
-      ) : (
-        <div class="edit-character-top-details">
-          <div class="edit-roll">
-            <NumberInput
-              id="edit-roll"
-              value={roll}
-              label="Initiative"
-              onChange={onInitiativeChange}
-            />
-          </div>
-
-          <div className="edit-character-name">
-            <Text
-              id="edit-display-name"
-              label="Display Name"
-              value={displayName}
-              onChange={onDisplayNameChange}
-            />
-          </div>
-
-          <div className="edit-character-admin-name">
-            <Text
-              id="edit-admin-name"
-              label="Admin Note"
-              value={adminName}
-              onChange={onAdminNameChange}
-            />
-          </div>
-
-          <ConfirmOrCancel
-            label="Changes"
-            onConfirm={onSaveEditClick}
-            onCancel={onCancelEditClick}
-          />
-        </div>
-      )}
-    </div>
+    <Grid container>
+      <Grid item sm={2}>
+        <TextField
+          id="edit-character-initiative"
+          label="Initiative"
+          variant="filled"
+          type="number"
+          value={roll}
+          onChange={onInitiativeChange}
+        />
+      </Grid>
+      <Grid item sm={8}>
+        <TextField
+          id="edit-character-display-name"
+          label="Name"
+          variant="filled"
+          value={character.displayName}
+          onChange={onDisplayNameChange}
+        />
+        <TextField
+          id="edit-character-admin-notes"
+          label="Admin Note"
+          variant="filled"
+          value={character.adminName}
+          onChange={onAdminNameChange}
+        />
+      </Grid>
+      <Grid item sm={2}>
+        <ConfirmOrCancel
+          onConfirm={onSaveEditClick}
+          onCancel={onCancelEditClick}
+        />
+      </Grid>
+    </Grid>
   );
 }
 

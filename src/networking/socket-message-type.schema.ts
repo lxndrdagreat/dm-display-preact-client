@@ -67,9 +67,20 @@ export interface ClientConnectToSession extends SocketMessage {
   };
 }
 
+export interface ClientConnectToSessionWithQuickJoin extends SocketMessage {
+  type: SocketMessageType.ConnectToSession;
+  payload: {
+    quick: string;
+  };
+}
+
 export interface ServerCommandSessionConnected extends SocketMessage {
   type: SocketMessageType.SessionConnected;
-  payload: string;
+  payload: {
+    token: string;
+    role: SessionUserRole;
+    session: string;
+  };
 }
 
 export interface ServerCommandFullState extends SocketMessage {
@@ -78,6 +89,10 @@ export interface ServerCommandFullState extends SocketMessage {
     id: string;
     activeScreen: ActiveScreen;
     combatTracker: CombatTrackerSchema;
+    quickJoin: {
+      admin: string;
+      display: string;
+    };
   };
 }
 

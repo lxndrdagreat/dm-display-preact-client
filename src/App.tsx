@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AppRoute } from '@store/slices/app-route.slice';
 import { dispatch } from '@store/store';
 import HomeRoute from './route-components/HomeRoute';
-import AdminRoute from './route-components/AdminRoute';
+import AdminRoute from './route-components/admin/AdminRoute';
 import type { RootState } from '@store/reducer';
 import { SocketClient } from './networking/socket-client';
 import { initStorage } from './storage-service';
@@ -12,14 +12,32 @@ import { setSessionId, setSessionPassword } from '@store/slices/session.slice';
 import { setUserRole } from '@store/slices/user-role.slice';
 import { SocketMessageType } from './networking/socket-message-type.schema';
 import { setServerOffline } from '@store/slices/server-offline.slice';
-import ModalWrap from './components/ModalWrap';
-import Button from './components/buttons/Button';
-import './App.css';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import brown from '@material-ui/core/colors/brown';
+import {
+  Button,
+  CssBaseline,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@material-ui/core';
+import { getDarkModePreference } from './utils/detect-dark-mode';
 
 interface AppProps {
   appRoute: AppRoute;
   showSocketDisconnectMessage: boolean;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    type: getDarkModePreference(),
+    primary: blueGrey,
+    secondary: brown
+  }
+});
 
 class App extends Component<AppProps> {
   constructor(props?: AppProps) {
@@ -60,6 +78,27 @@ class App extends Component<AppProps> {
           }
         });
       });
+    } else if (window.location.search && window.location.search.length > 1) {
+      // check for quick link
+      const parts = window.location.search.substr(1).split('&');
+      const quickJoinPart = parts.find((part) =>
+        part.toLowerCase().startsWith('join=')
+      );
+      if (quickJoinPart) {
+        const [, quickJoin] = quickJoinPart.split('=');
+        let wait = Promise.resolve();
+        if (!SocketClient.instance.connected) {
+          wait = SocketClient.instance.connect();
+        }
+        wait.then(() => {
+          SocketClient.instance.send({
+            type: SocketMessageType.ConnectToSession,
+            payload: {
+              quick: quickJoin
+            }
+          });
+        });
+      }
     }
   }
 
@@ -71,32 +110,37 @@ class App extends Component<AppProps> {
   // Return the App component.
   render() {
     return (
-      <div className="App">
-        <div className="screen-too-small-message">
-          This site has not been optimized for small screens yet. Please use the
-          site from a device with a larger screen.
-        </div>
+      <div>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-        {this.props.appRoute === AppRoute.Home ? (
-          <HomeRoute />
-        ) : this.props.appRoute === AppRoute.Admin ? (
-          <AdminRoute />
-        ) : (
-          <DisplayRoute />
-        )}
+          {this.props.appRoute === AppRoute.Home ? (
+            <HomeRoute />
+          ) : this.props.appRoute === AppRoute.Admin ? (
+            <AdminRoute />
+          ) : (
+            <DisplayRoute />
+          )}
 
-        <ModalWrap active={this.props.showSocketDisconnectMessage}>
-          <h3>Offline</h3>
-          <p>
-            Connection to the server has been lost. Please check your network
-            connection.
-          </p>
-          <p>
-            <Button primary onClick={this.onAttemptReconnectClick.bind(this)}>
-              Attempt to Reconnect
-            </Button>
-          </p>
-        </ModalWrap>
+          <Dialog open={this.props.showSocketDisconnectMessage}>
+            <DialogTitle>Offline</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Connection to the server has been lost. Please check your
+                network connection.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={this.onAttemptReconnectClick.bind(this)}
+              >
+                Attempt to Reconnect
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </ThemeProvider>
       </div>
     );
   }

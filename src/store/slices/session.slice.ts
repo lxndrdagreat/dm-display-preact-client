@@ -4,6 +4,10 @@ export interface SessionInfo {
   id: string | null;
   token: string | null;
   password: string;
+  quickJoin: {
+    admin: string;
+    display: string;
+  };
 }
 
 const sessionSlice = createSlice({
@@ -11,7 +15,11 @@ const sessionSlice = createSlice({
   initialState: {
     id: null,
     token: null,
-    password: ''
+    password: '',
+    quickJoin: {
+      admin: '',
+      display: ''
+    }
   } as SessionInfo,
   reducers: {
     setSessionId(state, action) {
@@ -26,11 +34,19 @@ const sessionSlice = createSlice({
       state.password = action.payload;
     },
 
+    setQuickJoin(state, action) {
+      state.quickJoin = action.payload;
+    },
+
     clearSession() {
       return {
         id: null,
         token: null,
-        password: ''
+        password: '',
+        quickJoin: {
+          admin: '',
+          display: ''
+        }
       };
     }
   }
@@ -40,7 +56,8 @@ export const {
   setSessionId,
   setSessionToken,
   setSessionPassword,
-  clearSession
+  clearSession,
+  setQuickJoin
 } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

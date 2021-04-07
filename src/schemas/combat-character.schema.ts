@@ -20,8 +20,25 @@ export enum CharacterConditions {
   Prone,
   Restrained,
   Stunned,
-  Unconcious
+  Unconscious
 }
+
+export const characterConditionLabel: Readonly<{ [index: number]: string }> = {
+  [CharacterConditions.Blinded]: 'Blinded',
+  [CharacterConditions.Charmed]: 'Charmed',
+  [CharacterConditions.Deafened]: 'Deafened',
+  [CharacterConditions.Frightened]: 'Frightened',
+  [CharacterConditions.Grappled]: 'Grappled',
+  [CharacterConditions.Incapacitated]: 'Incapacitated',
+  [CharacterConditions.Invisible]: 'Invisible',
+  [CharacterConditions.Paralyzed]: 'Paralyzed',
+  [CharacterConditions.Petrified]: 'Petrified',
+  [CharacterConditions.Poisoned]: 'Poisoned',
+  [CharacterConditions.Prone]: 'Prone',
+  [CharacterConditions.Restrained]: 'Restrained',
+  [CharacterConditions.Stunned]: 'Stunned',
+  [CharacterConditions.Unconscious]: 'Unconscious'
+};
 
 export interface CombatCharacterSchema {
   id: string;

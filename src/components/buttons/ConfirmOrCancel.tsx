@@ -1,6 +1,6 @@
 import { h, Fragment } from 'preact';
-import Icon from '../Icon';
-import Button from './Button';
+import { Grid, IconButton } from '@material-ui/core';
+import { Cancel, CheckCircle } from '@material-ui/icons';
 
 interface Props {
   label?: string;
@@ -10,14 +10,18 @@ interface Props {
 
 function ConfirmOrCancel(props: Props) {
   return (
-    <Fragment>
-      <Button icon title={`Discard ${props.label}`} onClick={props.onCancel}>
-        <Icon name="cancel" />
-      </Button>
-      <Button icon title={`Save ${props.label}`} onClick={props.onConfirm}>
-        <Icon name="confirm" />
-      </Button>
-    </Fragment>
+    <Grid container>
+      <Grid item sm={6}>
+        <IconButton onClick={props.onCancel}>
+          <Cancel />
+        </IconButton>
+      </Grid>
+      <Grid item sm={6}>
+        <IconButton onClick={props.onConfirm}>
+          <CheckCircle />
+        </IconButton>
+      </Grid>
+    </Grid>
   );
 }
 

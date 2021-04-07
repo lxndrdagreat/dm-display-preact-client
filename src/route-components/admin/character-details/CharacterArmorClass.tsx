@@ -1,9 +1,6 @@
 import { h } from 'preact';
-import LabelledStat from './LabelledStat';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import Button from '../../../components/buttons/Button';
-import Icon from '../../../components/Icon';
 import { dispatch } from '@store/store';
 import {
   setEditingCharacterArmorClass,
@@ -11,9 +8,9 @@ import {
 } from '@store/slices/character-details.slice';
 import { SocketClient } from '../../../networking/socket-client';
 import { SocketMessageType } from '../../../networking/socket-message-type.schema';
-import NumberInput from '../../../components/forms/NumberInput';
 import ConfirmOrCancel from '../../../components/buttons/ConfirmOrCancel';
-import './CharacterArmorClass.css';
+import { Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 
 interface Props {
   characterId: string;
@@ -33,7 +30,8 @@ function CharacterArmorClass({
     dispatch(setNpcArmorClass(characterAC));
   }
 
-  function onValueChange(value: number) {
+  function onValueChange(event: InputEvent) {
+    const value = parseInt((event.target as HTMLInputElement).value);
     dispatch(setNpcArmorClass(value));
   }
 
@@ -56,28 +54,29 @@ function CharacterArmorClass({
 
   if (editing) {
     return (
-      <div className="CharacterArmorClass">
-        <NumberInput
-          id={`edit-armorclass-${characterId}`}
-          label="A/C"
-          value={value}
-          onChange={onValueChange}
-        />
-        <ConfirmOrCancel
-          label="Armor Class"
-          onConfirm={onSaveClick}
-          onCancel={onDiscardClick}
-        />
-      </div>
+      <Grid container>
+        <Grid item>
+          <Typography variant="subtitle2">A/C</Typography>
+          <TextField value={value} onChange={onValueChange} type="number" />
+        </Grid>
+        <Grid item>
+          <ConfirmOrCancel onConfirm={onSaveClick} onCancel={onDiscardClick} />
+        </Grid>
+      </Grid>
     );
   }
   return (
-    <div className="CharacterArmorClass">
-      <LabelledStat label="A/C" value={characterAC} icon="shield" />
-      <Button icon onClick={onEditClick}>
-        <Icon name="pencil" />
-      </Button>
-    </div>
+    <Grid container>
+      <Grid item>
+        <Typography variant="subtitle2">A/C</Typography>
+        <Typography variant="subtitle1">{value}</Typography>
+      </Grid>
+      <Grid item>
+        <IconButton onClick={onEditClick}>
+          <Edit />
+        </IconButton>
+      </Grid>
+    </Grid>
   );
 }
 
