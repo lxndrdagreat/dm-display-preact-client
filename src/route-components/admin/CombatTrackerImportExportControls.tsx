@@ -1,12 +1,17 @@
-import { h, Fragment } from 'preact';
+import { h } from 'preact';
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Grid,
-  makeStyles
+  IconButton,
+  makeStyles,
+  Menu,
+  MenuItem
 } from '@material-ui/core';
 import { downloadDataAsFile, readFile } from '../../utils/file-access';
 import { SocketClient } from '../../networking/socket-client';
@@ -15,10 +20,15 @@ import store from '@store/store';
 import { useState } from 'preact/hooks';
 import type { RootState } from '@store/reducer';
 import type { CombatTrackerSchema } from '../../schemas/combat-tracker.schema';
+import { MoreVert } from '@material-ui/icons';
+import AddCharacterForm from './AddCharacterForm';
 
 interface State {
-  importOpen: boolean;
-  file: File | null;
+  importOpen?: boolean;
+  file?: File | null;
+  anchorEl?: HTMLElement | null;
+  addCharacterDialogOpen?: boolean;
+  confirm?: 'restart' | 'clear';
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -28,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CombatTrackerImportExportControls() {
-  const [state, setState] = useState<State>({
-    importOpen: false,
-    file: null
-  });
+  const [state, setState] = useState<State>({});
 
   const classes = useStyles();
 
@@ -40,6 +47,48 @@ export default function CombatTrackerImportExportControls() {
       file: null,
       importOpen: true
     });
+  }
+
+  function handleMenuClick(event: MouseEvent) {
+    setState({
+      anchorEl: event.currentTarget as HTMLElement
+    });
+  }
+
+  function handleMenuClose() {
+    setState({
+      anchorEl: null
+    });
+  }
+
+  function onRestartClick() {
+    setState({
+      confirm: 'restart'
+    });
+  }
+
+  function onClearClick() {
+    setState({
+      confirm: 'clear'
+    });
+  }
+
+  function handleConfirm() {
+    if (state.confirm === 'restart') {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRequestRestart
+      });
+    } else if (state.confirm === 'clear') {
+      SocketClient.instance.send({
+        type: SocketMessageType.CombatTrackerRequestClear
+      });
+    }
+
+    setState({});
+  }
+
+  function handleConfirmClose() {
+    setState({});
   }
 
   async function onImportFileChange(e: Event) {
@@ -59,7 +108,8 @@ export default function CombatTrackerImportExportControls() {
       });
       setState({
         importOpen: false,
-        file: null
+        file: null,
+        anchorEl: null
       });
     } catch (e) {
       console.error(e);
@@ -69,7 +119,8 @@ export default function CombatTrackerImportExportControls() {
   function onImportDialogClose() {
     setState({
       importOpen: false,
-      file: null
+      file: null,
+      anchorEl: null
     });
   }
 
@@ -81,22 +132,69 @@ export default function CombatTrackerImportExportControls() {
 
     const asString = JSON.stringify(combatTracker);
     downloadDataAsFile(asString, 'combat-tracker-export.json');
+    setState({
+      ...state,
+      anchorEl: null
+    });
+  }
+
+  function onAddCharacterClick() {
+    setState({
+      addCharacterDialogOpen: true
+    });
+  }
+
+  function onAddCharacterDialogBackdropClick() {
+    setState({
+      addCharacterDialogOpen: false
+    });
   }
 
   return (
-    <Fragment>
+    <Grid container spacing={1} justify="flex-end">
       <Grid item>
-        <Button variant="outlined" onClick={onImportClick}>
-          Load
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={onAddCharacterClick}
+        >
+          Add Character
         </Button>
       </Grid>
       <Grid item>
-        <Button variant="outlined" onClick={onExportClick}>
-          Save
-        </Button>
+        <IconButton onClick={handleMenuClick}>
+          <MoreVert />
+        </IconButton>
+        <Menu
+          id="combat-tracker-controls-menu"
+          open={Boolean(state.anchorEl)}
+          anchorEl={state.anchorEl}
+          onClose={handleMenuClose}
+          keepMounted
+        >
+          <MenuItem onClick={onRestartClick}>Restart Combat</MenuItem>
+          <MenuItem onClick={onClearClick}>Clear Combat</MenuItem>
+          <Divider />
+          <MenuItem onClick={onImportClick}>Load</MenuItem>
+          <MenuItem onClick={onExportClick}>Save</MenuItem>
+        </Menu>
       </Grid>
+
+      {/* Add Character Dialog */}
       <Dialog
-        open={state.importOpen}
+        open={!!state.addCharacterDialogOpen}
+        onClose={onAddCharacterDialogBackdropClick}
+        aria-labelledby="add-character-dialog-title"
+      >
+        <DialogTitle id="add-character-dialog-title">Add Character</DialogTitle>
+        <DialogContent>
+          <AddCharacterForm />
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Dialog */}
+      <Dialog
+        open={!!state.importOpen}
         onClose={onImportDialogClose}
         aria-labelledby="import-dialog-title"
       >
@@ -121,6 +219,38 @@ export default function CombatTrackerImportExportControls() {
           </label>
         </DialogContent>
       </Dialog>
-    </Fragment>
+
+      {/* Confirm Dialog */}
+      <Dialog
+        open={!!state.confirm}
+        onClose={handleConfirmClose}
+        aria-labelledby="confirm-dialog-title"
+      >
+        <DialogTitle id="confirm-dialog-title">
+          {state.confirm === 'clear'
+            ? 'Clear Combat Tracker?'
+            : 'Restart Combat?'}
+        </DialogTitle>
+        <DialogContent>
+          {state.confirm === 'clear' ? (
+            <DialogContentText>
+              This will completely reset the combat tracker.
+            </DialogContentText>
+          ) : (
+            <DialogContentText>
+              This will restart the current combat from the first round.
+            </DialogContentText>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirmClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirm} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Grid>
   );
 }
