@@ -6,7 +6,6 @@ import AdminCombatTracker from './AdminCombatTracker';
 import {
   AppBar,
   Container,
-  CssBaseline,
   Divider,
   Drawer,
   IconButton,
@@ -119,7 +118,6 @@ function AdminRoute({ activeScreen }: AdminRouteProps) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         position="absolute"
         className={clsx(classes.appBar, open && classes.appBarShift)}

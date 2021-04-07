@@ -17,6 +17,7 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import brown from '@material-ui/core/colors/brown';
 import {
   Button,
+  CssBaseline,
   Dialog,
   DialogActions,
   DialogContent,
@@ -111,6 +112,8 @@ class App extends Component<AppProps> {
     return (
       <div>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
+
           {this.props.appRoute === AppRoute.Home ? (
             <HomeRoute />
           ) : this.props.appRoute === AppRoute.Admin ? (

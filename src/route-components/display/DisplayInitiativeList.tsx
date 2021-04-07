@@ -1,8 +1,8 @@
-import { h } from 'preact';
+import { Fragment, h } from 'preact';
 import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
 import type { RootState } from '@store/reducer';
 import { connect } from 'react-redux';
-import './DisplayInitiativeList.css';
+import { Divider, List, ListItem, ListItemText } from '@material-ui/core';
 
 interface Props {
   characters: (CombatCharacterSchema | null)[];
@@ -13,19 +13,38 @@ const maxShowing = 10;
 
 function DisplayInitiativeList({ characters, total }: Props) {
   return (
-    <div className="DisplayInitiativeList">
+    <List>
       {characters.map((character) => {
         return character ? (
-          <div className="character">{character.displayName}</div>
+          <ListItem>
+            <ListItemText
+              primary={character.displayName}
+              primaryTypographyProps={{ variant: 'h4', component: 'div' }}
+            />
+          </ListItem>
         ) : (
-          <div className="character next-round">Next Round</div>
+          <Fragment>
+            <Divider />
+            <ListItem>
+              <ListItemText
+                secondary="Next Round"
+                secondaryTypographyProps={{ variant: 'h6', component: 'div' }}
+              />
+            </ListItem>
+            <Divider />
+          </Fragment>
         );
       })}
 
       {total > maxShowing ? (
-        <div className="character plus-more">+{total - maxShowing} more</div>
+        <Fragment>
+          <Divider />
+          <ListItem>
+            <ListItemText secondary={`+${total - maxShowing} more`} />
+          </ListItem>
+        </Fragment>
       ) : null}
-    </div>
+    </List>
   );
 }
 

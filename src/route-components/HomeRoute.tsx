@@ -7,7 +7,6 @@ import {
   Button,
   CircularProgress,
   Container,
-  CssBaseline,
   Grid,
   Link,
   makeStyles,
@@ -54,7 +53,6 @@ function HomeRoute(props: HomeRouteProps) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12}>
