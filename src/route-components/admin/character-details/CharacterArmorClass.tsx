@@ -69,7 +69,7 @@ function CharacterArmorClass({
     <Grid container>
       <Grid item>
         <Typography variant="subtitle2">A/C</Typography>
-        <Typography variant="subtitle1">{value}</Typography>
+        <Typography variant="subtitle1">{characterAC}</Typography>
       </Grid>
       <Grid item>
         <IconButton onClick={onEditClick}>
