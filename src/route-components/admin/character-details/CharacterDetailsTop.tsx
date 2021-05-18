@@ -32,16 +32,14 @@ function CharacterDetailsTop({
   roll
 }: Props) {
   function onEditClick() {
-    if (!editing) {
-      dispatch(setEditingCharacterTopDetails(true));
-      dispatch(
-        setTopDetails({
-          displayName: character.displayName,
-          adminName: character.adminName,
-          roll: character.roll
-        })
-      );
-    }
+    dispatch(setEditingCharacterTopDetails(true));
+    dispatch(
+      setTopDetails({
+        displayName: character.displayName,
+        adminName: character.adminName,
+        roll: character.roll
+      })
+    );
   }
 
   function onCancelEditClick() {
@@ -49,8 +47,6 @@ function CharacterDetailsTop({
   }
 
   function onSaveEditClick() {
-    dispatch(setEditingCharacterTopDetails(false));
-    console.log({ displayName, adminName, roll });
     SocketClient.instance.send({
       type: SocketMessageType.CombatTrackerUpdateCharacter,
       payload: {
@@ -60,6 +56,7 @@ function CharacterDetailsTop({
         roll: roll
       }
     });
+    dispatch(setEditingCharacterTopDetails(false));
   }
 
   function onInitiativeChange(event: InputEvent) {
@@ -119,14 +116,14 @@ function CharacterDetailsTop({
           id="edit-character-display-name"
           label="Name"
           variant="filled"
-          value={character.displayName}
+          value={displayName}
           onChange={onDisplayNameChange}
         />
         <TextField
           id="edit-character-admin-notes"
           label="Admin Note"
           variant="filled"
-          value={character.adminName}
+          value={adminName}
           onChange={onAdminNameChange}
         />
       </Grid>

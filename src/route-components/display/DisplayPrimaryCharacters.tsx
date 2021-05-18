@@ -13,7 +13,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function DisplayPrimaryCharacters({ activeCharacter, onDeckCharacter }: Props) {
+export default function DisplayPrimaryCharacters({
+  activeCharacter,
+  onDeckCharacter
+}: Props) {
   const classes = useStyles();
 
   if (!activeCharacter) {

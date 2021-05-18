@@ -9,7 +9,10 @@ interface Props {
 
 const maxShowing = 10;
 
-export default function DisplayInitiativeList({ characters, activeCharacter }: Props) {
+export default function DisplayInitiativeList({
+  characters,
+  activeCharacter
+}: Props) {
   let initiativeList: (CombatCharacterSchema | null)[] = characters.slice();
   initiativeList.push(null);
   const activeCharacterIndex = !activeCharacter

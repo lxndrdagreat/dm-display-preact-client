@@ -38,7 +38,11 @@ interface Props {
   sortedCharacters: CombatCharacterSchema[];
 }
 
-function DisplayCombatTracker({ activeCharacter, onDeckCharacter, sortedCharacters }: Props) {
+function DisplayCombatTracker({
+  activeCharacter,
+  onDeckCharacter,
+  sortedCharacters
+}: Props) {
   const classes = useStyles();
 
   return (
@@ -63,10 +67,16 @@ function DisplayCombatTracker({ activeCharacter, onDeckCharacter, sortedCharacte
           ) : (
             <Grid container spacing={3}>
               <Grid item xs={12} md={3}>
-                <DisplayInitiativeList characters={sortedCharacters} activeCharacter={activeCharacter}/>
+                <DisplayInitiativeList
+                  characters={sortedCharacters}
+                  activeCharacter={activeCharacter}
+                />
               </Grid>
               <Grid item xs={12} md={9}>
-                <DisplayPrimaryCharacters activeCharacter={activeCharacter} onDeckCharacter={onDeckCharacter} />
+                <DisplayPrimaryCharacters
+                  activeCharacter={activeCharacter}
+                  onDeckCharacter={onDeckCharacter}
+                />
               </Grid>
             </Grid>
           )}
