@@ -34,9 +34,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   activeCharacter: CombatCharacterSchema | null;
+  onDeckCharacter: CombatCharacterSchema | null;
+  sortedCharacters: CombatCharacterSchema[];
 }
 
-function DisplayCombatTracker({ activeCharacter }: Props) {
+function DisplayCombatTracker({ activeCharacter, onDeckCharacter, sortedCharacters }: Props) {
   const classes = useStyles();
 
   return (
@@ -61,10 +63,10 @@ function DisplayCombatTracker({ activeCharacter }: Props) {
           ) : (
             <Grid container spacing={3}>
               <Grid item xs={12} md={3}>
-                <DisplayInitiativeList />
+                <DisplayInitiativeList characters={sortedCharacters} activeCharacter={activeCharacter}/>
               </Grid>
               <Grid item xs={12} md={9}>
-                <DisplayPrimaryCharacters />
+                <DisplayPrimaryCharacters activeCharacter={activeCharacter} onDeckCharacter={onDeckCharacter} />
               </Grid>
             </Grid>
           )}
@@ -74,26 +76,42 @@ function DisplayCombatTracker({ activeCharacter }: Props) {
   );
 }
 
-// FIXME this logic is duplicated in DisplayPrimaryCharacters
 function mapStateToProps(state: RootState): Props {
   if (!state.combatTracker) {
     return {
-      activeCharacter: null
+      activeCharacter: null,
+      onDeckCharacter: null,
+      sortedCharacters: []
     };
   }
-  const characters = state.combatTracker.characters
+
+  const characters: CombatCharacterSchema[] = state.combatTracker.characters
     .slice()
+    .filter((ch) => ch.active)
     .sort((a, b) => b.roll - a.roll);
-  const activeIndex = characters.findIndex(
-    (ch) => ch.id === state.combatTracker!.activeCharacterId
-  );
-  if (activeIndex < 0) {
-    return {
-      activeCharacter: null
-    };
+
+  let activeCharacter: CombatCharacterSchema | null = null;
+  let onDeckCharacter: CombatCharacterSchema | null = null;
+
+  if (characters.length && state.combatTracker.activeCharacterId) {
+    // need index to determine next character
+    const activeCharacterIndex = characters.findIndex(
+      (ch) => ch.id === state.combatTracker!.activeCharacterId
+    );
+    if (activeCharacterIndex >= 0) {
+      activeCharacter = characters[activeCharacterIndex];
+      const nextUpCharacterIndex =
+        activeCharacterIndex + 1 >= characters.length
+          ? 0
+          : activeCharacterIndex + 1;
+      onDeckCharacter = characters[nextUpCharacterIndex];
+    }
   }
+
   return {
-    activeCharacter: state.combatTracker.characters[activeIndex]
+    sortedCharacters: characters,
+    activeCharacter: activeCharacter,
+    onDeckCharacter: onDeckCharacter
   };
 }
 

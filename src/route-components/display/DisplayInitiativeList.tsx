@@ -1,20 +1,29 @@
 import { Fragment, h } from 'preact';
 import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
-import type { RootState } from '@store/reducer';
-import { connect } from 'react-redux';
 import { Divider, List, ListItem, ListItemText } from '@material-ui/core';
 
 interface Props {
-  characters: (CombatCharacterSchema | null)[];
-  total: number;
+  characters: CombatCharacterSchema[];
+  activeCharacter: CombatCharacterSchema | null;
 }
 
 const maxShowing = 10;
 
-function DisplayInitiativeList({ characters, total }: Props) {
+export default function DisplayInitiativeList({ characters, activeCharacter }: Props) {
+  let initiativeList: (CombatCharacterSchema | null)[] = characters.slice();
+  initiativeList.push(null);
+  const activeCharacterIndex = !activeCharacter
+    ? -1
+    : characters.findIndex((ch) => ch && ch.id === activeCharacter.id);
+  initiativeList = initiativeList
+    .rotate(activeCharacterIndex >= 0 ? activeCharacterIndex : 0)
+    .slice(0, maxShowing);
+
+  const total = initiativeList.length;
+
   return (
     <List>
-      {characters.map((character) => {
+      {initiativeList.map((character) => {
         return character ? (
           <ListItem>
             <ListItemText
@@ -47,29 +56,3 @@ function DisplayInitiativeList({ characters, total }: Props) {
     </List>
   );
 }
-
-function mapStateToProps(state: RootState): Props {
-  if (!state.combatTracker) {
-    return {
-      characters: [],
-      total: 0
-    };
-  }
-
-  let characters: (CombatCharacterSchema | null)[] = state.combatTracker.characters
-    .slice()
-    .sort((a, b) => b.roll - a.roll);
-  characters.push(null);
-  const activeCharacterIndex = characters.findIndex(
-    (ch) => ch && ch.id === state.combatTracker!.activeCharacterId
-  );
-  characters = characters
-    .rotate(activeCharacterIndex >= 0 ? activeCharacterIndex : 0)
-    .slice(0, maxShowing);
-  return {
-    characters: characters,
-    total: state.combatTracker.characters.length
-  };
-}
-
-export default connect(mapStateToProps)(DisplayInitiativeList);

@@ -1,7 +1,5 @@
 import { h } from 'preact';
 import type { CombatCharacterSchema } from '../../schemas/combat-character.schema';
-import type { RootState } from '@store/reducer';
-import { connect } from 'react-redux';
 import { Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 
 interface Props {
@@ -15,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DisplayPrimaryCharacters({ activeCharacter, onDeckCharacter }: Props) {
+export default function DisplayPrimaryCharacters({ activeCharacter, onDeckCharacter }: Props) {
   const classes = useStyles();
 
   if (!activeCharacter) {
@@ -54,32 +52,3 @@ function DisplayPrimaryCharacters({ activeCharacter, onDeckCharacter }: Props) {
     </Grid>
   );
 }
-
-function mapStateToProps(state: RootState): Props {
-  if (!state.combatTracker) {
-    return {
-      activeCharacter: null,
-      onDeckCharacter: null
-    };
-  }
-  const characters = state.combatTracker.characters
-    .slice()
-    .sort((a, b) => b.roll - a.roll);
-  const activeIndex = characters.findIndex(
-    (ch) => ch.id === state.combatTracker!.activeCharacterId
-  );
-  if (activeIndex < 0) {
-    return {
-      activeCharacter: null,
-      onDeckCharacter: null
-    };
-  }
-  const nextUpIndex =
-    activeIndex + 1 >= characters.length ? 0 : activeIndex + 1;
-  return {
-    activeCharacter: state.combatTracker.characters[activeIndex],
-    onDeckCharacter: state.combatTracker.characters[nextUpIndex]
-  };
-}
-
-export default connect(mapStateToProps)(DisplayPrimaryCharacters);
